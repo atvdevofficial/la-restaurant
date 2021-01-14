@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers;
 
 use App\User;
 use App\Http\Controllers\Controller;
@@ -22,10 +22,10 @@ class AuthController extends Controller
             $token = $user->createToken('LaravelPasswordGrantClient')->accessToken;
             return response($token);
         }
-        
+
         return response('Invalid Credentials', 401);
     }
-    
+
     public function logout () {
         $token = request()->user()->token();
         $token->revoke();

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ChangePasswordRequest;
@@ -15,14 +15,14 @@ class UserController extends Controller
      */
     public function changePassword(ChangePasswordRequest $request) {
         $currentUser = Auth::user();
-        
+
         $oldPassword = $request->validated()['old_password'];
         $newPassword = $request->validated()['new_password'];
 
         if (Hash::check($oldPassword, $currentUser->password)) {
             $currentUser->password = $newPassword;
             $currentUser->save();
-            return response('Password changed successfully'); 
+            return response('Password changed successfully');
         } else {
             return response('Old password does not match', 401);
         }
