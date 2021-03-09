@@ -19,4 +19,27 @@ trait FileUpload
 
         return $fileUrl;
     }
+
+    public function imageUploadForBase64($base64Image, $filename = '', $uploadFolder = 'misc')
+    {
+        if (preg_match('/^data:image\/(\w+);base64,/', $base64Image)) {
+            $data = substr($base64Image, strpos($base64Image, ',') + 1);
+
+            $data = base64_decode($data);
+            $filenameWithExtension = $filename . '.png';
+            $imagePath = 'images/' . $uploadFolder . '/' . $filenameWithExtension;
+            Storage::disk('public')->put($imagePath, $data);
+            $fileUrl = Storage::url($imagePath);
+            return $fileUrl;
+        }
+
+        return null;
+
+        /**
+         * Note: When using this to upload images as model mutators
+         * add the following lines as accessors
+         *
+         * public function getTopImageAttribute($value) { return URL::to('/') . $value; }
+         */
+    }
 }
