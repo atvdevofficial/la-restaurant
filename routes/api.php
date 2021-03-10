@@ -17,7 +17,7 @@ Route::group(['middleware' => 'forceJsonResponse'], function () {
 
     Route::group(['prefix' => 'v1'], function() {
 
-        Route::post('/login', 'API\AuthController@login');
+        Route::post('/login', 'AuthController@login');
 
         Route::get('/verification', 'VerificationController@verifyContactNumber');
         Route::put('/forgot-password', 'VerificationController@sendCodeToContactNumber');
@@ -26,7 +26,7 @@ Route::group(['middleware' => 'forceJsonResponse'], function () {
 
         Route::group(['middleware' => 'auth:api'], function() {
 
-            Route::post('/logout', 'API\AuthController@logout');
+            Route::post('/logout', 'AuthController@logout');
 
             Route::get('/user', function() { return request()->user(); });
             Route::put('/user/change-password', 'API\UserController@changePassword');
