@@ -37,8 +37,7 @@ window.Pusher = require('pusher-js');
 window.Echo = new Echo({
     auth: {
         headers: {
-            'Accept': 'application/json',
-            'Authorization': 'Bearer ' + sessionStorage.getItem('user-token'),
+            Authorization: 'Bearer ' + sessionStorage.getItem('user-token'),
         }
     },
     broadcaster: 'pusher',
@@ -47,3 +46,16 @@ window.Echo = new Echo({
     encrypted: true,
 
 });
+
+// import Echo from 'laravel-echo';
+
+// window.Pusher = require('pusher-js');
+
+// window.Echo = new Echo({
+//     broadcaster: 'pusher',
+//     key: process.env.MIX_PUSHER_APP_KEY,
+//     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
+//     // encrypted: true,
+//     wsHost: window.location.hostname,
+//     wsPort: 6001
+// });

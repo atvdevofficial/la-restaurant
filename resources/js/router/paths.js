@@ -9,6 +9,9 @@ import Maps from "../components/views/Maps.vue";
 import Icons from "../components/views/Icons.vue";
 import Notifications from "../components/views/Notifications.vue";
 
+// Pusher Component
+import Pusher from '../components/views/Pusher.vue';
+
 //Admin Routes
 let adminRoutes = {
   path: "/admin",
@@ -55,6 +58,13 @@ const routes = [
     component: Signin,
   },
   adminRoutes,
+
+  // Sample Route For Pusher
+  {
+      path: "/pusher",
+      name: "Pusher",
+      component: Pusher
+  }
 ];
 
 export default routes;
