@@ -22,7 +22,7 @@ class VerificationController extends Controller
     {
         // $contactNumber = $request->validated()['contact_number'];
         // $verificationCode = rand(111111, 999999);
-        // $message = 'Your ' . env('APP_NAME', 'PitStop') . ' new user verification code is ' . $verificationCode;
+        // $message = 'Your ' . env('APP_NAME', 'Template') . ' new user verification code is ' . $verificationCode;
 
         // $iTextMoResponse = $this->sendSMS($contactNumber, $message);
 
@@ -40,7 +40,7 @@ class VerificationController extends Controller
     {
         // $contactNumber = $request->validated()['contact_number'];
         // $verificationCode = rand(111111, 999999);
-        // $message = 'Your ' . env('APP_NAME', 'PitStop') . ' forgot password user verification code is ' . $verificationCode;
+        // $message = 'Your ' . env('APP_NAME', 'Template') . ' forgot password user verification code is ' . $verificationCode;
 
         // $iTextMoResponse = $this->sendSMS($contactNumber, $message);
 
