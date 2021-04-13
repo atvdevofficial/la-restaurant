@@ -29,7 +29,7 @@ Route::group(['middleware' => 'forceJsonResponse'], function () {
             Route::post('/logout', 'AuthController@logout');
 
             Route::get('/user', function() { return request()->user(); });
-            Route::put('/user/change-password', 'API\UserController@changePassword');
+            Route::put('/user/change-password', 'UserController@changePassword');
         });
     });
 });
