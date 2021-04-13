@@ -1,0 +1,4 @@
+Pusher Test
+    To test "pusher run php artisan queue:listen | queue:work"
+    Run "php artisan tinker"
+    Execute "event(new \App\Events\SampleEvent('Alright'))"
