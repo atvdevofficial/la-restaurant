@@ -18,13 +18,11 @@ export default {
     },
 
     mounted() {
-        Echo.channel('home')
-            .listen('SampleEvent', (e) => {
-                console.log(e)
-                this.message = e.message
-            })
-
-        console.log('Pusher Component')
+        Echo.channel('sample-events')
+        .listen('SampleEvent', (e) => {
+            console.log(e)
+            this.message = e.message
+        })
     },
 
     methods: {

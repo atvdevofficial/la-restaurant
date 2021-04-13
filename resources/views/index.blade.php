@@ -4,11 +4,11 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>KoolCare</title>
+        <title>Template</title>
         <meta content="" name="descriptison">
         <meta content="" name="keywords">
 
-    <!-- CSRF Token -->
+        <!-- CSRF Token -->
         <meta name="csrf-token" content="{{ csrf_token() }}" />
 
         <!-- Google Fonts -->
@@ -32,7 +32,7 @@
                 background: url("/img/zambo.jpg") cover;
             } */
         </style> --}}
-<!-- <script src="https://js.pusher.com/7.0/pusher.min.js"></script> -->
+        <!-- <script src="https://js.pusher.com/7.0/pusher.min.js"></script> -->
     </head>
     <body>
         <div id="app">

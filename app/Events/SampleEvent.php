@@ -10,11 +10,12 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class SampleEvent
+class SampleEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $message;
+
     /**
      * Create a new event instance.
      *
@@ -32,6 +33,6 @@ class SampleEvent
      */
     public function broadcastOn()
     {
-        return new Channel('home');
+        return new Channel('sample-events');
     }
 }

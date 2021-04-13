@@ -29,7 +29,7 @@
             </v-container>
         </header>
 
-         
+
         <!-- ======= Hero Section ======= -->
         <section class="d-flex align-items-center" id="hero">
             <v-container>
@@ -50,7 +50,7 @@
                 </v-row>
             </v-container>
         </section><!-- End Hero -->
-        
+
         <main id="main">
 
             <!-- ======= Home Section ======= -->
