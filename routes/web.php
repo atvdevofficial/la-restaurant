@@ -11,6 +11,11 @@
 |
 */
 
+use Illuminate\Support\Facades\Route;
+
+Route::get('auth/{provider}', 'GoogleLoginController@redirectGoogle');
+Route::get('auth/callback/{provider}', 'GoogleLoginController@runCallback');
+
 Route::get('{any}', function () {
     return view('index');
 })->where('any','.*');
