@@ -19,8 +19,7 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'email', 'password',
-        'role',
-        'google_user_id'
+        'role', 'google_user_id'
     ];
 
     /**
@@ -29,7 +28,8 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password',
+        'password', 'google_user_id', 'role',
+        'created_at', 'updated_at'
     ];
 
     /**
@@ -39,5 +39,15 @@ class User extends Authenticatable
         if($value != null && $value != '') {
             $this->attributes['password'] = Hash::make($value);
         }
+    }
+
+    /**
+     * Model relationship
+     */
+    public function profile() {
+        if ($this->role === 'CUSTOMER')
+            return $this->hasOne(Customer::class);
+
+        return null;
     }
 }

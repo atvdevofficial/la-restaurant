@@ -9,6 +9,7 @@
     "license": "MIT",
     "require": {
         "php": "^7.2",
+        "dyrynda/laravel-cascade-soft-deletes": "3.0.0",
         "fideloper/proxy": "^4.0",
         "laravel/framework": "^6.18.35",
         "laravel/passport": "8.*",
