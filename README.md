@@ -1,1 +1,1 @@
-#lara6vue-template
+#MyShop LaraVue
