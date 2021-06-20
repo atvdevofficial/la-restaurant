@@ -24,6 +24,9 @@ Route::group(['middleware' => 'forceJsonResponse'], function () {
         // Route::put('/forgot-password/verify-code', 'VerificationController@verifyForgotPasswordCode');
         // Route::put('/forgot-password/change-password', 'VerificationController@forgotPasswordChangePassword');
 
+        Route::apiResource('productCategories', 'ProductCategoryController')
+                ->only(['index', 'show']);
+
         Route::group(['middleware' => 'auth:api'], function() {
 
             // Route::post('/logout', 'AuthController@logout');
@@ -32,6 +35,8 @@ Route::group(['middleware' => 'forceJsonResponse'], function () {
             // Route::put('/user/change-password', 'UserController@changePassword');
 
             Route::apiResource('customers', 'CustomerController');
+            Route::apiResource('productCategories', 'ProductCategoryController')
+                ->only(['store', 'update', 'destroy']);
         });
     });
 });
