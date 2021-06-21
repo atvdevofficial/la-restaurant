@@ -42,6 +42,7 @@ Route::group(['middleware' => 'forceJsonResponse'], function () {
                 ->only(['store', 'update', 'destroy']);
             Route::apiResource('products', 'ProductController')
                 ->only(['store', 'update', 'destroy']);
+            Route::apiResource('orders', 'OrderController');
         });
     });
 });

@@ -23,7 +23,7 @@ class CustomerUpdateRequest extends FormRequest
             $authenticatedCustomer = Auth::user()->profile;
             $routeCustomer = $this->route('customer');
 
-            if ($authenticatedCustomer->id === $routeCustomer->id)
+            if ((int) $authenticatedCustomer->id === (int) $routeCustomer->id)
                 return TRUE;
         }
 

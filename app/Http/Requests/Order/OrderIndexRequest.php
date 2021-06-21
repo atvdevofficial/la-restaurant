@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests\Customer;
+namespace App\Http\Requests\Order;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
-class CustomerShowRequest extends FormRequest
+class OrderIndexRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -19,13 +19,8 @@ class CustomerShowRequest extends FormRequest
         if ($authenticatedUserRole === 'ADMINISTRATOR')
             return TRUE;
 
-        if ($authenticatedUserRole === 'CUSTOMER') {
-            $authenticatedCustomer = Auth::user()->profile;
-            $routeCustomer = $this->route('customer');
-
-            if ((int) $authenticatedCustomer->id === (int) $routeCustomer->id)
-                return TRUE;
-        }
+        if ($authenticatedUserRole === 'CUSTOMER')
+            return TRUE;
 
         return FALSE;
     }
