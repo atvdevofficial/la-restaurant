@@ -34,6 +34,8 @@ class ProductController extends Controller
     public function store(ProductStoreRequest $request)
     {
         $product = Product::create($request->validated());
+        $product->productCategories()->sync($request->validated()['product_categories']);
+        $product->load('productCategories');
 
         return new ProductResource($product);
     }
@@ -46,6 +48,7 @@ class ProductController extends Controller
      */
     public function show(ProductShowRequest $request, Product $product)
     {
+        $product->load('productCategories');
         return new ProductResource($product);
     }
 
@@ -59,6 +62,8 @@ class ProductController extends Controller
     public function update(ProductUpdateRequest $request, Product $product)
     {
         $product->update($request->validated());
+        $product->productCategories()->sync($request->validated()['product_categories']);
+        $product->load('productCategories');
 
         return new ProductResource($product);
     }

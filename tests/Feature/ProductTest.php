@@ -31,7 +31,7 @@ class ProductTest extends TestCase
         ->assertStatus(200)
         ->assertJsonStructure([
             'id', 'name', 'description',
-            'price', 'image_link'
+            'price', 'image_link', 'product_categories'
         ]);
     }
 
@@ -39,11 +39,17 @@ class ProductTest extends TestCase
      * Administrator Tests
      */
     public function testPublicProductStore() {
+        $productCategory = factory(\App\ProductCategory::class)->create();
+
         $productData = [
             'name' => $this->faker->word,
             'description' => $this->faker->paragraph,
             'price' => random_int(100, 9999),
-            'image_link' => $this->faker->imageUrl
+            'image_link' => $this->faker->imageUrl,
+
+            'product_categories' => [
+                $productCategory->id
+            ]
         ];
 
         $administrator = factory(\App\User::class)->create(['role' => 'ADMINISTRATOR']);
@@ -52,11 +58,13 @@ class ProductTest extends TestCase
         ->assertStatus(201)
         ->assertJsonStructure([
             'id', 'name', 'description',
-            'price', 'image_link'
+            'price', 'image_link', 'product_categories'
         ]);
     }
 
     public function testPublicProductUpdate() {
+        $productCategory = factory(\App\ProductCategory::class)->create();
+
         $product = factory(\App\Product::class)->create();
 
         $productData = [
@@ -64,7 +72,11 @@ class ProductTest extends TestCase
             'name' => $this->faker->word,
             'description' => $this->faker->paragraph,
             'price' => random_int(100, 9999),
-            'image' => $this->faker->imageUrl
+            'image' => $this->faker->imageUrl,
+
+            'product_categories' => [
+                $productCategory->id
+            ]
         ];
 
         $administrator = factory(\App\User::class)->create(['role' => 'ADMINISTRATOR']);
@@ -73,7 +85,7 @@ class ProductTest extends TestCase
         ->assertStatus(200)
         ->assertJsonStructure([
             'id', 'name', 'description',
-            'price', 'image_link'
+            'price', 'image_link', 'product_categories'
         ]);
     }
 

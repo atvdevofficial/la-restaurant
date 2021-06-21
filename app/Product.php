@@ -16,6 +16,7 @@ class Product extends Model
     ];
 
     protected $hidden = [
+        'pivot',
         'created_at', 'updated_at'
     ];
 
@@ -41,5 +42,12 @@ class Product extends Model
         } else {
             return $value;
         }
+    }
+
+    /**
+     * Model relationships
+     */
+    public function productCategories() {
+        return $this->belongsToMany(ProductCategory::class);
     }
 }
