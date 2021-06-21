@@ -89,6 +89,8 @@ class OrderTest extends TestCase
     }
 
     public function testCustomerOrderStore() {
+        $product = factory(\App\Product::class)->create();
+
         $customerUser = factory(\App\User::class)->create(['role' => 'CUSTOMER']);
         factory(\App\Customer::class)->create(['user_id' => $customerUser->id]);
 
@@ -96,7 +98,11 @@ class OrderTest extends TestCase
             'address' => $this->faker->streetAddress,
             'latitude' => $this->faker->latitude,
             'longitude' => $this->faker->longitude,
-            'distance' => random_int(100, 999)
+            'distance' => random_int(100, 999),
+
+            'products' => [
+                ['id' => $product->id, 'quantity' => 1]
+            ]
         ];
 
         $this->actingAs($customerUser, 'api')

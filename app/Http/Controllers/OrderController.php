@@ -9,6 +9,8 @@ use App\Http\Requests\Order\OrderStoreRequest;
 use App\Http\Requests\Order\OrderUpdateRequest;
 use App\Http\Resources\OrderResource;
 use App\Order;
+use App\OrderProduct;
+use App\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -24,12 +26,12 @@ class OrderController extends Controller
         $authenticatedUserRole = Auth::user()->role;
 
         if ($authenticatedUserRole === 'ADMINISTRATOR') {
-            $orders = Order::with('customer')->get();
+            $orders = Order::with('customer', 'orderProducts', 'orderProducts.product')->get();
         }
 
         if ($authenticatedUserRole === 'CUSTOMER') {
             $authenticatedCustomer = Auth::user()->profile;
-            $orders = $authenticatedCustomer->orders;
+            $orders = $authenticatedCustomer->orders->load('orderProducts', 'orderProducts.product');
         }
 
         return OrderResource::collection($orders);
@@ -59,7 +61,40 @@ class OrderController extends Controller
             'status' => 'PENDING'
         ];
 
+        // Delivery Fee
+        $orderData['delivery_fee'] = 100;
+
+        // Order Products
+        $subTotal = 0; $orderProductsInfo = [];
+        $orderProducts = $request->validated()['products'];
+        foreach($orderProducts as $orderProduct) {
+            $product = Product::findOrFail($orderProduct['id']);
+
+            $orderProductsInfo[] = [
+                'product_id' => $product->id,
+                'price' => $product->price,
+                'quantity' => $orderProduct['quantity'],
+                'total' => (double) $product->price * $orderProduct['quantity'],
+            ];
+
+            $subTotal += (double) $product->price * $orderProduct['quantity'];
+        }
+
+        // Sub Total
+        $orderData['sub_total'] = $subTotal;
+
+        // Grand Total
+        $orderData['grand_total'] = $orderData['sub_total'] + $orderData['delivery_fee'];
+
+        // Create Order
         $order = Order::create($orderData);
+
+        // Create Order Products
+        foreach($orderProductsInfo as $orderProduct) {
+            OrderProduct::create(array_merge($orderProduct, ['order_id' => $order->id]));
+        }
+
+        $order->load('orderProducts', 'orderProducts.product');
 
         return new OrderResource($order);
     }
@@ -72,7 +107,7 @@ class OrderController extends Controller
      */
     public function show(OrderShowRequest $request, Order $order)
     {
-        $order->load('customer');
+        $order->load('customer', 'orderProducts', 'orderProducts.product');
         return new OrderResource($order);
     }
 
@@ -86,6 +121,7 @@ class OrderController extends Controller
     public function update(OrderUpdateRequest $request, Order $order)
     {
         $order->update($request->validated());
+        $order->load('customer', 'orderProducts', 'orderProducts.product');
 
         return new OrderResource($order);
     }
