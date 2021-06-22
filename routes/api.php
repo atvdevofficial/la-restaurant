@@ -30,6 +30,9 @@ Route::group(['middleware' => 'forceJsonResponse'], function () {
         Route::apiResource('products', 'ProductController')
             ->only(['index', 'show']);
 
+        Route::apiResource('deliveryFees', 'DeliveryFeeController')
+            ->only(['index', 'show']);
+
         Route::group(['middleware' => 'auth:api'], function() {
 
             // Route::post('/logout', 'AuthController@logout');
@@ -38,11 +41,17 @@ Route::group(['middleware' => 'forceJsonResponse'], function () {
             // Route::put('/user/change-password', 'UserController@changePassword');
 
             Route::apiResource('customers', 'CustomerController');
+
             Route::apiResource('productCategories', 'ProductCategoryController')
                 ->only(['store', 'update', 'destroy']);
+
             Route::apiResource('products', 'ProductController')
                 ->only(['store', 'update', 'destroy']);
+
             Route::apiResource('orders', 'OrderController');
+
+            Route::apiResource('deliveryFees', 'DeliveryFeeController')
+                ->only(['store', 'update', 'destroy']);
         });
     });
 });
