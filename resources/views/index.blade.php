@@ -16,8 +16,7 @@
     </head>
     <body>
         <div id="app">
-            <example-component />
-            {{-- <router-view></router-view> --}}
+            <router-view></router-view>
         </div>
         <script src="{{ asset('js/app.js') }}"></script>
     </body>
