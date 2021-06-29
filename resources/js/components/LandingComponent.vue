@@ -11,7 +11,7 @@
 </template>
 
 <script>
-    import ExampleComponent from './ExampleComponent.vue'
+    import ExampleComponent from './subs/ExampleComponent.vue'
 
     export default {
         components: {
