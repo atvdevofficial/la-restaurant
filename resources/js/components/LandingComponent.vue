@@ -3,7 +3,7 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card-body">
-                    LandingComponent
+                    <example-component></example-component>
                 </div>
             </div>
         </div>
@@ -11,7 +11,12 @@
 </template>
 
 <script>
+    import ExampleComponent from './ExampleComponent.vue'
+
     export default {
+        components: {
+            ExampleComponent
+        },
         mounted() {
             console.log('Component mounted.')
         }
