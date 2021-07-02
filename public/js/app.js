@@ -2063,6 +2063,267 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/OrdersComponent.vue?vue&type=script&lang=js&":
+/*!**************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/OrdersComponent.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      orderInformationDialog: false,
+      search: "",
+      viewingOrder: {
+        code: null,
+        customer: null,
+        address: null,
+        sub_total: 0,
+        delivery_fee: 0,
+        grand_total: 0,
+        status: null,
+        note: null,
+        items: [{
+          name: null,
+          price: 0,
+          quantity: 0
+        }]
+      },
+      headers: [{
+        text: "Code",
+        value: "code"
+      }, {
+        text: "Customer",
+        value: "customer"
+      }, {
+        text: "Address",
+        value: "address"
+      }, {
+        text: "Sub Total",
+        value: "sub_total"
+      }, {
+        text: "Delivery Fee",
+        value: "delivery_fee"
+      }, {
+        text: "Grand Total",
+        value: "grand_total"
+      }, {
+        text: "Status",
+        value: "status"
+      }, {
+        text: "Actions",
+        value: "actions",
+        sortable: false,
+        align: "center"
+      }],
+      orders: [{
+        code: "159753451",
+        customer: "John Doe Jr.",
+        address: "Mapple Drive, Honey Drive, ASU",
+        sub_total: 700.0,
+        delivery_fee: 70.0,
+        grand_total: 770.0,
+        status: "PENDING",
+        note: "the quick brown fox jumps over the lazy dog.",
+        items: [{
+          name: "Burger",
+          price: 100,
+          quantity: 1
+        }, {
+          name: "Fries",
+          price: 50,
+          quantity: 2
+        }, {
+          name: "Coke Float",
+          price: 150,
+          quantity: 3
+        }]
+      }, {
+        code: "159753452",
+        customer: "John Doe Jr.",
+        address: "Mapple Drive, Honey Drive, ASU",
+        sub_total: 700.0,
+        delivery_fee: 70.0,
+        grand_total: 770.0,
+        status: "PENDING",
+        note: null,
+        items: [{
+          name: "Burger",
+          price: 100,
+          quantity: 4
+        }, {
+          name: "Fries",
+          price: 50,
+          quantity: 5
+        }, {
+          name: "Coke Float",
+          price: 150,
+          quantity: 6
+        }]
+      }, {
+        code: "159753453",
+        customer: "John Doe Jr.",
+        address: "Mapple Drive, Honey Drive, ASU",
+        sub_total: 700.0,
+        delivery_fee: 70.0,
+        grand_total: 770.0,
+        status: "PROCESSING",
+        note: null,
+        items: [{
+          name: "Burger",
+          price: 100,
+          quantity: 7
+        }, {
+          name: "Fries",
+          price: 50,
+          quantity: 8
+        }, {
+          name: "Coke Float",
+          price: 150,
+          quantity: 9
+        }]
+      }, {
+        code: "159753454",
+        customer: "John Doe Jr.",
+        address: "Mapple Drive, Honey Drive, ASU",
+        sub_total: 700.0,
+        delivery_fee: 70.0,
+        grand_total: 770.0,
+        status: "DELIVERED",
+        note: null,
+        items: [{
+          name: "Burger",
+          price: 100,
+          quantity: 10
+        }, {
+          name: "Fries",
+          price: 50,
+          quantity: 11
+        }, {
+          name: "Coke Float",
+          price: 150,
+          quantity: 12
+        }]
+      }],
+      statusList: ["PENDING", "PROCESSING", "ON-THE-WAY", "DELIVERED"]
+    };
+  },
+  methods: {
+    viewOrder: function viewOrder(item) {
+      this.viewingOrder = Object.assign({}, item);
+      this.orderInformationDialog = true;
+    },
+    updateStatus: function updateStatus() {
+      console.log("Status Updated");
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ScaffoldComponent.vue?vue&type=script&lang=js&":
 /*!****************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/ScaffoldComponent.vue?vue&type=script&lang=js& ***!
@@ -38658,6 +38919,305 @@ var render = function() {
       ])
     ])
   ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/OrdersComponent.vue?vue&type=template&id=14426806&":
+/*!******************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/OrdersComponent.vue?vue&type=template&id=14426806& ***!
+  \******************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "v-container",
+    { attrs: { fluid: "" } },
+    [
+      _c("div", { staticClass: "caption font-italic ma-1" }, [
+        _vm._v("Note: Click the status of the corresponding order to update.")
+      ]),
+      _vm._v(" "),
+      _c("v-data-table", {
+        attrs: {
+          headers: _vm.headers,
+          items: _vm.orders,
+          "items-per-page": 5,
+          search: _vm.search
+        },
+        scopedSlots: _vm._u([
+          {
+            key: "item.status",
+            fn: function(props) {
+              return [
+                _c(
+                  "v-edit-dialog",
+                  {
+                    attrs: {
+                      "return-value": props.item.status,
+                      large: "",
+                      persistent: ""
+                    },
+                    on: {
+                      "update:returnValue": function($event) {
+                        return _vm.$set(props.item, "status", $event)
+                      },
+                      "update:return-value": function($event) {
+                        return _vm.$set(props.item, "status", $event)
+                      },
+                      save: _vm.updateStatus
+                    },
+                    scopedSlots: _vm._u(
+                      [
+                        {
+                          key: "input",
+                          fn: function() {
+                            return [
+                              _c("div", { staticClass: "mt-4" }, [
+                                _vm._v("Update Status")
+                              ]),
+                              _vm._v(" "),
+                              _c("v-select", {
+                                attrs: { items: _vm.statusList },
+                                model: {
+                                  value: props.item.status,
+                                  callback: function($$v) {
+                                    _vm.$set(props.item, "status", $$v)
+                                  },
+                                  expression: "props.item.status"
+                                }
+                              })
+                            ]
+                          },
+                          proxy: true
+                        }
+                      ],
+                      null,
+                      true
+                    )
+                  },
+                  [_c("div", [_vm._v(_vm._s(props.item.status))])]
+                )
+              ]
+            }
+          },
+          {
+            key: "item.actions",
+            fn: function(ref) {
+              var item = ref.item
+              return [
+                _c(
+                  "v-dialog",
+                  {
+                    attrs: { width: "500", "retain-focus": false },
+                    scopedSlots: _vm._u(
+                      [
+                        {
+                          key: "activator",
+                          fn: function(ref) {
+                            var on = ref.on
+                            var attrs = ref.attrs
+                            return [
+                              _c(
+                                "v-btn",
+                                _vm._g(
+                                  _vm._b(
+                                    {
+                                      attrs: { icon: "", color: "info" },
+                                      on: {
+                                        click: function($event) {
+                                          return _vm.viewOrder(item)
+                                        }
+                                      }
+                                    },
+                                    "v-btn",
+                                    attrs,
+                                    false
+                                  ),
+                                  on
+                                ),
+                                [
+                                  _c("v-icon", { attrs: { small: "" } }, [
+                                    _vm._v(" mdi-information ")
+                                  ])
+                                ],
+                                1
+                              )
+                            ]
+                          }
+                        }
+                      ],
+                      null,
+                      true
+                    ),
+                    model: {
+                      value: _vm.orderInformationDialog,
+                      callback: function($$v) {
+                        _vm.orderInformationDialog = $$v
+                      },
+                      expression: "orderInformationDialog"
+                    }
+                  },
+                  [
+                    _vm._v(" "),
+                    _c(
+                      "v-card",
+                      [
+                        _c(
+                          "v-card-title",
+                          { staticClass: "text-h5 primary white--text" },
+                          [
+                            _vm._v(
+                              "\n            Order Information (" +
+                                _vm._s(_vm.viewingOrder.code) +
+                                ")\n          "
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "v-card-text",
+                          {},
+                          [
+                            _c(
+                              "v-list",
+                              [
+                                _c("v-subheader", [_vm._v("Items")]),
+                                _vm._v(" "),
+                                _vm._l(_vm.viewingOrder.items, function(
+                                  item,
+                                  index
+                                ) {
+                                  return _c(
+                                    "v-list-item",
+                                    { key: index },
+                                    [
+                                      _c(
+                                        "v-list-item-content",
+                                        [
+                                          _c(
+                                            "v-list-item-title",
+                                            { staticClass: "font-weight-bold" },
+                                            [_vm._v(_vm._s(item.name))]
+                                          ),
+                                          _vm._v(" "),
+                                          _c("v-list-item-subtitle", [
+                                            _vm._v(
+                                              "\n                    Php " +
+                                                _vm._s(item.price) +
+                                                " x\n                    " +
+                                                _vm._s(item.quantity)
+                                            )
+                                          ])
+                                        ],
+                                        1
+                                      ),
+                                      _vm._v(" "),
+                                      _c("v-list-item-action", [
+                                        _c(
+                                          "div",
+                                          { staticClass: "font-weight-bold" },
+                                          [
+                                            _vm._v(
+                                              "\n                    Php " +
+                                                _vm._s(
+                                                  item.price * item.quantity
+                                                ) +
+                                                "\n                  "
+                                            )
+                                          ]
+                                        )
+                                      ])
+                                    ],
+                                    1
+                                  )
+                                }),
+                                _vm._v(" "),
+                                _vm.viewingOrder.note != null
+                                  ? _c(
+                                      "div",
+                                      [
+                                        _c("v-subheader", [_vm._v("Note")]),
+                                        _vm._v(" "),
+                                        _c(
+                                          "v-list-item",
+                                          [
+                                            _c(
+                                              "v-list-item-content",
+                                              [
+                                                _c("v-list-item-subtitle", [
+                                                  _vm._v(
+                                                    "\n                      " +
+                                                      _vm._s(
+                                                        _vm.viewingOrder.note
+                                                      )
+                                                  )
+                                                ])
+                                              ],
+                                              1
+                                            )
+                                          ],
+                                          1
+                                        )
+                                      ],
+                                      1
+                                    )
+                                  : _vm._e()
+                              ],
+                              2
+                            )
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c("v-divider"),
+                        _vm._v(" "),
+                        _c(
+                          "v-card-actions",
+                          [
+                            _c("v-spacer"),
+                            _vm._v(" "),
+                            _c(
+                              "v-btn",
+                              {
+                                attrs: { color: "default", text: "" },
+                                on: {
+                                  click: function($event) {
+                                    _vm.orderInformationDialog = false
+                                  }
+                                }
+                              },
+                              [_vm._v("\n              Close\n            ")]
+                            )
+                          ],
+                          1
+                        )
+                      ],
+                      1
+                    )
+                  ],
+                  1
+                )
+              ]
+            }
+          }
+        ])
+      })
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -99954,6 +100514,75 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/OrdersComponent.vue":
+/*!*****************************************************!*\
+  !*** ./resources/js/components/OrdersComponent.vue ***!
+  \*****************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _OrdersComponent_vue_vue_type_template_id_14426806___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./OrdersComponent.vue?vue&type=template&id=14426806& */ "./resources/js/components/OrdersComponent.vue?vue&type=template&id=14426806&");
+/* harmony import */ var _OrdersComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./OrdersComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/OrdersComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _OrdersComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _OrdersComponent_vue_vue_type_template_id_14426806___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _OrdersComponent_vue_vue_type_template_id_14426806___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/OrdersComponent.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/OrdersComponent.vue?vue&type=script&lang=js&":
+/*!******************************************************************************!*\
+  !*** ./resources/js/components/OrdersComponent.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_OrdersComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./OrdersComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/OrdersComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_OrdersComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/OrdersComponent.vue?vue&type=template&id=14426806&":
+/*!************************************************************************************!*\
+  !*** ./resources/js/components/OrdersComponent.vue?vue&type=template&id=14426806& ***!
+  \************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_OrdersComponent_vue_vue_type_template_id_14426806___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./OrdersComponent.vue?vue&type=template&id=14426806& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/OrdersComponent.vue?vue&type=template&id=14426806&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_OrdersComponent_vue_vue_type_template_id_14426806___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_OrdersComponent_vue_vue_type_template_id_14426806___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/components/ScaffoldComponent.vue":
 /*!*******************************************************!*\
   !*** ./resources/js/components/ScaffoldComponent.vue ***!
@@ -100107,6 +100736,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_LandingComponent_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/LandingComponent.vue */ "./resources/js/components/LandingComponent.vue");
 /* harmony import */ var _components_ScaffoldComponent_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/ScaffoldComponent.vue */ "./resources/js/components/ScaffoldComponent.vue");
 /* harmony import */ var _components_DashboardComponent_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/DashboardComponent.vue */ "./resources/js/components/DashboardComponent.vue");
+/* harmony import */ var _components_OrdersComponent_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/OrdersComponent.vue */ "./resources/js/components/OrdersComponent.vue");
+
 
 
 
@@ -100126,6 +100757,12 @@ var routes = [{
     name: 'dashboard',
     components: {
       "default": _components_DashboardComponent_vue__WEBPACK_IMPORTED_MODULE_4__["default"]
+    }
+  }, {
+    path: '/orders',
+    name: 'orders',
+    components: {
+      "default": _components_OrdersComponent_vue__WEBPACK_IMPORTED_MODULE_5__["default"]
     }
   }]
 }];
