@@ -1,44 +1,20 @@
 <template>
   <v-container fluid>
-    <div class="caption font-italic ma-1">Note: Click the status of the corresponding order to update.</div>
+    <div class="caption font-italic ma-1">
+      Note: Click the status of the corresponding order to update.
+    </div>
     <v-data-table
       :headers="headers"
       :items="orders"
       :items-per-page="5"
       :search="search"
     >
-      <template v-slot:item.status="props">
-        <v-edit-dialog
-          :return-value.sync="props.item.status"
-          large
-          persistent
-          @save="updateStatus"
-        >
-          <div>{{ props.item.status }}</div>
-          <template v-slot:input>
-            <div class="mt-4">Update Status</div>
-            <v-select :items="statusList" v-model="props.item.status"></v-select>
-          </template>
-        </v-edit-dialog>
-      </template>
-      <template v-slot:item.actions="{ item }">
+      <template v-slot:top>
         <v-dialog
           v-model="orderInformationDialog"
           width="500"
           :retain-focus="false"
         >
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn
-              icon
-              color="info"
-              v-bind="attrs"
-              v-on="on"
-              @click="viewOrder(item)"
-            >
-              <v-icon small> mdi-information </v-icon>
-            </v-btn>
-          </template>
-
           <v-card>
             <v-card-title class="text-h5 primary white--text">
               Order Information ({{ viewingOrder.code }})
@@ -93,6 +69,30 @@
             </v-card-actions>
           </v-card>
         </v-dialog>
+      </template>
+
+      <template v-slot:item.status="props">
+        <v-edit-dialog
+          :return-value.sync="props.item.status"
+          large
+          persistent
+          @save="updateStatus"
+        >
+          <div>{{ props.item.status }}</div>
+          <template v-slot:input>
+            <div class="mt-4">Update Status</div>
+            <v-select
+              :items="statusList"
+              v-model="props.item.status"
+            ></v-select>
+          </template>
+        </v-edit-dialog>
+      </template>
+
+      <template v-slot:item.actions="{ item }">
+        <v-btn icon @click="viewOrder(item)">
+          <v-icon small> mdi-information </v-icon>
+        </v-btn>
       </template>
     </v-data-table>
   </v-container>
