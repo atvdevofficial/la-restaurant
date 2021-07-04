@@ -69,9 +69,9 @@
 
         <v-dialog v-model="dialogDelete" max-width="320">
             <v-card>
-              <v-card-title class="caption">
+               <v-card-text class="pa-4 text-center">
                 Are you sure you want to delete this customer?
-              </v-card-title>
+              </v-card-text>
               <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="default" text @click="closeDelete"> No </v-btn>

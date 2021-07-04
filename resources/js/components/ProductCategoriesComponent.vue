@@ -2,7 +2,7 @@
   <v-container fluid>
     <v-data-table
       :headers="headers"
-      :items="products"
+      :items="productCategories"
       :items-per-page="5"
       :search="search"
     >
@@ -12,7 +12,7 @@
           <v-dialog v-model="dialog" max-width="500px">
             <template v-slot:activator="{ on, attrs }">
               <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
-                New Product
+                New Product Category
               </v-btn>
             </template>
             <v-card>
@@ -25,29 +25,8 @@
                   <v-row>
                     <v-col cols="12">
                       <v-text-field
-                        v-model="editedProduct.name"
+                        v-model="editedProductCategory.name"
                         label="Name"
-                      ></v-text-field>
-                    </v-col>
-                    <v-col cols="12">
-                      <v-textarea
-                        v-model="editedProduct.description"
-                        label="Description"
-                      ></v-textarea>
-                    </v-col>
-                    <v-col cols="12" sm="6">
-                      <v-file-input
-                        show-size
-                        accept="image/*"
-                        label="Image"
-                      ></v-file-input>
-                    </v-col>
-                    <v-col cols="12" sm="6">
-                      <v-text-field
-                        v-model="editedProduct.price"
-                        label="Price"
-                        prefix="PHP"
-                        type="number"
                       ></v-text-field>
                     </v-col>
                   </v-row>
@@ -67,7 +46,7 @@
           <v-dialog v-model="dialogDelete" max-width="320">
             <v-card>
               <v-card-text class="pa-4 text-center">
-                Are you sure you want to delete this product?
+                Are you sure you want to delete this product category?
               </v-card-text>
               <v-card-actions>
                 <v-spacer></v-spacer>
@@ -81,28 +60,6 @@
           </v-dialog>
         </v-toolbar>
       </template>
-
-      <!-- Product Image -->
-      <template v-slot:item.image="{ item }">
-        <v-img
-          width="75"
-          :src="`https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-images-image_large.png?format=jpg&quality=90&v=1530129081`"
-          aspect-ratio="1"
-          class="grey lighten-2"
-        >
-          <template v-slot:placeholder>
-            <v-row class="fill-height ma-0" align="center" justify="center">
-              <v-progress-circular
-                indeterminate
-                color="grey lighten-5"
-              ></v-progress-circular>
-            </v-row>
-          </template>
-        </v-img>
-      </template>
-
-      <!-- Product Price -->
-      <template v-slot:item.price="{ item }"> Php {{ item.price }} </template>
 
       <!-- Product Actions -->
       <template v-slot:item.actions="{ item }">
@@ -122,58 +79,37 @@ export default {
       search: "",
       headers: [
         { text: "ID", value: "id" },
-        { text: "Image", value: "image" },
         { text: "Name", value: "name" },
-        { text: "Description", value: "description" },
-        { text: "Price", value: "price" },
         { text: "Actions", value: "actions", sortable: false, align: "center" },
       ],
       editedIndex: -1,
-      editedProduct: {
+      editedProductCategory: {
         id: null,
-        image: null,
         name: null,
-        description: null,
-        price: 0,
       },
-      defaultProduct: {
+      defaultProductCategory: {
         id: null,
-        image: null,
         name: null,
-        description: null,
-        price: 0,
       },
-      products: [
+      productCategories: [
         {
           id: 1,
-          image:
-            "https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-images-image_large.png?format=jpg&quality=90&v=1530129081",
           name: "Burger",
-          description: "The Delicious Burger",
-          price: 100,
         },
         {
           id: 2,
-          image:
-            "https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-images-image_large.png?format=jpg&quality=90&v=1530129081",
           name: "Fries",
-          description: "The Delicious Fries",
-          price: 100,
         },
         {
           id: 3,
-          image:
-            "https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-images-image_large.png?format=jpg&quality=90&v=1530129081",
           name: "Coke Float",
-          description: "The Delicious Coke Float",
-          price: 100,
         },
       ],
     };
   },
   computed: {
     formTitle() {
-      return this.editedIndex === -1 ? "New Product" : "Edit Product";
+      return this.editedIndex === -1 ? "New Product Category" : "Edit Product Category";
     },
   },
   watch: {
@@ -187,26 +123,26 @@ export default {
 
   methods: {
     editItem(item) {
-      this.editedIndex = this.products.indexOf(item);
-      this.editedProduct = Object.assign({}, item);
+      this.editedIndex = this.productCategories.indexOf(item);
+      this.editedProductCategory = Object.assign({}, item);
       this.dialog = true;
     },
 
     deleteItem(item) {
-      this.editedIndex = this.products.indexOf(item);
-      this.editedProduct = Object.assign({}, item);
+      this.editedIndex = this.productCategories.indexOf(item);
+      this.editedProductCategory = Object.assign({}, item);
       this.dialogDelete = true;
     },
 
     deleteItemConfirm() {
-      this.products.splice(this.editedIndex, 1);
+      this.productCategories.splice(this.editedIndex, 1);
       this.closeDelete();
     },
 
     close() {
       this.dialog = false;
       this.$nextTick(() => {
-        this.editedProduct = Object.assign({}, this.defaultProduct);
+        this.editedProductCategory = Object.assign({}, this.defaultProductCategory);
         this.editedIndex = -1;
       });
     },
@@ -214,16 +150,16 @@ export default {
     closeDelete() {
       this.dialogDelete = false;
       this.$nextTick(() => {
-        this.editedProduct = Object.assign({}, this.defaultProduct);
+        this.editedProductCategory = Object.assign({}, this.defaultProductCategory);
         this.editedIndex = -1;
       });
     },
 
     save() {
       if (this.editedIndex > -1) {
-        Object.assign(this.products[this.editedIndex], this.editedProduct);
+        Object.assign(this.productCategories[this.editedIndex], this.editedProductCategory);
       } else {
-        this.products.push(this.editedProduct);
+        this.productCategories.push(this.editedProductCategory);
       }
       this.close();
     },
