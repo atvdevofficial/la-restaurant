@@ -124,7 +124,7 @@ export default {
         { text: "ID", value: "id" },
         { text: "Image", value: "image" },
         { text: "Name", value: "name" },
-        { text: "Description", value: "description " },
+        { text: "Description", value: "description" },
         { text: "Price", value: "price" },
         { text: "Actions", value: "actions", sortable: false, align: "center" },
       ],

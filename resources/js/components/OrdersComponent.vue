@@ -20,7 +20,7 @@
               Order Information ({{ viewingOrder.code }})
             </v-card-title>
 
-            <v-card-text class="">
+            <v-card-text>
               <v-list>
                 <v-subheader>Items</v-subheader>
                 <v-list-item

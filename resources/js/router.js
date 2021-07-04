@@ -6,6 +6,7 @@ import ScaffoldComponent from './components/ScaffoldComponent.vue'
 import DashboardComponent from './components/DashboardComponent.vue'
 import OrdersComponent from './components/OrdersComponent.vue'
 import ProductsComponent from './components/ProductsComponent.vue'
+import CustomersComponent from './components/CustomersComponent.vue'
 
 Vue.use(VueRouter)
 
@@ -23,6 +24,7 @@ const routes = [
             { path: '/dashboard', name: 'dashboard', components: { default: DashboardComponent } },
             { path: '/orders', name: 'orders', components: { default: OrdersComponent } },
             { path: '/products', name: 'products', components: { default: ProductsComponent } },
+            { path: '/customers', name: 'customers', components: { default: CustomersComponent } },
         ]
     }
 ];

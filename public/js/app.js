@@ -1924,6 +1924,233 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/CustomersComponent.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/CustomersComponent.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      customerInformationDialog: false,
+      dialogDelete: false,
+      search: "",
+      headers: [{
+        text: "ID",
+        value: "id"
+      }, {
+        text: "Name",
+        value: "name"
+      }, {
+        text: "Address",
+        value: "address"
+      }, {
+        text: "Phone Number",
+        value: "phone_number"
+      }, {
+        text: "Actions",
+        value: "actions",
+        sortable: false,
+        align: "center"
+      }],
+      customers: [{
+        id: 1,
+        name: "John Doe",
+        address: "Mapple Street",
+        phone_number: "999-9999",
+        orders: {
+          total: 0,
+          delivered: 0,
+          cancelled: 0
+        }
+      }, {
+        id: 2,
+        name: "Mila Ei",
+        address: "Apple Corner",
+        phone_number: "999-9999",
+        orders: {
+          total: 0,
+          delivered: 0,
+          cancelled: 0
+        }
+      }, {
+        id: 3,
+        name: "Robert Bob",
+        address: "Oakwood Drive",
+        phone_number: "999-9999",
+        orders: {
+          total: 0,
+          delivered: 0,
+          cancelled: 0
+        }
+      }],
+      viewingCustomer: {
+        id: null,
+        name: null,
+        address: null,
+        phone_number: null,
+        orders: {
+          total: 0,
+          delivered: 0,
+          cancelled: 0
+        }
+      },
+      defaultCustomer: {
+        id: null,
+        name: null,
+        address: null,
+        phone_number: null,
+        orders: {
+          total: 0,
+          delivered: 0,
+          cancelled: 0
+        }
+      },
+      editedIndex: -1
+    };
+  },
+  watch: {
+    dialogDelete: function dialogDelete(val) {
+      val || this.closeDelete();
+    }
+  },
+  methods: {
+    viewCustomer: function viewCustomer(item) {
+      this.viewingCustomer = Object.assign({}, item);
+      this.customerInformationDialog = true;
+    },
+    deleteCustomer: function deleteCustomer(item) {
+      this.editedIndex = this.customers.indexOf(item);
+      this.viewingCustomer = Object.assign({}, item);
+      this.dialogDelete = true;
+    },
+    deleteCustomerConfirm: function deleteCustomerConfirm() {
+      this.customers.splice(this.editedIndex, 1);
+      this.closeDelete();
+    },
+    close: function close() {
+      var _this = this;
+
+      this.customerInformationDialog = false;
+      this.$nextTick(function () {
+        _this.viewingCustomer = Object.assign({}, _this.defaultCustomer);
+        _this.editedIndex = -1;
+      });
+    },
+    closeDelete: function closeDelete() {
+      var _this2 = this;
+
+      this.dialogDelete = false;
+      this.$nextTick(function () {
+        _this2.viewingCustomer = Object.assign({}, _this2.defaultCustomer);
+        _this2.editedIndex = -1;
+      });
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/DashboardComponent.vue?vue&type=script&lang=js&":
 /*!*****************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/DashboardComponent.vue?vue&type=script&lang=js& ***!
@@ -2465,7 +2692,7 @@ __webpack_require__.r(__webpack_exports__);
         value: "name"
       }, {
         text: "Description",
-        value: "description "
+        value: "description"
       }, {
         text: "Price",
         value: "price"
@@ -39025,6 +39252,333 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/CustomersComponent.vue?vue&type=template&id=377065d3&":
+/*!*********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/CustomersComponent.vue?vue&type=template&id=377065d3& ***!
+  \*********************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "v-container",
+    { attrs: { fluid: "" } },
+    [
+      _c("v-data-table", {
+        attrs: {
+          headers: _vm.headers,
+          items: _vm.customers,
+          "items-per-page": 5,
+          search: _vm.search
+        },
+        scopedSlots: _vm._u([
+          {
+            key: "top",
+            fn: function() {
+              return [
+                _c(
+                  "v-dialog",
+                  {
+                    attrs: { width: "500", "retain-focus": false },
+                    model: {
+                      value: _vm.customerInformationDialog,
+                      callback: function($$v) {
+                        _vm.customerInformationDialog = $$v
+                      },
+                      expression: "customerInformationDialog"
+                    }
+                  },
+                  [
+                    _c(
+                      "v-card",
+                      [
+                        _c(
+                          "v-card-title",
+                          { staticClass: "text-h5 primary white--text" },
+                          [
+                            _vm._v(
+                              "\n            Customer Information (" +
+                                _vm._s(_vm.viewingCustomer.name) +
+                                ")\n          "
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "v-card-text",
+                          { staticClass: "mt-4" },
+                          [
+                            _c(
+                              "v-row",
+                              [
+                                _c(
+                                  "v-col",
+                                  { attrs: { cols: "4" } },
+                                  [
+                                    _c(
+                                      "v-card",
+                                      [
+                                        _c(
+                                          "v-card-title",
+                                          { staticClass: "justify-center" },
+                                          [
+                                            _c(
+                                              "div",
+                                              { staticClass: "title" },
+                                              [
+                                                _vm._v(
+                                                  "\n                      " +
+                                                    _vm._s(
+                                                      _vm.viewingCustomer.orders
+                                                        .total
+                                                    ) +
+                                                    "\n                    "
+                                                )
+                                              ]
+                                            )
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "v-card-text",
+                                          { staticClass: "text-center" },
+                                          [_vm._v(" Orders ")]
+                                        )
+                                      ],
+                                      1
+                                    )
+                                  ],
+                                  1
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "v-col",
+                                  { attrs: { cols: "4" } },
+                                  [
+                                    _c(
+                                      "v-card",
+                                      [
+                                        _c(
+                                          "v-card-title",
+                                          { staticClass: "justify-center" },
+                                          [
+                                            _c(
+                                              "div",
+                                              { staticClass: "title" },
+                                              [
+                                                _vm._v(
+                                                  "\n                      " +
+                                                    _vm._s(
+                                                      _vm.viewingCustomer.orders
+                                                        .delivered
+                                                    ) +
+                                                    "\n                    "
+                                                )
+                                              ]
+                                            )
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "v-card-text",
+                                          { staticClass: "text-center" },
+                                          [_vm._v(" Delivered ")]
+                                        )
+                                      ],
+                                      1
+                                    )
+                                  ],
+                                  1
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "v-col",
+                                  { attrs: { cols: "4" } },
+                                  [
+                                    _c(
+                                      "v-card",
+                                      [
+                                        _c(
+                                          "v-card-title",
+                                          { staticClass: "justify-center" },
+                                          [
+                                            _c(
+                                              "div",
+                                              { staticClass: "title" },
+                                              [
+                                                _vm._v(
+                                                  "\n                      " +
+                                                    _vm._s(
+                                                      _vm.viewingCustomer.orders
+                                                        .cancelled
+                                                    ) +
+                                                    "\n                    "
+                                                )
+                                              ]
+                                            )
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "v-card-text",
+                                          { staticClass: "text-center" },
+                                          [_vm._v(" Cancelled ")]
+                                        )
+                                      ],
+                                      1
+                                    )
+                                  ],
+                                  1
+                                )
+                              ],
+                              1
+                            )
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c("v-divider"),
+                        _vm._v(" "),
+                        _c(
+                          "v-card-actions",
+                          [
+                            _c("v-spacer"),
+                            _vm._v(" "),
+                            _c(
+                              "v-btn",
+                              {
+                                attrs: { color: "default", text: "" },
+                                on: {
+                                  click: function($event) {
+                                    _vm.customerInformationDialog = false
+                                  }
+                                }
+                              },
+                              [_vm._v("\n              Close\n            ")]
+                            )
+                          ],
+                          1
+                        )
+                      ],
+                      1
+                    )
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "v-dialog",
+                  {
+                    attrs: { "max-width": "320" },
+                    model: {
+                      value: _vm.dialogDelete,
+                      callback: function($$v) {
+                        _vm.dialogDelete = $$v
+                      },
+                      expression: "dialogDelete"
+                    }
+                  },
+                  [
+                    _c(
+                      "v-card",
+                      [
+                        _c("v-card-title", { staticClass: "caption" }, [
+                          _vm._v(
+                            "\n              Are you sure you want to delete this customer?\n            "
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "v-card-actions",
+                          [
+                            _c("v-spacer"),
+                            _vm._v(" "),
+                            _c(
+                              "v-btn",
+                              {
+                                attrs: { color: "default", text: "" },
+                                on: { click: _vm.closeDelete }
+                              },
+                              [_vm._v(" No ")]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "v-btn",
+                              {
+                                attrs: { color: "primary darken-1" },
+                                on: { click: _vm.deleteCustomerConfirm }
+                              },
+                              [_vm._v("\n                Yes\n              ")]
+                            ),
+                            _vm._v(" "),
+                            _c("v-spacer")
+                          ],
+                          1
+                        )
+                      ],
+                      1
+                    )
+                  ],
+                  1
+                )
+              ]
+            },
+            proxy: true
+          },
+          {
+            key: "item.actions",
+            fn: function(ref) {
+              var item = ref.item
+              return [
+                _c(
+                  "v-icon",
+                  {
+                    staticClass: "mr-2",
+                    attrs: { small: "" },
+                    on: {
+                      click: function($event) {
+                        return _vm.viewCustomer(item)
+                      }
+                    }
+                  },
+                  [_vm._v("\n        mdi-information\n      ")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "v-icon",
+                  {
+                    attrs: { small: "" },
+                    on: {
+                      click: function($event) {
+                        return _vm.deleteCustomer(item)
+                      }
+                    }
+                  },
+                  [_vm._v(" mdi-delete ")]
+                )
+              ]
+            }
+          }
+        ])
+      })
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/DashboardComponent.vue?vue&type=template&id=01ab55f4&":
 /*!*********************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/DashboardComponent.vue?vue&type=template&id=01ab55f4& ***!
@@ -39241,7 +39795,6 @@ var render = function() {
                         _vm._v(" "),
                         _c(
                           "v-card-text",
-                          {},
                           [
                             _c(
                               "v-list",
@@ -101012,6 +101565,75 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/CustomersComponent.vue":
+/*!********************************************************!*\
+  !*** ./resources/js/components/CustomersComponent.vue ***!
+  \********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _CustomersComponent_vue_vue_type_template_id_377065d3___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./CustomersComponent.vue?vue&type=template&id=377065d3& */ "./resources/js/components/CustomersComponent.vue?vue&type=template&id=377065d3&");
+/* harmony import */ var _CustomersComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./CustomersComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/CustomersComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _CustomersComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _CustomersComponent_vue_vue_type_template_id_377065d3___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _CustomersComponent_vue_vue_type_template_id_377065d3___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/CustomersComponent.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/CustomersComponent.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************!*\
+  !*** ./resources/js/components/CustomersComponent.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CustomersComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./CustomersComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/CustomersComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CustomersComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/CustomersComponent.vue?vue&type=template&id=377065d3&":
+/*!***************************************************************************************!*\
+  !*** ./resources/js/components/CustomersComponent.vue?vue&type=template&id=377065d3& ***!
+  \***************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CustomersComponent_vue_vue_type_template_id_377065d3___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./CustomersComponent.vue?vue&type=template&id=377065d3& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/CustomersComponent.vue?vue&type=template&id=377065d3&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CustomersComponent_vue_vue_type_template_id_377065d3___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CustomersComponent_vue_vue_type_template_id_377065d3___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/components/DashboardComponent.vue":
 /*!********************************************************!*\
   !*** ./resources/js/components/DashboardComponent.vue ***!
@@ -101443,6 +102065,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_DashboardComponent_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/DashboardComponent.vue */ "./resources/js/components/DashboardComponent.vue");
 /* harmony import */ var _components_OrdersComponent_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/OrdersComponent.vue */ "./resources/js/components/OrdersComponent.vue");
 /* harmony import */ var _components_ProductsComponent_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/ProductsComponent.vue */ "./resources/js/components/ProductsComponent.vue");
+/* harmony import */ var _components_CustomersComponent_vue__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components/CustomersComponent.vue */ "./resources/js/components/CustomersComponent.vue");
+
 
 
 
@@ -101476,6 +102100,12 @@ var routes = [{
     name: 'products',
     components: {
       "default": _components_ProductsComponent_vue__WEBPACK_IMPORTED_MODULE_6__["default"]
+    }
+  }, {
+    path: '/customers',
+    name: 'customers',
+    components: {
+      "default": _components_CustomersComponent_vue__WEBPACK_IMPORTED_MODULE_7__["default"]
     }
   }]
 }];
