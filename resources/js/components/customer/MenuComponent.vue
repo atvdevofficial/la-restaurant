@@ -11,7 +11,13 @@
           item-text="name"
         ></v-select>
       </v-col>
-      <v-col cols="12" sm="4" lg="3"><v-text-field dense label="Search" append-icon="mdi-magnify"></v-text-field></v-col>
+      <v-col cols="12" sm="4" lg="3"
+        ><v-text-field
+          dense
+          label="Search"
+          append-icon="mdi-magnify"
+        ></v-text-field
+      ></v-col>
     </v-row>
     <v-row>
       <v-col
