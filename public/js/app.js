@@ -3163,9 +3163,98 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      category: {
+        id: 0,
+        name: "All"
+      },
+      categories: [{
+        id: 0,
+        name: "All"
+      }, {
+        id: 1,
+        name: "Chicken"
+      }, {
+        id: 2,
+        name: "Beef"
+      }, {
+        id: 3,
+        name: "Vegan"
+      }],
+      snackbar: false,
+      dialogInformation: false,
+      viewingProduct: {
+        id: null,
+        image: null,
+        name: null,
+        description: null,
+        price: null
+      },
       products: [{
         id: 1,
         image: "https://www.tasteofhome.com/wp-content/uploads/2020/03/Smash-Burgers_EXPS_TOHcom20_246232_B10_06_10b.jpg",
@@ -3185,25 +3274,24 @@ __webpack_require__.r(__webpack_exports__);
         description: "The Delicious Coke Float",
         price: 100
       }, {
-        id: 1,
-        image: "https://www.tasteofhome.com/wp-content/uploads/2020/03/Smash-Burgers_EXPS_TOHcom20_246232_B10_06_10b.jpg",
-        name: "Burger",
-        description: "The Delicious Burger",
-        price: 100
-      }, {
-        id: 2,
-        image: "https://www.sprinklesandsprouts.com/wp-content/uploads/2021/05/Peri-Peri-Fries-SQ.jpg",
-        name: "Fries",
-        description: "The Delicious Fries",
-        price: 100
-      }, {
-        id: 3,
-        image: "https://www.lanascooking.com/wp-content/uploads/2012/06/coke-floats-feature.jpg",
-        name: "Coke Float",
-        description: "The Delicious Coke Float",
+        id: 4,
+        image: "https://a7m3f5i5.rocketcdn.me/wp-content/uploads/2015/09/moms-spaghetti-sauce-recipe-a-healthy-slice-of-life-6-of-6-800x600.jpg",
+        name: "Spaghetti",
+        description: "The Delicious Spaghetti",
         price: 100
       }]
     };
+  },
+  methods: {
+    viewInformation: function viewInformation(product) {
+      this.viewingProduct = Object.assign({}, product);
+      this.dialogInformation = true;
+    },
+    addToCart: function addToCart(product) {
+      this.viewingProduct = Object.assign({}, product);
+      this.dialogInformation = false;
+      this.snackbar = true;
+    }
   }
 });
 
@@ -3218,6 +3306,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
 //
 //
 //
@@ -41373,14 +41462,77 @@ var render = function() {
     [
       _c(
         "v-row",
+        { attrs: { justify: "space-between", "no-gutters": "" } },
+        [
+          _c(
+            "v-col",
+            { attrs: { cols: "12", sm: "4", lg: "3" } },
+            [
+              _c("v-select", {
+                attrs: {
+                  items: _vm.categories,
+                  label: "Category",
+                  dense: "",
+                  solo: "",
+                  "item-text": "name"
+                },
+                model: {
+                  value: _vm.category,
+                  callback: function($$v) {
+                    _vm.category = $$v
+                  },
+                  expression: "category"
+                }
+              })
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-col",
+            { attrs: { cols: "12", sm: "4", lg: "3" } },
+            [
+              _c("v-text-field", {
+                attrs: {
+                  dense: "",
+                  label: "Search",
+                  "append-icon": "mdi-magnify"
+                }
+              })
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-row",
         _vm._l(_vm.products, function(product, index) {
           return _c(
             "v-col",
-            { key: index, attrs: { cols: "6", sm: "4", lg: "3" } },
+            {
+              key: index,
+              staticClass: "d-flex",
+              staticStyle: { "flex-direction": "column" },
+              attrs: { cols: "6", sm: "4", md: "3", lg: "2" }
+            },
             [
               _c(
                 "v-card",
-                { attrs: { loading: _vm.loading, "max-width": "374" } },
+                {
+                  staticClass: "flex-grow-1",
+                  staticStyle: {
+                    position: "relative",
+                    "padding-bottom": "50px"
+                  },
+                  attrs: { "max-width": "374", height: "100%" },
+                  on: {
+                    click: function($event) {
+                      return _vm.viewInformation(product)
+                    }
+                  }
+                },
                 [
                   _c(
                     "template",
@@ -41402,29 +41554,37 @@ var render = function() {
                   _c(
                     "v-card-title",
                     { staticClass: "ma-0 pb-0 font-weight-bold" },
-                    [_vm._v(_vm._s(product.name))]
+                    [_vm._v(_vm._s(product.name) + "\n        ")]
                   ),
                   _vm._v(" "),
                   _c("v-card-text", { staticClass: "ma-0 pb-0" }, [
                     _c("div", {}, [
                       _vm._v("Php " + _vm._s(product.price) + " / Order")
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "mt-2" }, [
-                      _vm._v(_vm._s(product.description))
                     ])
                   ]),
                   _vm._v(" "),
                   _c(
                     "v-card-actions",
+                    {
+                      staticStyle: {
+                        position: "absolute",
+                        bottom: "0",
+                        width: "100%"
+                      }
+                    },
                     [
                       _c(
                         "v-btn",
                         {
                           attrs: { block: "", color: "primary" },
-                          on: { click: _vm.reserve }
+                          on: {
+                            click: function($event) {
+                              $event.stopPropagation()
+                              return _vm.addToCart(product)
+                            }
+                          }
                         },
-                        [_vm._v(" Add to Cart ")]
+                        [_vm._v("\n            Add to Cart\n          ")]
                       )
                     ],
                     1
@@ -41437,6 +41597,122 @@ var render = function() {
           )
         }),
         1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-dialog",
+        {
+          attrs: { width: "500", "retain-focus": false },
+          model: {
+            value: _vm.dialogInformation,
+            callback: function($$v) {
+              _vm.dialogInformation = $$v
+            },
+            expression: "dialogInformation"
+          }
+        },
+        [
+          _c(
+            "v-card",
+            { staticClass: "flex-grow-1", attrs: { height: "100%" } },
+            [
+              _c(
+                "template",
+                { slot: "progress" },
+                [
+                  _c("v-progress-linear", {
+                    attrs: {
+                      color: "deep-purple",
+                      height: "10",
+                      indeterminate: ""
+                    }
+                  })
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c("v-img", {
+                attrs: { height: "200", src: _vm.viewingProduct.image }
+              }),
+              _vm._v(" "),
+              _c(
+                "v-card-title",
+                { staticClass: "ma-0 pb-0 font-weight-bold" },
+                [_vm._v(_vm._s(_vm.viewingProduct.name) + "\n      ")]
+              ),
+              _vm._v(" "),
+              _c("v-card-text", {}, [
+                _c("div", {}, [
+                  _vm._v("Php " + _vm._s(_vm.viewingProduct.price) + " / Order")
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "mt-2" }, [
+                  _vm._v(_vm._s(_vm.viewingProduct.description))
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "mt-4" },
+                  [
+                    _c("v-chip", { attrs: { small: "", color: "primary" } }, [
+                      _vm._v(" Beef ")
+                    ]),
+                    _vm._v(" "),
+                    _c("v-chip", { attrs: { small: "", color: "primary" } }, [
+                      _vm._v(" Juicy ")
+                    ]),
+                    _vm._v(" "),
+                    _c("v-chip", { attrs: { small: "", color: "primary" } }, [
+                      _vm._v(" Grilled ")
+                    ])
+                  ],
+                  1
+                )
+              ]),
+              _vm._v(" "),
+              _c(
+                "v-card-actions",
+                [
+                  _c(
+                    "v-btn",
+                    {
+                      attrs: { block: "", color: "primary" },
+                      on: {
+                        click: function($event) {
+                          $event.stopPropagation()
+                          return _vm.addToCart(_vm.viewingProduct)
+                        }
+                      }
+                    },
+                    [_vm._v("\n          Add to Cart\n        ")]
+                  )
+                ],
+                1
+              )
+            ],
+            2
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-snackbar",
+        {
+          attrs: { color: "primary", timeout: "2000" },
+          model: {
+            value: _vm.snackbar,
+            callback: function($$v) {
+              _vm.snackbar = $$v
+            },
+            expression: "snackbar"
+          }
+        },
+        [
+          _vm._v(
+            "\n    " + _vm._s(_vm.viewingProduct.name) + " added to Cart\n  "
+          )
+        ]
       )
     ],
     1
@@ -41474,14 +41750,6 @@ var render = function() {
           attrs: { app: "", "clipped-left": "", dark: "", color: "primary" }
         },
         [
-          _c("v-app-bar-nav-icon", {
-            on: {
-              click: function($event) {
-                _vm.toggler = !_vm.toggler
-              }
-            }
-          }),
-          _vm._v(" "),
           _c("v-toolbar-title", [_vm._v("MyRestaurant.com")]),
           _vm._v(" "),
           _c("v-spacer"),
@@ -41489,51 +41757,15 @@ var render = function() {
           _c(
             "v-btn",
             { attrs: { icon: "" } },
-            [_c("v-icon", [_vm._v("mdi-bell")])],
+            [_c("v-icon", [_vm._v("mdi-cart")])],
             1
-          )
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c(
-        "v-navigation-drawer",
-        {
-          attrs: { app: "", clipped: "" },
-          model: {
-            value: _vm.toggler,
-            callback: function($$v) {
-              _vm.toggler = $$v
-            },
-            expression: "toggler"
-          }
-        },
-        [
+          ),
+          _vm._v(" "),
           _c(
-            "v-list",
-            [
-              _c("v-subheader", [_vm._v("Categories")]),
-              _vm._v(" "),
-              _vm._l(_vm.categories, function(category, index) {
-                return _c(
-                  "v-list-item",
-                  { key: index },
-                  [
-                    _c(
-                      "v-list-item-content",
-                      [
-                        _c("v-list-item-title", { staticClass: "pl-4" }, [
-                          _vm._v(_vm._s(category.name))
-                        ])
-                      ],
-                      1
-                    )
-                  ],
-                  1
-                )
-              })
-            ],
-            2
+            "v-btn",
+            { attrs: { icon: "" } },
+            [_c("v-icon", [_vm._v("mdi-dots-vertical")])],
+            1
           )
         ],
         1
