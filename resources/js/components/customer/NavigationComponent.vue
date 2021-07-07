@@ -13,20 +13,20 @@
         </template>
 
         <v-list>
-          <v-list-item @click="navMenuClicked(1)">
+          <v-list-item to="/c/profile">
             <v-list-item-icon>
               <v-icon>mdi-account-circle</v-icon>
             </v-list-item-icon>
             <v-list-item-title>Profile</v-list-item-title>
           </v-list-item>
-          <v-list-item @click="navMenuClicked(2)">
+          <v-list-item to="/c/orders">
             <v-list-item-icon>
               <v-icon>mdi-format-list-bulleted</v-icon>
             </v-list-item-icon>
             <v-list-item-title>Orders</v-list-item-title>
           </v-list-item>
           <v-divider></v-divider>
-          <v-list-item @click="navMenuClicked(3)">
+          <v-list-item>
             <v-list-item-icon>
               <v-icon>mdi-logout-variant</v-icon>
             </v-list-item-icon>

@@ -11,6 +11,7 @@ import CustomersComponent from './components/administrator/CustomersComponent.vu
 
 import MenuComponent from './components/customer/MenuComponent.vue'
 import CheckoutComponent from './components/customer/CheckoutComponent.vue'
+import CustomerOrderComponent from './components/customer/OrdersComponent.vue'
 
 Vue.use(VueRouter)
 
@@ -39,6 +40,7 @@ const routes = [
         children: [
             { path: '/c/menu', name: 'menu', components: { default: MenuComponent } },
             { path: '/c/checkout', name: 'checkout', components: { default: CheckoutComponent } },
+            { path: '/c/orders', name: 'customerOrders', components: { default: CustomerOrderComponent } },
         ]
     }
 ];
