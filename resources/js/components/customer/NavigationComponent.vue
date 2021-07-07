@@ -3,6 +3,7 @@
     <v-app-bar app clipped-left dark class="elevation-0" color="primary">
       <v-toolbar-title>MyRestaurant.com</v-toolbar-title>
       <v-spacer></v-spacer>
+      <v-btn icon to="/c/menu"><v-icon>mdi-food</v-icon></v-btn>
       <v-btn icon to="/c/checkout"><v-icon>mdi-cart</v-icon></v-btn>
       <v-btn icon><v-icon>mdi-bell</v-icon></v-btn>
       <v-menu bottom left min-width="150">
