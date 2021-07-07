@@ -10,7 +10,7 @@
                 Php {{ product.price }} x {{ product.quantity }}
               </v-list-item-subtitle>
             </v-list-item-content>
-            <v-list-item-action>
+            <v-list-item-action class="font-weight-bold">
               Php {{ product.price * product.quantity }}
             </v-list-item-action>
           </v-list-item>
@@ -25,14 +25,16 @@
               <v-col cols="12">
                 <div class="caption">Address</div>
                 <div class="font-weight-bold">
+                  <v-icon small>mdi-earth</v-icon>
                   Mapple Driver, Honey Street, Bee Colony
                 </div>
               </v-col>
 
               <v-col cols="12"
-                ><div class="caption">Notes</div>
-                <div>No Notes / Instructions</div></v-col
-              >
+                ><div class="caption">Notes / Instructions</div>
+                <div>
+                  <v-textarea placeholder="No Notes / Instructions" auto-grow rows="1"></v-textarea></div
+              ></v-col>
 
               <v-col cols="6">
                 <div class="caption">Sub Total</div>
@@ -52,8 +54,38 @@
           </v-card-text>
         </v-card>
 
-        <v-btn block color="primary" class="my-2">Checkout</v-btn>
-        <v-btn block text color="default" class="my-2" to="/c/menu">Back to Menu</v-btn>
+        <!-- <v-btn block color="primary" class="my-2">Checkout</v-btn> -->
+
+        <v-dialog v-model="dialogCheckoutConfirmation" max-width="320">
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn block color="primary" v-bind="attrs" v-on="on" class="my-2">
+              Checkout
+            </v-btn>
+          </template>
+          <v-card>
+            <v-card-text class="pa-4 text-center">
+              Please confirm checkout action.
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn
+                color="default"
+                text
+                @click="dialogCheckoutConfirmation = false"
+              >
+                Cancel
+              </v-btn>
+              <v-btn color="primary darken-1" @click="checkout">
+                Confirm
+              </v-btn>
+              <v-spacer></v-spacer>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+
+        <v-btn block depressed color="default" class="my-2" to="/c/menu"
+          >Back to Menu</v-btn
+        >
       </v-col>
     </v-row>
   </v-container>
@@ -63,6 +95,7 @@
 export default {
   data() {
     return {
+      dialogCheckoutConfirmation: false,
       products: [
         {
           id: 1,
@@ -102,6 +135,12 @@ export default {
         },
       ],
     };
+  },
+  methods: {
+    checkout() {
+      this.dialogCheckoutConfirmation = false;
+      console.log("Checkout!");
+    },
   },
 };
 </script>
