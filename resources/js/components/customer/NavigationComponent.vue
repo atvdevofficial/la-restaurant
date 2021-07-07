@@ -4,7 +4,36 @@
       <v-toolbar-title>MyRestaurant.com</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-btn icon to="/c/checkout"><v-icon>mdi-cart</v-icon></v-btn>
-      <v-btn icon><v-icon>mdi-dots-vertical</v-icon></v-btn>
+      <v-btn icon><v-icon>mdi-bell</v-icon></v-btn>
+      <v-menu bottom left min-width="150">
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn dark icon v-bind="attrs" v-on="on">
+            <v-icon>mdi-dots-vertical</v-icon>
+          </v-btn>
+        </template>
+
+        <v-list>
+          <v-list-item @click="navMenuClicked(1)">
+            <v-list-item-icon>
+              <v-icon>mdi-account-circle</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>Profile</v-list-item-title>
+          </v-list-item>
+          <v-list-item @click="navMenuClicked(2)">
+            <v-list-item-icon>
+              <v-icon>mdi-format-list-bulleted</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>Orders</v-list-item-title>
+          </v-list-item>
+          <v-divider></v-divider>
+          <v-list-item @click="navMenuClicked(3)">
+            <v-list-item-icon>
+              <v-icon>mdi-logout-variant</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>Sign out</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
     </v-app-bar>
   </div>
 </template>
@@ -20,6 +49,11 @@ export default {
         { id: 3, name: "Vegan" },
       ],
     };
+  },
+  methods: {
+    navMenuClicked(menuId) {
+      console.log(menuId);
+    },
   },
 };
 </script>

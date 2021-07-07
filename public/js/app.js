@@ -3470,6 +3470,35 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -3485,6 +3514,11 @@ __webpack_require__.r(__webpack_exports__);
         name: "Vegan"
       }]
     };
+  },
+  methods: {
+    navMenuClicked: function navMenuClicked(menuId) {
+      console.log(menuId);
+    }
   }
 });
 
@@ -42190,7 +42224,113 @@ var render = function() {
           _c(
             "v-btn",
             { attrs: { icon: "" } },
-            [_c("v-icon", [_vm._v("mdi-dots-vertical")])],
+            [_c("v-icon", [_vm._v("mdi-bell")])],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-menu",
+            {
+              attrs: { bottom: "", left: "", "min-width": "150" },
+              scopedSlots: _vm._u([
+                {
+                  key: "activator",
+                  fn: function(ref) {
+                    var on = ref.on
+                    var attrs = ref.attrs
+                    return [
+                      _c(
+                        "v-btn",
+                        _vm._g(
+                          _vm._b(
+                            { attrs: { dark: "", icon: "" } },
+                            "v-btn",
+                            attrs,
+                            false
+                          ),
+                          on
+                        ),
+                        [_c("v-icon", [_vm._v("mdi-dots-vertical")])],
+                        1
+                      )
+                    ]
+                  }
+                }
+              ])
+            },
+            [
+              _vm._v(" "),
+              _c(
+                "v-list",
+                [
+                  _c(
+                    "v-list-item",
+                    {
+                      on: {
+                        click: function($event) {
+                          return _vm.navMenuClicked(1)
+                        }
+                      }
+                    },
+                    [
+                      _c(
+                        "v-list-item-icon",
+                        [_c("v-icon", [_vm._v("mdi-account-circle")])],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c("v-list-item-title", [_vm._v("Profile")])
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-list-item",
+                    {
+                      on: {
+                        click: function($event) {
+                          return _vm.navMenuClicked(2)
+                        }
+                      }
+                    },
+                    [
+                      _c(
+                        "v-list-item-icon",
+                        [_c("v-icon", [_vm._v("mdi-format-list-bulleted")])],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c("v-list-item-title", [_vm._v("Orders")])
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c("v-divider"),
+                  _vm._v(" "),
+                  _c(
+                    "v-list-item",
+                    {
+                      on: {
+                        click: function($event) {
+                          return _vm.navMenuClicked(3)
+                        }
+                      }
+                    },
+                    [
+                      _c(
+                        "v-list-item-icon",
+                        [_c("v-icon", [_vm._v("mdi-logout-variant")])],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c("v-list-item-title", [_vm._v("Sign out")])
+                    ],
+                    1
+                  )
+                ],
+                1
+              )
+            ],
             1
           )
         ],
