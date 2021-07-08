@@ -3227,10 +3227,119 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      editedIndex: -1,
+      dialogInformation: false,
       dialogCheckoutConfirmation: false,
+      editedProduct: {
+        id: null,
+        image: null,
+        name: null,
+        description: null,
+        price: null,
+        quantity: null
+      },
       products: [{
         id: 1,
         image: "https://www.tasteofhome.com/wp-content/uploads/2020/03/Smash-Burgers_EXPS_TOHcom20_246232_B10_06_10b.jpg",
@@ -3266,6 +3375,22 @@ __webpack_require__.r(__webpack_exports__);
     checkout: function checkout() {
       this.dialogCheckoutConfirmation = false;
       console.log("Checkout!");
+    },
+    editProduct: function editProduct(product) {
+      this.editedIndex = this.products.indexOf(product);
+      this.editedProduct = Object.assign({}, product);
+      this.dialogInformation = true;
+    },
+    increaseQuantity: function increaseQuantity() {
+      this.editedProduct.quantity += 1;
+    },
+    decreaseQuantity: function decreaseQuantity() {
+      this.editedProduct.quantity -= 1;
+    },
+    updateProduct: function updateProduct() {
+      Object.assign(this.products[this.editedIndex], this.editedProduct);
+      this.editedIndex = -1;
+      this.dialogInformation = false;
     }
   }
 });
@@ -3632,6 +3757,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -3761,6 +3896,10 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
 //
 //
 //
@@ -41905,10 +42044,7 @@ var render = function() {
                               },
                               [
                                 _c("v-progress-circular", {
-                                  attrs: {
-                                    indeterminate: "",
-                                    color: "grey lighten-5"
-                                  }
+                                  attrs: { indeterminate: "", color: "primary" }
                                 })
                               ],
                               1
@@ -41996,7 +42132,6 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "v-container",
-    { attrs: { fluid: "" } },
     [
       _c(
         "v-row",
@@ -42007,7 +42142,15 @@ var render = function() {
             _vm._l(_vm.products, function(product, index) {
               return _c(
                 "v-card",
-                { key: index, staticClass: "mb-2" },
+                {
+                  key: index,
+                  staticClass: "mb-2",
+                  on: {
+                    click: function($event) {
+                      return _vm.editProduct(product)
+                    }
+                  }
+                },
                 [
                   _c(
                     "v-list-item",
@@ -42235,6 +42378,303 @@ var render = function() {
               ),
               _vm._v(" "),
               _c(
+                "v-dialog",
+                {
+                  attrs: { width: "500", "retain-focus": false },
+                  model: {
+                    value: _vm.dialogInformation,
+                    callback: function($$v) {
+                      _vm.dialogInformation = $$v
+                    },
+                    expression: "dialogInformation"
+                  }
+                },
+                [
+                  _c(
+                    "v-card",
+                    { staticClass: "flex-grow-1", attrs: { height: "100%" } },
+                    [
+                      _c(
+                        "template",
+                        { slot: "progress" },
+                        [
+                          _c("v-progress-linear", {
+                            attrs: {
+                              color: "deep-purple",
+                              height: "10",
+                              indeterminate: ""
+                            }
+                          })
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c("v-img", {
+                        attrs: { height: "200", src: _vm.editedProduct.image },
+                        scopedSlots: _vm._u([
+                          {
+                            key: "placeholder",
+                            fn: function() {
+                              return [
+                                _c(
+                                  "v-row",
+                                  {
+                                    staticClass: "fill-height ma-0",
+                                    attrs: {
+                                      align: "center",
+                                      justify: "center"
+                                    }
+                                  },
+                                  [
+                                    _c("v-progress-circular", {
+                                      attrs: {
+                                        indeterminate: "",
+                                        color: "primary"
+                                      }
+                                    })
+                                  ],
+                                  1
+                                )
+                              ]
+                            },
+                            proxy: true
+                          }
+                        ])
+                      }),
+                      _vm._v(" "),
+                      _c(
+                        "v-card-title",
+                        { staticClass: "ma-0 pb-0 font-weight-bold" },
+                        [
+                          _vm._v(
+                            _vm._s(_vm.editedProduct.name) + "\n          "
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-card-text",
+                        {},
+                        [
+                          _c("div", {}, [
+                            _vm._v(
+                              "Php " +
+                                _vm._s(_vm.editedProduct.price) +
+                                " / Order"
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "mt-2" }, [
+                            _vm._v(_vm._s(_vm.editedProduct.description))
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            { staticClass: "mt-4" },
+                            [
+                              _c(
+                                "v-chip",
+                                { attrs: { small: "", color: "primary" } },
+                                [_vm._v(" Beef ")]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-chip",
+                                { attrs: { small: "", color: "primary" } },
+                                [_vm._v(" Juicy ")]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-chip",
+                                { attrs: { small: "", color: "primary" } },
+                                [_vm._v(" Grilled ")]
+                              )
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c("v-divider", { staticClass: "my-2" }),
+                          _vm._v(" "),
+                          _c(
+                            "v-row",
+                            { attrs: { "no-gutters": "" } },
+                            [
+                              _c(
+                                "v-col",
+                                {
+                                  staticClass: "text-center",
+                                  attrs: { cols: "6" }
+                                },
+                                [_vm._v("Quantity")]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-col",
+                                {
+                                  staticClass: "text-center",
+                                  attrs: { cols: "6" }
+                                },
+                                [_vm._v("Total")]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-col",
+                                {
+                                  staticClass:
+                                    "mt-1 px-2 text-center font-weight-bold",
+                                  attrs: { cols: "6" }
+                                },
+                                [
+                                  _c(
+                                    "v-row",
+                                    {
+                                      attrs: {
+                                        "no-gutters": "",
+                                        justify: "center",
+                                        align: "center"
+                                      }
+                                    },
+                                    [
+                                      _c(
+                                        "v-col",
+                                        [
+                                          _c(
+                                            "v-btn",
+                                            {
+                                              attrs: {
+                                                icon: "",
+                                                color: "primary"
+                                              },
+                                              on: {
+                                                click: _vm.decreaseQuantity
+                                              }
+                                            },
+                                            [
+                                              _c("v-icon", [
+                                                _vm._v("mdi-minus")
+                                              ])
+                                            ],
+                                            1
+                                          )
+                                        ],
+                                        1
+                                      ),
+                                      _vm._v(" "),
+                                      _c("v-col", [
+                                        _c("div", [
+                                          _vm._v(
+                                            _vm._s(_vm.editedProduct.quantity)
+                                          )
+                                        ])
+                                      ]),
+                                      _vm._v(" "),
+                                      _c(
+                                        "v-col",
+                                        [
+                                          _c(
+                                            "v-btn",
+                                            {
+                                              attrs: {
+                                                icon: "",
+                                                color: "primary"
+                                              },
+                                              on: {
+                                                click: _vm.increaseQuantity
+                                              }
+                                            },
+                                            [
+                                              _c("v-icon", [_vm._v("mdi-plus")])
+                                            ],
+                                            1
+                                          )
+                                        ],
+                                        1
+                                      )
+                                    ],
+                                    1
+                                  )
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-col",
+                                {
+                                  staticClass:
+                                    "mt-1 px-2 title text-center font-weight-bold",
+                                  attrs: { cols: "6" }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                Php " +
+                                      _vm._s(
+                                        _vm.editedProduct.price *
+                                          _vm.editedProduct.quantity
+                                      ) +
+                                      "\n                "
+                                  )
+                                ]
+                              )
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-card-actions",
+                        [
+                          _c(
+                            "v-btn",
+                            { attrs: { icon: "", color: "error" } },
+                            [_c("v-icon", [_vm._v("mdi-delete")])],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c("v-spacer"),
+                          _vm._v(" "),
+                          _c(
+                            "v-btn",
+                            {
+                              attrs: { depressed: "", color: "default" },
+                              on: {
+                                click: function($event) {
+                                  $event.stopPropagation()
+                                  _vm.dialogInformation = false
+                                }
+                              }
+                            },
+                            [_vm._v("\n              Close\n            ")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-btn",
+                            {
+                              attrs: { color: "primary" },
+                              on: {
+                                click: function($event) {
+                                  $event.stopPropagation()
+                                  return _vm.updateProduct.apply(
+                                    null,
+                                    arguments
+                                  )
+                                }
+                              }
+                            },
+                            [_vm._v("\n              Update\n            ")]
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    2
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
                 "v-btn",
                 {
                   staticClass: "my-2",
@@ -42281,7 +42721,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "v-container",
-    { staticClass: "my-4", attrs: { fluid: "" } },
+    { staticClass: "my-4" },
     [
       _c(
         "v-row",
@@ -42715,44 +43155,81 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "v-container",
-    { staticClass: "pa-0", attrs: { fluid: "" } },
+    { staticClass: "pa-2" },
     [
       _c(
-        "v-list",
-        { staticClass: "pa-0" },
-        _vm._l(_vm.orders, function(order, index) {
-          return _c(
-            "v-list-item",
-            { key: index, attrs: { "two-line": "" } },
+        "v-row",
+        { attrs: { justify: "center", "no-gutters": "" } },
+        [
+          _c("v-col", { attrs: { cols: "12" } }, [
+            _c("div", { staticClass: "caption font-italic text-center" }, [
+              _vm._v(
+                "\n        Note: Click the order to view information.\n      "
+              )
+            ])
+          ]),
+          _vm._v(" "),
+          _c(
+            "v-col",
+            { attrs: { cols: "12", sm: "10", md: "8", lg: "6", xl: "4" } },
             [
               _c(
-                "v-list-item-content",
-                {
-                  on: {
-                    click: function($event) {
-                      return _vm.viewOrder(order)
-                    }
-                  }
-                },
-                [
-                  _c("v-list-item-title", { staticClass: "font-weight-bold" }, [
-                    _vm._v(_vm._s(order.code))
-                  ]),
-                  _vm._v(" "),
-                  _c("v-list-item-subtitle", { staticClass: "font-italic" }, [
-                    _vm._v("July 05, 2021 11:00 AM")
-                  ])
-                ],
+                "v-list",
+                { staticClass: "pa-0" },
+                _vm._l(_vm.orders, function(order, index) {
+                  return _c(
+                    "v-list-item",
+                    {
+                      key: index,
+                      attrs: { "two-line": "" },
+                      on: {
+                        click: function($event) {
+                          return _vm.viewOrder(order)
+                        }
+                      }
+                    },
+                    [
+                      _c(
+                        "v-list-item-content",
+                        [
+                          _c(
+                            "v-list-item-title",
+                            { staticClass: "font-weight-bold" },
+                            [
+                              _vm._v(
+                                "\n              " +
+                                  _vm._s(order.code) +
+                                  "\n            "
+                              )
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-list-item-subtitle",
+                            { staticClass: "font-italic" },
+                            [
+                              _vm._v(
+                                "\n              July 05, 2021 11:00 AM\n            "
+                              )
+                            ]
+                          )
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c("v-list-item-action", [
+                        _vm._v(" " + _vm._s(order.status) + " ")
+                      ])
+                    ],
+                    1
+                  )
+                }),
                 1
-              ),
-              _vm._v(" "),
-              _c("v-list-item-action", [
-                _vm._v(" " + _vm._s(order.status) + " ")
-              ])
+              )
             ],
             1
           )
-        }),
+        ],
         1
       ),
       _vm._v(" "),
@@ -42851,9 +43328,7 @@ var render = function() {
                           _c("v-list-item-action", [
                             _c("div", [
                               _vm._v(
-                                "\n                Php " +
-                                  _vm._s(item.price * item.quantity) +
-                                  "\n              "
+                                "Php " + _vm._s(item.price * item.quantity)
                               )
                             ])
                           ])
@@ -42967,198 +43442,219 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "v-container",
-    { attrs: { fluid: "" } },
     [
       _c(
-        "v-form",
-        {
-          ref: "form",
-          attrs: { "lazy-validation": "" },
-          model: {
-            value: _vm.valid,
-            callback: function($$v) {
-              _vm.valid = $$v
-            },
-            expression: "valid"
-          }
-        },
+        "v-row",
+        { attrs: { justify: "center" } },
         [
           _c(
-            "v-row",
-            { attrs: { "no-gutters": "" } },
+            "v-col",
+            { attrs: { cols: "12", sm: "10", md: "8", lg: "6", xl: "4" } },
             [
-              _c("v-col", { attrs: { cols: "12" } }, [
-                _c(
-                  "div",
-                  [
-                    _c("v-text-field", {
-                      attrs: {
-                        disabled: _vm.isNotEditing,
-                        label: "Email",
-                        rules: _vm.emailRules
-                      },
-                      model: {
-                        value: _vm.email,
-                        callback: function($$v) {
-                          _vm.email = $$v
-                        },
-                        expression: "email"
-                      }
-                    })
-                  ],
-                  1
-                )
-              ]),
-              _vm._v(" "),
-              _c("v-col", { attrs: { cols: "12" } }, [
-                _c(
-                  "div",
-                  [
-                    _c("v-text-field", {
-                      attrs: {
-                        disabled: _vm.isNotEditing,
-                        label: "First Name",
-                        rules: [
-                          function(v) {
-                            return !!v || "Field is required"
-                          }
-                        ]
-                      },
-                      model: {
-                        value: _vm.firstName,
-                        callback: function($$v) {
-                          _vm.firstName = $$v
-                        },
-                        expression: "firstName"
-                      }
-                    })
-                  ],
-                  1
-                )
-              ]),
-              _vm._v(" "),
-              _c("v-col", { attrs: { cols: "12" } }, [
-                _c(
-                  "div",
-                  [
-                    _c("v-text-field", {
-                      attrs: {
-                        disabled: _vm.isNotEditing,
-                        label: "Last Name",
-                        rules: [
-                          function(v) {
-                            return !!v || "Field is required"
-                          }
-                        ]
-                      },
-                      model: {
-                        value: _vm.lastName,
-                        callback: function($$v) {
-                          _vm.lastName = $$v
-                        },
-                        expression: "lastName"
-                      }
-                    })
-                  ],
-                  1
-                )
-              ]),
-              _vm._v(" "),
-              _c("v-col", { attrs: { cols: "12" } }, [
-                _c(
-                  "div",
-                  [
-                    _c("v-text-field", {
-                      attrs: {
-                        disabled: _vm.isNotEditing,
-                        label: "Contact Number",
-                        rules: [
-                          function(v) {
-                            return !!v || "Field is required"
-                          }
-                        ]
-                      },
-                      model: {
-                        value: _vm.contactNumber,
-                        callback: function($$v) {
-                          _vm.contactNumber = $$v
-                        },
-                        expression: "contactNumber"
-                      }
-                    })
-                  ],
-                  1
-                )
-              ]),
-              _vm._v(" "),
-              _c("v-col", { attrs: { cols: "12" } }, [
-                _c(
-                  "div",
-                  [
-                    _c("v-textarea", {
-                      attrs: {
-                        disabled: _vm.isNotEditing,
-                        label: "Address",
-                        rows: "1",
-                        "auto-grow": "",
-                        rules: [
-                          function(v) {
-                            return !!v || "Field is required"
-                          }
-                        ]
-                      },
-                      model: {
-                        value: _vm.address,
-                        callback: function($$v) {
-                          _vm.address = $$v
-                        },
-                        expression: "address"
-                      }
-                    })
-                  ],
-                  1
-                )
-              ]),
-              _vm._v(" "),
               _c(
-                "v-col",
-                { attrs: { cols: "12" } },
+                "v-form",
+                {
+                  ref: "form",
+                  attrs: { "lazy-validation": "" },
+                  model: {
+                    value: _vm.valid,
+                    callback: function($$v) {
+                      _vm.valid = $$v
+                    },
+                    expression: "valid"
+                  }
+                },
                 [
-                  _vm.isNotEditing == true
-                    ? _c(
-                        "v-btn",
-                        {
-                          staticClass: "mt-2",
-                          attrs: { block: "", color: "primary" },
-                          on: { click: _vm.updateProfile }
-                        },
-                        [_vm._v("\n          Update Information\n        ")]
+                  _c(
+                    "v-row",
+                    { attrs: { "no-gutters": "" } },
+                    [
+                      _c("v-col", { attrs: { cols: "12" } }, [
+                        _c(
+                          "div",
+                          [
+                            _c("v-text-field", {
+                              attrs: {
+                                disabled: _vm.isNotEditing,
+                                label: "Email",
+                                rules: _vm.emailRules
+                              },
+                              model: {
+                                value: _vm.email,
+                                callback: function($$v) {
+                                  _vm.email = $$v
+                                },
+                                expression: "email"
+                              }
+                            })
+                          ],
+                          1
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("v-col", { attrs: { cols: "12" } }, [
+                        _c(
+                          "div",
+                          [
+                            _c("v-text-field", {
+                              attrs: {
+                                disabled: _vm.isNotEditing,
+                                label: "First Name",
+                                rules: [
+                                  function(v) {
+                                    return !!v || "Field is required"
+                                  }
+                                ]
+                              },
+                              model: {
+                                value: _vm.firstName,
+                                callback: function($$v) {
+                                  _vm.firstName = $$v
+                                },
+                                expression: "firstName"
+                              }
+                            })
+                          ],
+                          1
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("v-col", { attrs: { cols: "12" } }, [
+                        _c(
+                          "div",
+                          [
+                            _c("v-text-field", {
+                              attrs: {
+                                disabled: _vm.isNotEditing,
+                                label: "Last Name",
+                                rules: [
+                                  function(v) {
+                                    return !!v || "Field is required"
+                                  }
+                                ]
+                              },
+                              model: {
+                                value: _vm.lastName,
+                                callback: function($$v) {
+                                  _vm.lastName = $$v
+                                },
+                                expression: "lastName"
+                              }
+                            })
+                          ],
+                          1
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("v-col", { attrs: { cols: "12" } }, [
+                        _c(
+                          "div",
+                          [
+                            _c("v-text-field", {
+                              attrs: {
+                                disabled: _vm.isNotEditing,
+                                label: "Contact Number",
+                                rules: [
+                                  function(v) {
+                                    return !!v || "Field is required"
+                                  }
+                                ]
+                              },
+                              model: {
+                                value: _vm.contactNumber,
+                                callback: function($$v) {
+                                  _vm.contactNumber = $$v
+                                },
+                                expression: "contactNumber"
+                              }
+                            })
+                          ],
+                          1
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("v-col", { attrs: { cols: "12" } }, [
+                        _c(
+                          "div",
+                          [
+                            _c("v-textarea", {
+                              attrs: {
+                                disabled: _vm.isNotEditing,
+                                label: "Address",
+                                rows: "1",
+                                "auto-grow": "",
+                                rules: [
+                                  function(v) {
+                                    return !!v || "Field is required"
+                                  }
+                                ]
+                              },
+                              model: {
+                                value: _vm.address,
+                                callback: function($$v) {
+                                  _vm.address = $$v
+                                },
+                                expression: "address"
+                              }
+                            })
+                          ],
+                          1
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "v-col",
+                        { attrs: { cols: "12" } },
+                        [
+                          _vm.isNotEditing == true
+                            ? _c(
+                                "v-btn",
+                                {
+                                  staticClass: "mt-2",
+                                  attrs: { block: "", color: "primary" },
+                                  on: { click: _vm.updateProfile }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n              Update Information\n            "
+                                  )
+                                ]
+                              )
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _vm.isNotEditing == false
+                            ? _c(
+                                "v-btn",
+                                {
+                                  staticClass: "mt-2",
+                                  attrs: { block: "", color: "primary" },
+                                  on: { click: _vm.validate }
+                                },
+                                [_vm._v("\n              Save\n            ")]
+                              )
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _vm.isNotEditing == false
+                            ? _c(
+                                "v-btn",
+                                {
+                                  staticClass: "mt-2",
+                                  attrs: {
+                                    block: "",
+                                    depressed: "",
+                                    color: "default"
+                                  },
+                                  on: { click: _vm.cancelEditing }
+                                },
+                                [_vm._v("\n              Cancel\n            ")]
+                              )
+                            : _vm._e()
+                        ],
+                        1
                       )
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _vm.isNotEditing == false
-                    ? _c(
-                        "v-btn",
-                        {
-                          staticClass: "mt-2",
-                          attrs: { block: "", color: "primary" },
-                          on: { click: _vm.validate }
-                        },
-                        [_vm._v("\n          Save\n        ")]
-                      )
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _vm.isNotEditing == false
-                    ? _c(
-                        "v-btn",
-                        {
-                          staticClass: "mt-2",
-                          attrs: { block: "", depressed: "", color: "default" },
-                          on: { click: _vm.cancelEditing }
-                        },
-                        [_vm._v("\n          Cancel\n        ")]
-                      )
-                    : _vm._e()
+                    ],
+                    1
+                  )
                 ],
                 1
               )

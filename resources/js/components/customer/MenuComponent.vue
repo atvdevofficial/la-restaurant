@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid class="my-4">
+  <v-container class="my-4">
     <v-row justify="space-between" no-gutters>
       <v-col cols="12" sm="4" lg="3">
         <v-select

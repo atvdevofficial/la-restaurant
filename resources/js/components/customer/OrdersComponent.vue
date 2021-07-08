@@ -1,18 +1,32 @@
 <template>
-  <v-container fluid class="pa-0">
-    <v-list class="pa-0">
-      <v-list-item two-line v-for="(order, index) in orders" :key="index">
-        <v-list-item-content @click="viewOrder(order)">
-          <v-list-item-title class="font-weight-bold">{{
-            order.code
-          }}</v-list-item-title>
-          <v-list-item-subtitle class="font-italic"
-            >July 05, 2021 11:00 AM</v-list-item-subtitle
+  <v-container class="pa-2">
+    <v-row justify="center" no-gutters>
+      <v-col cols="12">
+        <div class="caption font-italic text-center">
+          Note: Click the order to view information.
+        </div>
+      </v-col>
+      <v-col cols="12" sm="10" md="8" lg="6" xl="4">
+        <v-list class="pa-0">
+          <v-list-item
+            two-line
+            v-for="(order, index) in orders"
+            :key="index"
+            @click="viewOrder(order)"
           >
-        </v-list-item-content>
-        <v-list-item-action> {{ order.status }} </v-list-item-action>
-      </v-list-item>
-    </v-list>
+            <v-list-item-content>
+              <v-list-item-title class="font-weight-bold">
+                {{ order.code }}
+              </v-list-item-title>
+              <v-list-item-subtitle class="font-italic">
+                July 05, 2021 11:00 AM
+              </v-list-item-subtitle>
+            </v-list-item-content>
+            <v-list-item-action> {{ order.status }} </v-list-item-action>
+          </v-list-item>
+        </v-list>
+      </v-col>
+    </v-row>
 
     <v-dialog
       v-model="orderInformationDialog"
@@ -49,18 +63,14 @@
               :key="index"
             >
               <v-list-item-content>
-                <v-list-item-title>{{
-                  item.name
-                }}</v-list-item-title>
+                <v-list-item-title>{{ item.name }}</v-list-item-title>
                 <v-list-item-subtitle>
                   Php {{ item.price }} x
                   {{ item.quantity }}</v-list-item-subtitle
                 >
               </v-list-item-content>
               <v-list-item-action>
-                <div>
-                  Php {{ item.price * item.quantity }}
-                </div>
+                <div>Php {{ item.price * item.quantity }}</div>
               </v-list-item-action>
             </v-list-item>
           </v-list>
