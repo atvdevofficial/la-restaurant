@@ -3312,20 +3312,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -3390,6 +3376,10 @@ __webpack_require__.r(__webpack_exports__);
     updateProduct: function updateProduct() {
       Object.assign(this.products[this.editedIndex], this.editedProduct);
       this.editedIndex = -1;
+      this.dialogInformation = false;
+    },
+    deleteProduct: function deleteProduct() {
+      this.products.splice(this.editedIndex, 1);
       this.dialogInformation = false;
     }
   }
@@ -3659,11 +3649,6 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-//
-//
-//
-//
-//
 //
 //
 //
@@ -42611,7 +42596,7 @@ var render = function() {
                                         _vm.editedProduct.price *
                                           _vm.editedProduct.quantity
                                       ) +
-                                      "\n                "
+                                      "\n              "
                                   )
                                 ]
                               )
@@ -42627,7 +42612,18 @@ var render = function() {
                         [
                           _c(
                             "v-btn",
-                            { attrs: { icon: "", color: "error" } },
+                            {
+                              attrs: { icon: "", color: "error" },
+                              on: {
+                                click: function($event) {
+                                  $event.stopPropagation()
+                                  return _vm.deleteProduct.apply(
+                                    null,
+                                    arguments
+                                  )
+                                }
+                              }
+                            },
                             [_c("v-icon", [_vm._v("mdi-delete")])],
                             1
                           ),
@@ -43155,20 +43151,12 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "v-container",
-    { staticClass: "pa-2" },
+    { staticClass: "ma-0 pa-0" },
     [
       _c(
         "v-row",
         { attrs: { justify: "center", "no-gutters": "" } },
         [
-          _c("v-col", { attrs: { cols: "12" } }, [
-            _c("div", { staticClass: "caption font-italic text-center" }, [
-              _vm._v(
-                "\n        Note: Click the order to view information.\n      "
-              )
-            ])
-          ]),
-          _vm._v(" "),
           _c(
             "v-col",
             { attrs: { cols: "12", sm: "10", md: "8", lg: "6", xl: "4" } },

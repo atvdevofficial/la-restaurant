@@ -139,32 +139,18 @@
                       </v-btn>
                     </v-col>
                   </v-row>
-
-                  <!-- <v-text-field
-                    dense
-                    :value="editedProduct.quantity"
-                    solo
-                    type="number"
-                  ></v-text-field> -->
                 </v-col>
                 <v-col
                   cols="6"
                   class="mt-1 px-2 title text-center font-weight-bold"
                 >
                   Php {{ editedProduct.price * editedProduct.quantity }}
-                  <!-- <v-text-field
-                  prefix="Php"
-                    dense
-                    :value=""
-                    solo
-                    disabled
-                  ></v-text-field> -->
                 </v-col>
               </v-row>
             </v-card-text>
 
             <v-card-actions>
-              <v-btn icon color="error">
+              <v-btn icon color="error" @click.stop="deleteProduct">
                 <v-icon>mdi-delete</v-icon>
               </v-btn>
               <v-spacer></v-spacer>
@@ -270,6 +256,11 @@ export default {
       this.editedIndex = -1;
       this.dialogInformation = false;
     },
+
+    deleteProduct() {
+        this.products.splice(this.editedIndex, 1);
+        this.dialogInformation = false;
+    }
   },
 };
 </script>
