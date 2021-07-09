@@ -2,7 +2,9 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 import LandingComponent from './components/LandingComponent.vue'
+import SigninComponent from './components/SigninComponent.vue'
 import ScaffoldComponent from './components/ScaffoldComponent.vue'
+
 import DashboardComponent from './components/administrator/DashboardComponent.vue'
 import OrdersComponent from './components/administrator/OrdersComponent.vue'
 import ProductsComponent from './components/administrator/ProductsComponent.vue'
@@ -21,6 +23,11 @@ const routes = [
         path: '/',
         name: 'landing',
         component: LandingComponent
+    },
+    {
+        path: '/signin',
+        name: 'signin',
+        component: SigninComponent
     },
     {
         path: '/a',
