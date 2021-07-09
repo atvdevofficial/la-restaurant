@@ -3,7 +3,7 @@
     <v-row>
       <v-col cols="12" md="6">
         <v-card
-          v-for="(product, index) in products"
+          v-for="(product, index) in cart"
           :key="index"
           class="mb-2"
           @click="editProduct(product)"
@@ -177,6 +177,8 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
+
 export default {
   data() {
     return {
@@ -191,54 +193,26 @@ export default {
         price: null,
         quantity: null,
       },
-      products: [
-        {
-          id: 1,
-          image:
-            "https://www.tasteofhome.com/wp-content/uploads/2020/03/Smash-Burgers_EXPS_TOHcom20_246232_B10_06_10b.jpg",
-          name: "Burger",
-          description: "The Delicious Burger",
-          price: 100,
-          quantity: 1,
-        },
-        {
-          id: 2,
-          image:
-            "https://www.sprinklesandsprouts.com/wp-content/uploads/2021/05/Peri-Peri-Fries-SQ.jpg",
-          name: "Fries",
-          description: "The Delicious Fries",
-          price: 100,
-          quantity: 2,
-        },
-        {
-          id: 3,
-          image:
-            "https://www.lanascooking.com/wp-content/uploads/2012/06/coke-floats-feature.jpg",
-          name: "Coke Float",
-          description: "The Delicious Coke Float",
-          price: 100,
-          quantity: 3,
-        },
-        {
-          id: 4,
-          image:
-            "https://a7m3f5i5.rocketcdn.me/wp-content/uploads/2015/09/moms-spaghetti-sauce-recipe-a-healthy-slice-of-life-6-of-6-800x600.jpg",
-          name: "Spaghetti",
-          description: "The Delicious Spaghetti",
-          price: 100,
-          quantity: 4,
-        },
-      ],
     };
   },
+  computed: {
+    cart() {
+      return this.$store.state.cart;
+    },
+  },
   methods: {
+    ...mapActions([
+      "updateCartProduct",
+      "removeCartProduct",
+    ]),
+
     checkout() {
       this.dialogCheckoutConfirmation = false;
       console.log("Checkout!");
     },
 
     editProduct(product) {
-      this.editedIndex = this.products.indexOf(product);
+      this.editedIndex = this.cart.indexOf(product);
       this.editedProduct = Object.assign({}, product);
       this.dialogInformation = true;
     },
@@ -252,15 +226,19 @@ export default {
     },
 
     updateProduct() {
-      Object.assign(this.products[this.editedIndex], this.editedProduct);
+      this.updateCartProduct({
+        original: this.cart[this.editedIndex],
+        updated: this.editedProduct,
+      });
       this.editedIndex = -1;
       this.dialogInformation = false;
     },
 
     deleteProduct() {
-        this.products.splice(this.editedIndex, 1);
-        this.dialogInformation = false;
-    }
+      //   this.cart.splice(this.editedIndex, 1);
+      this.removeCartProduct(this.cart[this.editedIndex]);
+      this.dialogInformation = false;
+    },
   },
 };
 </script>

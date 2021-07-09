@@ -3216,6 +3216,13 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -3394,6 +3401,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -3407,45 +3415,21 @@ __webpack_require__.r(__webpack_exports__);
         description: null,
         price: null,
         quantity: null
-      },
-      products: [{
-        id: 1,
-        image: "https://www.tasteofhome.com/wp-content/uploads/2020/03/Smash-Burgers_EXPS_TOHcom20_246232_B10_06_10b.jpg",
-        name: "Burger",
-        description: "The Delicious Burger",
-        price: 100,
-        quantity: 1
-      }, {
-        id: 2,
-        image: "https://www.sprinklesandsprouts.com/wp-content/uploads/2021/05/Peri-Peri-Fries-SQ.jpg",
-        name: "Fries",
-        description: "The Delicious Fries",
-        price: 100,
-        quantity: 2
-      }, {
-        id: 3,
-        image: "https://www.lanascooking.com/wp-content/uploads/2012/06/coke-floats-feature.jpg",
-        name: "Coke Float",
-        description: "The Delicious Coke Float",
-        price: 100,
-        quantity: 3
-      }, {
-        id: 4,
-        image: "https://a7m3f5i5.rocketcdn.me/wp-content/uploads/2015/09/moms-spaghetti-sauce-recipe-a-healthy-slice-of-life-6-of-6-800x600.jpg",
-        name: "Spaghetti",
-        description: "The Delicious Spaghetti",
-        price: 100,
-        quantity: 4
-      }]
+      }
     };
   },
-  methods: {
+  computed: {
+    cart: function cart() {
+      return this.$store.state.cart;
+    }
+  },
+  methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(["updateCartProduct", "removeCartProduct"])), {}, {
     checkout: function checkout() {
       this.dialogCheckoutConfirmation = false;
       console.log("Checkout!");
     },
     editProduct: function editProduct(product) {
-      this.editedIndex = this.products.indexOf(product);
+      this.editedIndex = this.cart.indexOf(product);
       this.editedProduct = Object.assign({}, product);
       this.dialogInformation = true;
     },
@@ -3456,15 +3440,19 @@ __webpack_require__.r(__webpack_exports__);
       this.editedProduct.quantity -= 1;
     },
     updateProduct: function updateProduct() {
-      Object.assign(this.products[this.editedIndex], this.editedProduct);
+      this.updateCartProduct({
+        original: this.cart[this.editedIndex],
+        updated: this.editedProduct
+      });
       this.editedIndex = -1;
       this.dialogInformation = false;
     },
     deleteProduct: function deleteProduct() {
-      this.products.splice(this.editedIndex, 1);
+      //   this.cart.splice(this.editedIndex, 1);
+      this.removeCartProduct(this.cart[this.editedIndex]);
       this.dialogInformation = false;
     }
-  }
+  })
 });
 
 /***/ }),
@@ -42363,7 +42351,7 @@ var render = function() {
           _c(
             "v-col",
             { attrs: { cols: "12", md: "6" } },
-            _vm._l(_vm.products, function(product, index) {
+            _vm._l(_vm.cart, function(product, index) {
               return _c(
                 "v-card",
                 {
@@ -107313,16 +107301,86 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__["default"]);
 var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
   state: {
-    count: 0
+    cart: [{
+      id: 1,
+      image: "https://www.tasteofhome.com/wp-content/uploads/2020/03/Smash-Burgers_EXPS_TOHcom20_246232_B10_06_10b.jpg",
+      name: "Burger",
+      description: "The Delicious Burger",
+      price: 100,
+      quantity: 1
+    }, {
+      id: 2,
+      image: "https://www.sprinklesandsprouts.com/wp-content/uploads/2021/05/Peri-Peri-Fries-SQ.jpg",
+      name: "Fries",
+      description: "The Delicious Fries",
+      price: 100,
+      quantity: 2
+    }, {
+      id: 3,
+      image: "https://www.lanascooking.com/wp-content/uploads/2012/06/coke-floats-feature.jpg",
+      name: "Coke Float",
+      description: "The Delicious Coke Float",
+      price: 100,
+      quantity: 3
+    }, {
+      id: 4,
+      image: "https://a7m3f5i5.rocketcdn.me/wp-content/uploads/2015/09/moms-spaghetti-sauce-recipe-a-healthy-slice-of-life-6-of-6-800x600.jpg",
+      name: "Spaghetti",
+      description: "The Delicious Spaghetti",
+      price: 100,
+      quantity: 4
+    }]
   },
   mutations: {
-    increment: function increment(state) {
-      state.count++;
+    addCartProduct: function addCartProduct(state, payload) {
+      var productExists = false; // Check if product already exists
+
+      state.cart.forEach(function (product) {
+        if (product.id == payload.id) {
+          product.quantity += 1;
+          productExists = true;
+        }
+      }); // If product doesnt exists
+
+      if (!productExists) {
+        state.cart.push(_objectSpread(_objectSpread({}, payload), {}, {
+          quantity: 1
+        }));
+      }
+    },
+    updateCartProduct: function updateCartProduct(state, payload) {
+      if (state.cart.includes(payload.original)) {
+        var index = state.cart.indexOf(payload.original);
+        state.cart[index] = payload.updated;
+      }
+    },
+    removeCartProduct: function removeCartProduct(state, payload) {
+      if (state.cart.includes(payload)) {
+        var index = state.cart.indexOf(payload);
+        state.cart.splice(index, 1);
+      }
+    }
+  },
+  actions: {
+    addCartProduct: function addCartProduct(context, payload) {
+      context.commit('addCartProduct', payload);
+    },
+    updateCartProduct: function updateCartProduct(context, payload) {
+      context.commit('updateCartProduct', payload);
+    },
+    removeCartProduct: function removeCartProduct(context, payload) {
+      context.commit('removeCartProduct', payload);
     }
   }
 });
