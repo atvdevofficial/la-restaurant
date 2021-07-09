@@ -26,5 +26,6 @@ window.Vue = require('vue');
 
 import router from './router.js'
 import vuetify from './vuetify.js'
+import store from './store'
 
-const app = new Vue({ vuetify, router }).$mount('#app');
+const app = new Vue({ vuetify, router, store }).$mount('#app');
