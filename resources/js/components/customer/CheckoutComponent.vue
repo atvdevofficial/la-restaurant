@@ -12,15 +12,50 @@
             <v-list-item-content>
               <v-list-item-title>{{ product.name }}</v-list-item-title>
               <v-list-item-subtitle>
-                Php {{ product.price }} x {{ product.quantity }}
+                Php {{ parseFloat(product.price).toFixed(2) }} x
+                {{ product.quantity }}
               </v-list-item-subtitle>
             </v-list-item-content>
             <v-list-item-action class="font-weight-bold">
-              Php {{ product.price * product.quantity }}
+              Php {{ parseFloat(product.price * product.quantity).toFixed(2) }}
             </v-list-item-action>
           </v-list-item>
         </v-card>
+        <v-dialog v-model="dialogClearCartConfirmation" max-width="320" v-if="cart.length > 0">
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              text
+              small
+              block
+              color="error"
+              v-bind="attrs"
+              v-on="on"
+              class="mt-2"
+              >Clear Cart Items
+            </v-btn>
+          </template>
+          <v-card>
+            <v-card-text class="pa-4 text-center">
+              Please confirm action.
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn
+                color="default"
+                text
+                @click="dialogClearCartConfirmation = false"
+              >
+                Cancel
+              </v-btn>
+              <v-btn color="primary darken-1" @click="clearCart">
+                Confirm
+              </v-btn>
+              <v-spacer></v-spacer>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
       </v-col>
+
       <v-col cols="12" md="6">
         <v-card>
           <v-card-title class="justify-center"> Checkout </v-card-title>
@@ -47,23 +82,25 @@
 
               <v-col cols="6">
                 <div class="caption">Sub Total</div>
-                <div>Php 3,750.00</div></v-col
+                <div>Php {{ parseFloat(cartSubTotal).toFixed(2) }}</div></v-col
               >
 
               <v-col cols="6"
                 ><div class="caption">Delivery Fee</div>
-                <div>Php 100.00</div></v-col
+                <div>Php {{ parseFloat(100).toFixed(2) }}</div></v-col
               >
 
               <v-col cols="6"
                 ><div class="caption">Grand Total</div>
-                <div class="font-weight-bold">Php 3,850.00</div></v-col
+                <div class="font-weight-bold">
+                  Php {{ parseFloat(cartSubTotal + 100).toFixed(2) }}
+                </div></v-col
               >
             </v-row>
           </v-card-text>
         </v-card>
 
-        <v-dialog v-model="dialogCheckoutConfirmation" max-width="320">
+        <v-dialog v-model="dialogCheckoutConfirmation" max-width="320" v-if="cart.length > 0">
           <template v-slot:activator="{ on, attrs }">
             <v-btn block color="primary" v-bind="attrs" v-on="on" class="my-2">
               Checkout
@@ -177,7 +214,7 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   data() {
@@ -185,6 +222,7 @@ export default {
       editedIndex: -1,
       dialogInformation: false,
       dialogCheckoutConfirmation: false,
+      dialogClearCartConfirmation: false,
       editedProduct: {
         id: null,
         image: null,
@@ -196,15 +234,15 @@ export default {
     };
   },
   computed: {
-    cart() {
-      return this.$store.state.cart;
-    },
+    ...mapGetters(["cart", "cartSubTotal"]),
   },
   methods: {
-    ...mapActions([
-      "updateCartProduct",
-      "removeCartProduct",
-    ]),
+    ...mapActions(["updateCartProduct", "removeCartProduct", "clearCartItems"]),
+
+    clearCart() {
+      this.clearCartItems();
+      this.dialogClearCartConfirmation = false;
+    },
 
     checkout() {
       this.dialogCheckoutConfirmation = false;
@@ -235,7 +273,6 @@ export default {
     },
 
     deleteProduct() {
-      //   this.cart.splice(this.editedIndex, 1);
       this.removeCartProduct(this.cart[this.editedIndex]);
       this.dialogInformation = false;
     },

@@ -3401,6 +3401,43 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -3408,6 +3445,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       editedIndex: -1,
       dialogInformation: false,
       dialogCheckoutConfirmation: false,
+      dialogClearCartConfirmation: false,
       editedProduct: {
         id: null,
         image: null,
@@ -3418,12 +3456,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }
     };
   },
-  computed: {
-    cart: function cart() {
-      return this.$store.state.cart;
-    }
-  },
-  methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(["updateCartProduct", "removeCartProduct"])), {}, {
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(["cart", "cartSubTotal"])),
+  methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(["updateCartProduct", "removeCartProduct", "clearCartItems"])), {}, {
+    clearCart: function clearCart() {
+      this.clearCartItems();
+      this.dialogClearCartConfirmation = false;
+    },
     checkout: function checkout() {
       this.dialogCheckoutConfirmation = false;
       console.log("Checkout!");
@@ -3448,7 +3486,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.dialogInformation = false;
     },
     deleteProduct: function deleteProduct() {
-      //   this.cart.splice(this.editedIndex, 1);
       this.removeCartProduct(this.cart[this.editedIndex]);
       this.dialogInformation = false;
     }
@@ -3466,6 +3503,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -3564,6 +3608,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -3620,17 +3665,20 @@ __webpack_require__.r(__webpack_exports__);
       }]
     };
   },
-  methods: {
+  methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(["addCartProduct"])), {}, {
     viewInformation: function viewInformation(product) {
       this.viewingProduct = Object.assign({}, product);
       this.dialogInformation = true;
     },
     addToCart: function addToCart(product) {
-      this.viewingProduct = Object.assign({}, product);
+      this.viewingProduct = Object.assign({}, product, {
+        quantity: 1
+      });
       this.dialogInformation = false;
       this.snackbar = true;
+      this.addCartProduct(this.viewingProduct);
     }
-  }
+  })
 });
 
 /***/ }),
@@ -3644,6 +3692,13 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -3685,6 +3740,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -3701,6 +3767,7 @@ __webpack_require__.r(__webpack_exports__);
       }]
     };
   },
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(["cartItemsCount"])),
   methods: {
     navMenuClicked: function navMenuClicked(menuId) {
       console.log(menuId);
@@ -42351,62 +42418,176 @@ var render = function() {
           _c(
             "v-col",
             { attrs: { cols: "12", md: "6" } },
-            _vm._l(_vm.cart, function(product, index) {
-              return _c(
-                "v-card",
-                {
-                  key: index,
-                  staticClass: "mb-2",
-                  on: {
-                    click: function($event) {
-                      return _vm.editProduct(product)
+            [
+              _vm._l(_vm.cart, function(product, index) {
+                return _c(
+                  "v-card",
+                  {
+                    key: index,
+                    staticClass: "mb-2",
+                    on: {
+                      click: function($event) {
+                        return _vm.editProduct(product)
+                      }
                     }
-                  }
-                },
-                [
-                  _c(
-                    "v-list-item",
-                    { attrs: { "two-line": "" } },
-                    [
-                      _c(
-                        "v-list-item-content",
-                        [
-                          _c("v-list-item-title", [
-                            _vm._v(_vm._s(product.name))
-                          ]),
-                          _vm._v(" "),
-                          _c("v-list-item-subtitle", [
+                  },
+                  [
+                    _c(
+                      "v-list-item",
+                      { attrs: { "two-line": "" } },
+                      [
+                        _c(
+                          "v-list-item-content",
+                          [
+                            _c("v-list-item-title", [
+                              _vm._v(_vm._s(product.name))
+                            ]),
+                            _vm._v(" "),
+                            _c("v-list-item-subtitle", [
+                              _vm._v(
+                                "\n              Php " +
+                                  _vm._s(parseFloat(product.price).toFixed(2)) +
+                                  " x\n              " +
+                                  _vm._s(product.quantity) +
+                                  "\n            "
+                              )
+                            ])
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "v-list-item-action",
+                          { staticClass: "font-weight-bold" },
+                          [
                             _vm._v(
-                              "\n              Php " +
-                                _vm._s(product.price) +
-                                " x " +
-                                _vm._s(product.quantity) +
-                                "\n            "
+                              "\n            Php " +
+                                _vm._s(
+                                  parseFloat(
+                                    product.price * product.quantity
+                                  ).toFixed(2)
+                                ) +
+                                "\n          "
                             )
-                          ])
+                          ]
+                        )
+                      ],
+                      1
+                    )
+                  ],
+                  1
+                )
+              }),
+              _vm._v(" "),
+              _vm.cart.length > 0
+                ? _c(
+                    "v-dialog",
+                    {
+                      attrs: { "max-width": "320" },
+                      scopedSlots: _vm._u(
+                        [
+                          {
+                            key: "activator",
+                            fn: function(ref) {
+                              var on = ref.on
+                              var attrs = ref.attrs
+                              return [
+                                _c(
+                                  "v-btn",
+                                  _vm._g(
+                                    _vm._b(
+                                      {
+                                        staticClass: "mt-2",
+                                        attrs: {
+                                          text: "",
+                                          small: "",
+                                          block: "",
+                                          color: "error"
+                                        }
+                                      },
+                                      "v-btn",
+                                      attrs,
+                                      false
+                                    ),
+                                    on
+                                  ),
+                                  [_vm._v("Clear Cart Items\n          ")]
+                                )
+                              ]
+                            }
+                          }
                         ],
-                        1
+                        null,
+                        false,
+                        801990798
                       ),
+                      model: {
+                        value: _vm.dialogClearCartConfirmation,
+                        callback: function($$v) {
+                          _vm.dialogClearCartConfirmation = $$v
+                        },
+                        expression: "dialogClearCartConfirmation"
+                      }
+                    },
+                    [
                       _vm._v(" "),
                       _c(
-                        "v-list-item-action",
-                        { staticClass: "font-weight-bold" },
+                        "v-card",
                         [
-                          _vm._v(
-                            "\n            Php " +
-                              _vm._s(product.price * product.quantity) +
-                              "\n          "
+                          _c(
+                            "v-card-text",
+                            { staticClass: "pa-4 text-center" },
+                            [
+                              _vm._v(
+                                "\n            Please confirm action.\n          "
+                              )
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-card-actions",
+                            [
+                              _c("v-spacer"),
+                              _vm._v(" "),
+                              _c(
+                                "v-btn",
+                                {
+                                  attrs: { color: "default", text: "" },
+                                  on: {
+                                    click: function($event) {
+                                      _vm.dialogClearCartConfirmation = false
+                                    }
+                                  }
+                                },
+                                [_vm._v("\n              Cancel\n            ")]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-btn",
+                                {
+                                  attrs: { color: "primary darken-1" },
+                                  on: { click: _vm.clearCart }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n              Confirm\n            "
+                                  )
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c("v-spacer")
+                            ],
+                            1
                           )
-                        ]
+                        ],
+                        1
                       )
                     ],
                     1
                   )
-                ],
-                1
-              )
-            }),
-            1
+                : _vm._e()
+            ],
+            2
           ),
           _vm._v(" "),
           _c(
@@ -42471,7 +42652,14 @@ var render = function() {
                               _vm._v("Sub Total")
                             ]),
                             _vm._v(" "),
-                            _c("div", [_vm._v("Php 3,750.00")])
+                            _c("div", [
+                              _vm._v(
+                                "Php " +
+                                  _vm._s(
+                                    parseFloat(_vm.cartSubTotal).toFixed(2)
+                                  )
+                              )
+                            ])
                           ]),
                           _vm._v(" "),
                           _c("v-col", { attrs: { cols: "6" } }, [
@@ -42479,7 +42667,11 @@ var render = function() {
                               _vm._v("Delivery Fee")
                             ]),
                             _vm._v(" "),
-                            _c("div", [_vm._v("Php 100.00")])
+                            _c("div", [
+                              _vm._v(
+                                "Php " + _vm._s(parseFloat(100).toFixed(2))
+                              )
+                            ])
                           ]),
                           _vm._v(" "),
                           _c("v-col", { attrs: { cols: "6" } }, [
@@ -42488,7 +42680,15 @@ var render = function() {
                             ]),
                             _vm._v(" "),
                             _c("div", { staticClass: "font-weight-bold" }, [
-                              _vm._v("Php 3,850.00")
+                              _vm._v(
+                                "\n                Php " +
+                                  _vm._s(
+                                    parseFloat(_vm.cartSubTotal + 100).toFixed(
+                                      2
+                                    )
+                                  ) +
+                                  "\n              "
+                              )
                             ])
                           ])
                         ],
@@ -42501,93 +42701,108 @@ var render = function() {
                 1
               ),
               _vm._v(" "),
-              _c(
-                "v-dialog",
-                {
-                  attrs: { "max-width": "320" },
-                  scopedSlots: _vm._u([
+              _vm.cart.length > 0
+                ? _c(
+                    "v-dialog",
                     {
-                      key: "activator",
-                      fn: function(ref) {
-                        var on = ref.on
-                        var attrs = ref.attrs
-                        return [
-                          _c(
-                            "v-btn",
-                            _vm._g(
-                              _vm._b(
-                                {
-                                  staticClass: "my-2",
-                                  attrs: { block: "", color: "primary" }
-                                },
-                                "v-btn",
-                                attrs,
-                                false
-                              ),
-                              on
-                            ),
-                            [_vm._v("\n            Checkout\n          ")]
-                          )
-                        ]
+                      attrs: { "max-width": "320" },
+                      scopedSlots: _vm._u(
+                        [
+                          {
+                            key: "activator",
+                            fn: function(ref) {
+                              var on = ref.on
+                              var attrs = ref.attrs
+                              return [
+                                _c(
+                                  "v-btn",
+                                  _vm._g(
+                                    _vm._b(
+                                      {
+                                        staticClass: "my-2",
+                                        attrs: { block: "", color: "primary" }
+                                      },
+                                      "v-btn",
+                                      attrs,
+                                      false
+                                    ),
+                                    on
+                                  ),
+                                  [_vm._v("\n            Checkout\n          ")]
+                                )
+                              ]
+                            }
+                          }
+                        ],
+                        null,
+                        false,
+                        2223221108
+                      ),
+                      model: {
+                        value: _vm.dialogCheckoutConfirmation,
+                        callback: function($$v) {
+                          _vm.dialogCheckoutConfirmation = $$v
+                        },
+                        expression: "dialogCheckoutConfirmation"
                       }
-                    }
-                  ]),
-                  model: {
-                    value: _vm.dialogCheckoutConfirmation,
-                    callback: function($$v) {
-                      _vm.dialogCheckoutConfirmation = $$v
                     },
-                    expression: "dialogCheckoutConfirmation"
-                  }
-                },
-                [
-                  _vm._v(" "),
-                  _c(
-                    "v-card",
                     [
-                      _c("v-card-text", { staticClass: "pa-4 text-center" }, [
-                        _vm._v(
-                          "\n            Please confirm checkout action.\n          "
-                        )
-                      ]),
                       _vm._v(" "),
                       _c(
-                        "v-card-actions",
+                        "v-card",
                         [
-                          _c("v-spacer"),
-                          _vm._v(" "),
                           _c(
-                            "v-btn",
-                            {
-                              attrs: { color: "default", text: "" },
-                              on: {
-                                click: function($event) {
-                                  _vm.dialogCheckoutConfirmation = false
-                                }
-                              }
-                            },
-                            [_vm._v("\n              Cancel\n            ")]
+                            "v-card-text",
+                            { staticClass: "pa-4 text-center" },
+                            [
+                              _vm._v(
+                                "\n            Please confirm checkout action.\n          "
+                              )
+                            ]
                           ),
                           _vm._v(" "),
                           _c(
-                            "v-btn",
-                            {
-                              attrs: { color: "primary darken-1" },
-                              on: { click: _vm.checkout }
-                            },
-                            [_vm._v("\n              Confirm\n            ")]
-                          ),
-                          _vm._v(" "),
-                          _c("v-spacer")
+                            "v-card-actions",
+                            [
+                              _c("v-spacer"),
+                              _vm._v(" "),
+                              _c(
+                                "v-btn",
+                                {
+                                  attrs: { color: "default", text: "" },
+                                  on: {
+                                    click: function($event) {
+                                      _vm.dialogCheckoutConfirmation = false
+                                    }
+                                  }
+                                },
+                                [_vm._v("\n              Cancel\n            ")]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-btn",
+                                {
+                                  attrs: { color: "primary darken-1" },
+                                  on: { click: _vm.checkout }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n              Confirm\n            "
+                                  )
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c("v-spacer")
+                            ],
+                            1
+                          )
                         ],
                         1
                       )
                     ],
                     1
                   )
-                ],
-                1
-              ),
+                : _vm._e(),
               _vm._v(" "),
               _c(
                 "v-dialog",
@@ -43248,9 +43463,24 @@ var render = function() {
           ),
           _vm._v(" "),
           _c(
-            "v-btn",
-            { attrs: { icon: "", to: "/c/checkout" } },
-            [_c("v-icon", [_vm._v("mdi-cart")])],
+            "v-badge",
+            {
+              attrs: {
+                content: _vm.cartItemsCount,
+                value: _vm.cartItemsCount,
+                color: "error",
+                "offset-x": "20",
+                "offset-y": "20"
+              }
+            },
+            [
+              _c(
+                "v-btn",
+                { attrs: { icon: "", to: "/c/checkout" } },
+                [_c("v-icon", [_vm._v("mdi-cart")])],
+                1
+              )
+            ],
             1
           ),
           _vm._v(" "),
@@ -107342,6 +107572,19 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
       quantity: 4
     }]
   },
+  getters: {
+    cart: function cart(state) {
+      return state.cart;
+    },
+    cartSubTotal: function cartSubTotal(state) {
+      return state.cart.reduce(function (accumulator, currentValue) {
+        return Number(accumulator) + Number(currentValue.quantity) * Number(currentValue.price);
+      }, 0.0);
+    },
+    cartItemsCount: function cartItemsCount(state) {
+      return state.cart.length;
+    }
+  },
   mutations: {
     addCartProduct: function addCartProduct(state, payload) {
       var productExists = false; // Check if product already exists
@@ -107362,7 +107605,7 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
     updateCartProduct: function updateCartProduct(state, payload) {
       if (state.cart.includes(payload.original)) {
         var index = state.cart.indexOf(payload.original);
-        state.cart[index] = payload.updated;
+        state.cart[index].quantity = payload.updated.quantity;
       }
     },
     removeCartProduct: function removeCartProduct(state, payload) {
@@ -107370,6 +107613,9 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
         var index = state.cart.indexOf(payload);
         state.cart.splice(index, 1);
       }
+    },
+    clearCartItems: function clearCartItems(state) {
+      state.cart = [];
     }
   },
   actions: {
@@ -107381,6 +107627,9 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
     },
     removeCartProduct: function removeCartProduct(context, payload) {
       context.commit('removeCartProduct', payload);
+    },
+    clearCartItems: function clearCartItems(context) {
+      context.commit('clearCartItems');
     }
   }
 });

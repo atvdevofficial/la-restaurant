@@ -97,6 +97,8 @@
   </v-container>
 </template>
 <script>
+import { mapGetters, mapActions } from "vuex";
+
 export default {
   data() {
     return {
@@ -153,15 +155,19 @@ export default {
     };
   },
   methods: {
+    ...mapActions(["addCartProduct"]),
+
     viewInformation(product) {
       this.viewingProduct = Object.assign({}, product);
       this.dialogInformation = true;
     },
 
     addToCart(product) {
-      this.viewingProduct = Object.assign({}, product);
+      this.viewingProduct = Object.assign({}, product, { quantity: 1 });
       this.dialogInformation = false;
       this.snackbar = true;
+
+      this.addCartProduct(this.viewingProduct)
     },
   },
 };

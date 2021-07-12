@@ -4,7 +4,17 @@
       <v-toolbar-title>MyRestaurant.com</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-btn icon to="/c/menu"><v-icon>mdi-food</v-icon></v-btn>
-      <v-btn icon to="/c/checkout"><v-icon>mdi-cart</v-icon></v-btn>
+
+      <v-badge
+        :content="cartItemsCount"
+        :value="cartItemsCount"
+        color="error"
+        offset-x="20"
+        offset-y="20"
+      >
+        <v-btn icon to="/c/checkout"><v-icon>mdi-cart</v-icon></v-btn>
+      </v-badge>
+
       <v-btn icon><v-icon>mdi-bell</v-icon></v-btn>
       <v-menu bottom left min-width="150">
         <template v-slot:activator="{ on, attrs }">
@@ -40,6 +50,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
   data() {
     return {
@@ -50,6 +61,9 @@ export default {
         { id: 3, name: "Vegan" },
       ],
     };
+  },
+  computed: {
+    ...mapGetters(["cartItemsCount"]),
   },
   methods: {
     navMenuClicked(menuId) {

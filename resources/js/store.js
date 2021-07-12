@@ -44,6 +44,17 @@ const store = new Vuex.Store({
             },
         ],
     },
+    getters: {
+        cart(state) {
+            return state.cart
+        },
+        cartSubTotal(state) {
+            return state.cart.reduce((accumulator, currentValue) => Number(accumulator) + (Number(currentValue.quantity) * Number(currentValue.price)), 0.0)
+        },
+        cartItemsCount(state) {
+            return state.cart.length
+        }
+    },
     mutations: {
         addCartProduct(state, payload) {
             var productExists = false;
@@ -65,7 +76,7 @@ const store = new Vuex.Store({
         updateCartProduct(state, payload) {
             if (state.cart.includes(payload.original)) {
                 var index = state.cart.indexOf(payload.original)
-                state.cart[index] = payload.updated
+                state.cart[index].quantity = payload.updated.quantity
             }
         },
 
@@ -74,6 +85,10 @@ const store = new Vuex.Store({
                 var index = state.cart.indexOf(payload)
                 state.cart.splice(index, 1)
             }
+        },
+
+        clearCartItems(state) {
+            state.cart = []
         }
     },
     actions: {
@@ -87,6 +102,10 @@ const store = new Vuex.Store({
 
         removeCartProduct(context, payload) {
             context.commit('removeCartProduct', payload)
+        },
+
+        clearCartItems(context) {
+            context.commit('clearCartItems')
         }
     }
 })
