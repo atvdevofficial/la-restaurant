@@ -1,6 +1,22 @@
 <template>
   <v-container class="my-4">
-    <v-row justify="space-between" no-gutters>
+    <v-row
+      justify="center"
+      align="center"
+      class="100vh"
+      no-gutters
+      v-if="isRetrievingProducts == true"
+    >
+      <v-col>
+        <div class="caption mb-2">Retrieving products, please wait ...</div>
+        <v-progress-linear height="5" indeterminate></v-progress-linear>
+      </v-col>
+    </v-row>
+    <v-row
+      justify="space-between"
+      no-gutters
+      v-if="isRetrievingProducts == false"
+    >
       <v-col cols="12" sm="4" lg="3">
         <v-select
           v-model="category"
@@ -44,12 +60,14 @@
               indeterminate
             ></v-progress-linear>
           </template>
-          <v-img height="150" :src="product.image"></v-img>
+          <v-img height="150" :src="product.image_link"></v-img>
           <v-card-title class="ma-0 pb-0 font-weight-bold"
             >{{ product.name }}
           </v-card-title>
           <v-card-text class="ma-0 pb-0">
-            <div class="">Php {{ product.price }} / Order</div>
+            <div class="">
+              Php {{ parseFloat(product.price).toFixed(2) }} / Order
+            </div>
           </v-card-text>
           <v-card-actions style="position: absolute; bottom: 0; width: 100%">
             <v-btn block color="primary" @click.stop="addToCart(product)">
@@ -69,12 +87,14 @@
             indeterminate
           ></v-progress-linear>
         </template>
-        <v-img height="200" :src="viewingProduct.image"></v-img>
+        <v-img height="200" :src="viewingProduct.image_link"></v-img>
         <v-card-title class="ma-0 pb-0 font-weight-bold"
           >{{ viewingProduct.name }}
         </v-card-title>
         <v-card-text class="">
-          <div class="">Php {{ viewingProduct.price }} / Order</div>
+          <div class="">
+            Php {{ parseFloat(viewingProduct.price).toFixed(2) }} / Order
+          </div>
           <div class="mt-2">{{ viewingProduct.description }}</div>
           <div class="mt-4">
             <v-chip small color="primary"> Beef </v-chip>
@@ -102,6 +122,7 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   data() {
     return {
+      isRetrievingProducts: false,
       category: { id: 0, name: "All" },
       categories: [
         { id: 0, name: "All" },
@@ -113,46 +134,16 @@ export default {
       dialogInformation: false,
       viewingProduct: {
         id: null,
-        image: null,
+        image_link: null,
         name: null,
         description: null,
         price: null,
       },
-      products: [
-        {
-          id: 1,
-          image:
-            "https://www.tasteofhome.com/wp-content/uploads/2020/03/Smash-Burgers_EXPS_TOHcom20_246232_B10_06_10b.jpg",
-          name: "Burger",
-          description: "The Delicious Burger",
-          price: 100,
-        },
-        {
-          id: 2,
-          image:
-            "https://www.sprinklesandsprouts.com/wp-content/uploads/2021/05/Peri-Peri-Fries-SQ.jpg",
-          name: "Fries",
-          description: "The Delicious Fries",
-          price: 100,
-        },
-        {
-          id: 3,
-          image:
-            "https://www.lanascooking.com/wp-content/uploads/2012/06/coke-floats-feature.jpg",
-          name: "Coke Float",
-          description: "The Delicious Coke Float",
-          price: 100,
-        },
-        {
-          id: 4,
-          image:
-            "https://a7m3f5i5.rocketcdn.me/wp-content/uploads/2015/09/moms-spaghetti-sauce-recipe-a-healthy-slice-of-life-6-of-6-800x600.jpg",
-          name: "Spaghetti",
-          description: "The Delicious Spaghetti",
-          price: 100,
-        },
-      ],
+      products: [],
     };
+  },
+  mounted() {
+    this.retrieveProducts();
   },
   methods: {
     ...mapActions(["addCartProduct"]),
@@ -167,7 +158,23 @@ export default {
       this.dialogInformation = false;
       this.snackbar = true;
 
-      this.addCartProduct(this.viewingProduct)
+      this.addCartProduct(this.viewingProduct);
+    },
+
+    retrieveProducts() {
+      this.isRetrievingProducts = true;
+
+      axios
+        .get("/api/v1/products")
+        .then((response) => {
+          this.products = response.data;
+        })
+        .catch((error) => {
+          console.log(error.response.data);
+        })
+        .finally((fin) => {
+          this.isRetrievingProducts = false;
+        });
     },
   },
 };

@@ -3710,10 +3710,31 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      isRetrievingProducts: false,
       category: {
         id: 0,
         name: "All"
@@ -3735,37 +3756,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       dialogInformation: false,
       viewingProduct: {
         id: null,
-        image: null,
+        image_link: null,
         name: null,
         description: null,
         price: null
       },
-      products: [{
-        id: 1,
-        image: "https://www.tasteofhome.com/wp-content/uploads/2020/03/Smash-Burgers_EXPS_TOHcom20_246232_B10_06_10b.jpg",
-        name: "Burger",
-        description: "The Delicious Burger",
-        price: 100
-      }, {
-        id: 2,
-        image: "https://www.sprinklesandsprouts.com/wp-content/uploads/2021/05/Peri-Peri-Fries-SQ.jpg",
-        name: "Fries",
-        description: "The Delicious Fries",
-        price: 100
-      }, {
-        id: 3,
-        image: "https://www.lanascooking.com/wp-content/uploads/2012/06/coke-floats-feature.jpg",
-        name: "Coke Float",
-        description: "The Delicious Coke Float",
-        price: 100
-      }, {
-        id: 4,
-        image: "https://a7m3f5i5.rocketcdn.me/wp-content/uploads/2015/09/moms-spaghetti-sauce-recipe-a-healthy-slice-of-life-6-of-6-800x600.jpg",
-        name: "Spaghetti",
-        description: "The Delicious Spaghetti",
-        price: 100
-      }]
+      products: []
     };
+  },
+  mounted: function mounted() {
+    this.retrieveProducts();
   },
   methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(["addCartProduct"])), {}, {
     viewInformation: function viewInformation(product) {
@@ -3779,6 +3779,18 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.dialogInformation = false;
       this.snackbar = true;
       this.addCartProduct(this.viewingProduct);
+    },
+    retrieveProducts: function retrieveProducts() {
+      var _this = this;
+
+      this.isRetrievingProducts = true;
+      axios.get("/api/v1/products").then(function (response) {
+        _this.products = response.data;
+      })["catch"](function (error) {
+        console.log(error.response.data);
+      })["finally"](function (fin) {
+        _this.isRetrievingProducts = false;
+      });
     }
   })
 });
@@ -43396,51 +43408,79 @@ var render = function() {
     "v-container",
     { staticClass: "my-4" },
     [
-      _c(
-        "v-row",
-        { attrs: { justify: "space-between", "no-gutters": "" } },
-        [
-          _c(
-            "v-col",
-            { attrs: { cols: "12", sm: "4", lg: "3" } },
+      _vm.isRetrievingProducts == true
+        ? _c(
+            "v-row",
+            {
+              staticClass: "100vh",
+              attrs: { justify: "center", align: "center", "no-gutters": "" }
+            },
             [
-              _c("v-select", {
-                attrs: {
-                  items: _vm.categories,
-                  label: "Category",
-                  dense: "",
-                  solo: "",
-                  "item-text": "name"
-                },
-                model: {
-                  value: _vm.category,
-                  callback: function($$v) {
-                    _vm.category = $$v
-                  },
-                  expression: "category"
-                }
-              })
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "v-col",
-            { attrs: { cols: "12", sm: "4", lg: "3" } },
-            [
-              _c("v-text-field", {
-                attrs: {
-                  dense: "",
-                  label: "Search",
-                  "append-icon": "mdi-magnify"
-                }
-              })
+              _c(
+                "v-col",
+                [
+                  _c("div", { staticClass: "caption mb-2" }, [
+                    _vm._v("Retrieving products, please wait ...")
+                  ]),
+                  _vm._v(" "),
+                  _c("v-progress-linear", {
+                    attrs: { height: "5", indeterminate: "" }
+                  })
+                ],
+                1
+              )
             ],
             1
           )
-        ],
-        1
-      ),
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.isRetrievingProducts == false
+        ? _c(
+            "v-row",
+            { attrs: { justify: "space-between", "no-gutters": "" } },
+            [
+              _c(
+                "v-col",
+                { attrs: { cols: "12", sm: "4", lg: "3" } },
+                [
+                  _c("v-select", {
+                    attrs: {
+                      items: _vm.categories,
+                      label: "Category",
+                      dense: "",
+                      solo: "",
+                      "item-text": "name"
+                    },
+                    model: {
+                      value: _vm.category,
+                      callback: function($$v) {
+                        _vm.category = $$v
+                      },
+                      expression: "category"
+                    }
+                  })
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-col",
+                { attrs: { cols: "12", sm: "4", lg: "3" } },
+                [
+                  _c("v-text-field", {
+                    attrs: {
+                      dense: "",
+                      label: "Search",
+                      "append-icon": "mdi-magnify"
+                    }
+                  })
+                ],
+                1
+              )
+            ],
+            1
+          )
+        : _vm._e(),
       _vm._v(" "),
       _c(
         "v-row",
@@ -43485,7 +43525,9 @@ var render = function() {
                     1
                   ),
                   _vm._v(" "),
-                  _c("v-img", { attrs: { height: "150", src: product.image } }),
+                  _c("v-img", {
+                    attrs: { height: "150", src: product.image_link }
+                  }),
                   _vm._v(" "),
                   _c(
                     "v-card-title",
@@ -43495,7 +43537,11 @@ var render = function() {
                   _vm._v(" "),
                   _c("v-card-text", { staticClass: "ma-0 pb-0" }, [
                     _c("div", {}, [
-                      _vm._v("Php " + _vm._s(product.price) + " / Order")
+                      _vm._v(
+                        "\n            Php " +
+                          _vm._s(parseFloat(product.price).toFixed(2)) +
+                          " / Order\n          "
+                      )
                     ])
                   ]),
                   _vm._v(" "),
@@ -43568,7 +43614,7 @@ var render = function() {
               ),
               _vm._v(" "),
               _c("v-img", {
-                attrs: { height: "200", src: _vm.viewingProduct.image }
+                attrs: { height: "200", src: _vm.viewingProduct.image_link }
               }),
               _vm._v(" "),
               _c(
@@ -43579,7 +43625,11 @@ var render = function() {
               _vm._v(" "),
               _c("v-card-text", {}, [
                 _c("div", {}, [
-                  _vm._v("Php " + _vm._s(_vm.viewingProduct.price) + " / Order")
+                  _vm._v(
+                    "\n          Php " +
+                      _vm._s(parseFloat(_vm.viewingProduct.price).toFixed(2)) +
+                      " / Order\n        "
+                  )
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "mt-2" }, [
@@ -107998,35 +108048,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__["default"]);
 var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
   state: {
-    cart: [{
-      id: 1,
-      image: "https://www.tasteofhome.com/wp-content/uploads/2020/03/Smash-Burgers_EXPS_TOHcom20_246232_B10_06_10b.jpg",
-      name: "Burger",
-      description: "The Delicious Burger",
-      price: 100,
-      quantity: 1
-    }, {
-      id: 2,
-      image: "https://www.sprinklesandsprouts.com/wp-content/uploads/2021/05/Peri-Peri-Fries-SQ.jpg",
-      name: "Fries",
-      description: "The Delicious Fries",
-      price: 100,
-      quantity: 2
-    }, {
-      id: 3,
-      image: "https://www.lanascooking.com/wp-content/uploads/2012/06/coke-floats-feature.jpg",
-      name: "Coke Float",
-      description: "The Delicious Coke Float",
-      price: 100,
-      quantity: 3
-    }, {
-      id: 4,
-      image: "https://a7m3f5i5.rocketcdn.me/wp-content/uploads/2015/09/moms-spaghetti-sauce-recipe-a-healthy-slice-of-life-6-of-6-800x600.jpg",
-      name: "Spaghetti",
-      description: "The Delicious Spaghetti",
-      price: 100,
-      quantity: 4
-    }]
+    cart: []
   },
   getters: {
     cart: function cart(state) {

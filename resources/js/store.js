@@ -5,44 +5,7 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
     state: {
-        cart: [
-            {
-                id: 1,
-                image:
-                    "https://www.tasteofhome.com/wp-content/uploads/2020/03/Smash-Burgers_EXPS_TOHcom20_246232_B10_06_10b.jpg",
-                name: "Burger",
-                description: "The Delicious Burger",
-                price: 100,
-                quantity: 1,
-            },
-            {
-                id: 2,
-                image:
-                    "https://www.sprinklesandsprouts.com/wp-content/uploads/2021/05/Peri-Peri-Fries-SQ.jpg",
-                name: "Fries",
-                description: "The Delicious Fries",
-                price: 100,
-                quantity: 2,
-            },
-            {
-                id: 3,
-                image:
-                    "https://www.lanascooking.com/wp-content/uploads/2012/06/coke-floats-feature.jpg",
-                name: "Coke Float",
-                description: "The Delicious Coke Float",
-                price: 100,
-                quantity: 3,
-            },
-            {
-                id: 4,
-                image:
-                    "https://a7m3f5i5.rocketcdn.me/wp-content/uploads/2015/09/moms-spaghetti-sauce-recipe-a-healthy-slice-of-life-6-of-6-800x600.jpg",
-                name: "Spaghetti",
-                description: "The Delicious Spaghetti",
-                price: 100,
-                quantity: 4,
-            },
-        ],
+        cart: [],
     },
     getters: {
         cart(state) {

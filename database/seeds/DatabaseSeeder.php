@@ -16,5 +16,8 @@ class DatabaseSeeder extends Seeder
         // Customer Model
         $customerUser = factory(\App\User::class)->create(['email' => 'customer@mr.com', 'role' => 'CUSTOMER']);
         $customer = factory(\App\Customer::class)->create(['user_id' => $customerUser->id]);
+
+        // Products
+        factory(\App\Product::class, 5)->create();
     }
 }
