@@ -37,7 +37,7 @@
             <v-list-item-title>Orders</v-list-item-title>
           </v-list-item>
           <v-divider></v-divider>
-          <v-list-item>
+          <v-list-item @click="signout">
             <v-list-item-icon>
               <v-icon>mdi-logout-variant</v-icon>
             </v-list-item-icon>
@@ -69,6 +69,14 @@ export default {
     navMenuClicked(menuId) {
       console.log(menuId);
     },
+
+    signout() {
+        // Clear session storage
+        sessionStorage.clear();
+
+        // Push to sign in
+        this.$router.push("signin");
+    }
   },
 };
 </script>

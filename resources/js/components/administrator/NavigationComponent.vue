@@ -68,7 +68,7 @@
       <template v-slot:append>
         <v-list>
           <v-list-item-group color="primary">
-            <v-list-item >
+            <v-list-item @click="signout">
               <v-list-item-icon>
                 <v-icon>mdi-logout-variant</v-icon>
               </v-list-item-icon>
@@ -90,5 +90,14 @@ export default {
       toggler: true,
     };
   },
+  methods: {
+      signout() {
+        // Clear session storage
+        sessionStorage.clear();
+
+        // Push to sign in
+        this.$router.push("signin");
+    }
+  }
 };
 </script>
