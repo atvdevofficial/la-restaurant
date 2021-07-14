@@ -18,7 +18,7 @@
             ExampleComponent
         },
         mounted() {
-            console.log('Component mounted.')
+            console.log('Landing Component mounted.')
         }
     }
 </script>

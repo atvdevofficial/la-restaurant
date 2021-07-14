@@ -1,12 +1,10 @@
 <template>
   <v-app id="inspire">
     <administrator-navigation
-      v-if="role == 'ADMINISTRATOR'"
+      v-if="userRole == 'ADMINISTRATOR'"
     ></administrator-navigation>
 
-    <customer-navigation
-      v-if="role == 'CUSTOMER'"
-    ></customer-navigation>
+    <customer-navigation v-if="userRole == 'CUSTOMER'"></customer-navigation>
 
     <v-main class="px-4 py-0">
       <router-view></router-view>
@@ -23,10 +21,10 @@ export default {
     AdministratorNavigation,
     CustomerNavigation,
   },
-  data() {
-    return {
-      role: "CUSTOMER",
-    };
+  computed: {
+    userRole() {
+      return sessionStorage.getItem("userRole") ?? "GUEST";
+    },
   },
 };
 </script>
