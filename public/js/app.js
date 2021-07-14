@@ -3720,21 +3720,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      isRetrievingProducts: false,
+      isRetrievingProducts: true,
       category: {
         id: 0,
         name: "All"
@@ -43408,16 +43398,55 @@ var render = function() {
     "v-container",
     { staticClass: "my-4" },
     [
-      _vm.isRetrievingProducts == true
-        ? _c(
-            "v-row",
-            {
-              staticClass: "100vh",
-              attrs: { justify: "center", align: "center", "no-gutters": "" }
-            },
+      _c(
+        "v-row",
+        { attrs: { justify: "space-between", "no-gutters": "" } },
+        [
+          _c(
+            "v-col",
+            { attrs: { cols: "12", sm: "4", lg: "3" } },
             [
-              _c(
+              _c("v-select", {
+                attrs: {
+                  items: _vm.categories,
+                  label: "Category",
+                  dense: "",
+                  solo: "",
+                  "item-text": "name",
+                  disabled: _vm.isRetrievingProducts
+                },
+                model: {
+                  value: _vm.category,
+                  callback: function($$v) {
+                    _vm.category = $$v
+                  },
+                  expression: "category"
+                }
+              })
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-col",
+            { attrs: { cols: "12", sm: "4", lg: "3" } },
+            [
+              _c("v-text-field", {
+                attrs: {
+                  dense: "",
+                  label: "Search",
+                  "append-icon": "mdi-magnify",
+                  disabled: _vm.isRetrievingProducts
+                }
+              })
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _vm.isRetrievingProducts == true
+            ? _c(
                 "v-col",
+                { staticClass: "my-4", attrs: { cols: "12" } },
                 [
                   _c("div", { staticClass: "caption mb-2" }, [
                     _vm._v("Retrieving products, please wait ...")
@@ -43429,58 +43458,10 @@ var render = function() {
                 ],
                 1
               )
-            ],
-            1
-          )
-        : _vm._e(),
-      _vm._v(" "),
-      _vm.isRetrievingProducts == false
-        ? _c(
-            "v-row",
-            { attrs: { justify: "space-between", "no-gutters": "" } },
-            [
-              _c(
-                "v-col",
-                { attrs: { cols: "12", sm: "4", lg: "3" } },
-                [
-                  _c("v-select", {
-                    attrs: {
-                      items: _vm.categories,
-                      label: "Category",
-                      dense: "",
-                      solo: "",
-                      "item-text": "name"
-                    },
-                    model: {
-                      value: _vm.category,
-                      callback: function($$v) {
-                        _vm.category = $$v
-                      },
-                      expression: "category"
-                    }
-                  })
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c(
-                "v-col",
-                { attrs: { cols: "12", sm: "4", lg: "3" } },
-                [
-                  _c("v-text-field", {
-                    attrs: {
-                      dense: "",
-                      label: "Search",
-                      "append-icon": "mdi-magnify"
-                    }
-                  })
-                ],
-                1
-              )
-            ],
-            1
-          )
-        : _vm._e(),
+            : _vm._e()
+        ],
+        1
+      ),
       _vm._v(" "),
       _c(
         "v-row",

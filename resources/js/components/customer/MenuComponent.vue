@@ -1,22 +1,6 @@
 <template>
   <v-container class="my-4">
-    <v-row
-      justify="center"
-      align="center"
-      class="100vh"
-      no-gutters
-      v-if="isRetrievingProducts == true"
-    >
-      <v-col>
-        <div class="caption mb-2">Retrieving products, please wait ...</div>
-        <v-progress-linear height="5" indeterminate></v-progress-linear>
-      </v-col>
-    </v-row>
-    <v-row
-      justify="space-between"
-      no-gutters
-      v-if="isRetrievingProducts == false"
-    >
+    <v-row justify="space-between" no-gutters>
       <v-col cols="12" sm="4" lg="3">
         <v-select
           v-model="category"
@@ -25,6 +9,7 @@
           dense
           solo
           item-text="name"
+          :disabled="isRetrievingProducts"
         ></v-select>
       </v-col>
       <v-col cols="12" sm="4" lg="3"
@@ -32,8 +17,13 @@
           dense
           label="Search"
           append-icon="mdi-magnify"
+          :disabled="isRetrievingProducts"
         ></v-text-field
       ></v-col>
+      <v-col cols="12" class="my-4" v-if="isRetrievingProducts == true">
+        <div class="caption mb-2">Retrieving products, please wait ...</div>
+        <v-progress-linear height="5" indeterminate></v-progress-linear>
+      </v-col>
     </v-row>
     <v-row>
       <v-col
@@ -122,7 +112,7 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   data() {
     return {
-      isRetrievingProducts: false,
+      isRetrievingProducts: true,
       category: { id: 0, name: "All" },
       categories: [
         { id: 0, name: "All" },
