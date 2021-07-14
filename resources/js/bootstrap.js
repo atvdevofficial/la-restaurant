@@ -11,7 +11,7 @@ try {
     window.$ = window.jQuery = require('jquery');
 
     require('bootstrap');
-} catch (e) {}
+} catch (e) { }
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
@@ -22,6 +22,19 @@ try {
 window.axios = require('axios');
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+
+let token = document.head.querySelector('meta[name="csrf-token"]')
+if (token) window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content
+else console.error('CSRF token not found.')
+
+// Add a request interceptor to axios
+axios.interceptors.request.use(function (config) {
+    let authToken = sessionStorage.getItem('authToken') || ''
+    if (authToken) config.headers['Authorization'] = `Bearer ${authToken}`
+    return config
+}, function (error) {
+    return Promise.reject(error);
+});
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening

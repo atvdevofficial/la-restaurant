@@ -107,7 +107,7 @@ const modulePermissions = {
     },
     unauthenticated: {
         ...modules,
-        default: 'landing',
+        default: 'signin',
         dashboard: false, orders: false, products: false, orders: false, productCategories: false, customers: false,
         menu: false, checkout: false, customerOrders: false, profile: false,
     }

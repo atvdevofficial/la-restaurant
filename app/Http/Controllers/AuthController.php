@@ -11,22 +11,26 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
-    public function login (LoginRequest $request) {
+    public function login(LoginRequest $request)
+    {
 
         $validatedEmail = $request->validated()['email'];
         $validatedPassword = $request->validated()['password'];
 
-        $user = User::where('email', $validatedEmail)->firstOrFail();
+        $user = User::where('email', $validatedEmail)->first();
 
-        if (Hash::check($validatedPassword, $user->password)) {
-            $token = $user->createToken('LaravelPasswordGrantClient')->accessToken;
-            return response($token);
+        if ($user) {
+            if (Hash::check($validatedPassword, $user->password)) {
+                $token = $user->createToken('LaravelPasswordGrantClient')->accessToken;
+                return response(['authToken' => $token, 'userRole' => $user->role]);
+            }
         }
 
         return response('Invalid Credentials', 401);
     }
 
-    public function logout () {
+    public function logout()
+    {
         $token = request()->user()->token();
         $token->revoke();
         return response(null, 204);

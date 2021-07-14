@@ -35,10 +35,23 @@
                     ></v-text-field></div
                 ></v-col>
 
+                <v-col
+                  cols="12"
+                  v-if="errorMessage != ''"
+                  class="text-center red--text"
+                >
+                  {{ errorMessage }} !
+                </v-col>
+
                 <v-col cols="12">
-                  <v-btn block color="primary" @click="validate">
-                    Sign in</v-btn
+                  <v-btn
+                    block
+                    color="primary"
+                    @click="validate"
+                    :loading="isSigningIn"
                   >
+                    Sign in
+                  </v-btn>
                 </v-col>
               </v-row>
             </v-card-text>
@@ -53,18 +66,47 @@
 export default {
   data() {
     return {
+      isSigningIn: false,
       valid: false,
-      email: "",
+      errorMessage: "",
+      email: "customer@mr.com",
       emailRules: [
         (v) => !!v || "E-mail is required",
         (v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
       ],
-      password: "",
+      password: "password",
     };
   },
   methods: {
     validate() {
-      this.$refs.form.validate();
+      if (this.$refs.form.validate()) this.signin();
+    },
+
+    signin() {
+      this.isSigningIn = true;
+
+      axios
+        .post("/api/v1/login", { email: this.email, password: this.password })
+        .then((response) => {
+          let authToken = response.data.authToken;
+          let userRole = response.data.userRole;
+
+          // Set session storage items
+          sessionStorage.setItem("authToken", authToken);
+          sessionStorage.setItem("userRole", userRole);
+
+          // Pusher authToken
+          // Echo.connector.pusher.config.auth.headers["Authorization"] = "Bearer " + authToken;
+
+          // Push to dashboard
+          this.$router.push("dashboard");
+        })
+        .catch((error) => {
+            this.errorMessage = error.response.data;
+        })
+        .finally((fin) => {
+          this.isSigningIn = false;
+        });
     },
   },
 };
