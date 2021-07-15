@@ -27,4 +27,12 @@ class Order extends Model
     public function orderProducts() {
         return $this->hasMany(OrderProduct::class);
     }
+
+    public static function boot() {
+        parent::boot();
+
+        self::creating(function($order) {
+            $order->code = time() . $order->customer_id;
+        });
+    }
 }

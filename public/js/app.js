@@ -4123,101 +4123,27 @@ __webpack_require__.r(__webpack_exports__);
           quantity: 0
         }]
       },
-      orders: [{
-        code: "159753451",
-        customer: "John Doe Jr.",
-        address: "Mapple Drive, Honey Drive, ASU",
-        sub_total: 700.0,
-        delivery_fee: 70.0,
-        grand_total: 770.0,
-        status: "PENDING",
-        note: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus consectetur vehicula aliquet. Sed porttitor ut sapien nec pretium. Pellentesque rutrum, lacus in placerat semper, sem nisl vestibulum sem.",
-        items: [{
-          name: "Burger",
-          price: 100,
-          quantity: 1
-        }, {
-          name: "Fries",
-          price: 50,
-          quantity: 2
-        }, {
-          name: "Coke Float",
-          price: 150,
-          quantity: 3
-        }]
-      }, {
-        code: "159753452",
-        customer: "John Doe Jr.",
-        address: "Mapple Drive, Honey Drive, ASU",
-        sub_total: 700.0,
-        delivery_fee: 70.0,
-        grand_total: 770.0,
-        status: "PENDING",
-        note: null,
-        items: [{
-          name: "Burger",
-          price: 100,
-          quantity: 4
-        }, {
-          name: "Fries",
-          price: 50,
-          quantity: 5
-        }, {
-          name: "Coke Float",
-          price: 150,
-          quantity: 6
-        }]
-      }, {
-        code: "159753453",
-        customer: "John Doe Jr.",
-        address: "Mapple Drive, Honey Drive, ASU",
-        sub_total: 700.0,
-        delivery_fee: 70.0,
-        grand_total: 770.0,
-        status: "PROCESSING",
-        note: null,
-        items: [{
-          name: "Burger",
-          price: 100,
-          quantity: 7
-        }, {
-          name: "Fries",
-          price: 50,
-          quantity: 8
-        }, {
-          name: "Coke Float",
-          price: 150,
-          quantity: 9
-        }]
-      }, {
-        code: "159753454",
-        customer: "John Doe Jr.",
-        address: "Mapple Drive, Honey Drive, ASU",
-        sub_total: 700.0,
-        delivery_fee: 70.0,
-        grand_total: 770.0,
-        status: "DELIVERED",
-        note: null,
-        items: [{
-          name: "Burger",
-          price: 100,
-          quantity: 10
-        }, {
-          name: "Fries",
-          price: 50,
-          quantity: 11
-        }, {
-          name: "Coke Float",
-          price: 150,
-          quantity: 12
-        }]
-      }]
+      orders: []
     };
+  },
+  mounted: function mounted() {
+    this.retrieveOrders();
   },
   methods: {
     viewOrder: function viewOrder(order) {
       this.viewingOrder = Object.assign({}, order);
       this.orderInformationDialog = true;
+    },
+    retrieveOrders: function retrieveOrders() {
+      var _this = this;
+
+      axios.get("/api/v1/orders").then(function (response) {
+        _this.orders = response.data;
+      })["catch"](function (error) {
+        console.log(error);
+      })["finally"](function (fin) {
+        console.log(fin);
+      });
     }
   }
 });
@@ -44221,7 +44147,9 @@ var render = function() {
                             { staticClass: "font-italic" },
                             [
                               _vm._v(
-                                "\n              July 05, 2021 11:00 AM\n            "
+                                "\n              " +
+                                  _vm._s(order.created_at) +
+                                  "\n            "
                               )
                             ]
                           )
@@ -44313,7 +44241,10 @@ var render = function() {
                   _c(
                     "v-list",
                     { attrs: { dense: "" } },
-                    _vm._l(_vm.viewingOrder.items, function(item, index) {
+                    _vm._l(_vm.viewingOrder.order_products, function(
+                      item,
+                      index
+                    ) {
                       return _c(
                         "v-list-item",
                         { key: index },
@@ -44322,7 +44253,7 @@ var render = function() {
                             "v-list-item-content",
                             [
                               _c("v-list-item-title", [
-                                _vm._v(_vm._s(item.name))
+                                _vm._v(_vm._s(item.product.name))
                               ]),
                               _vm._v(" "),
                               _c("v-list-item-subtitle", [

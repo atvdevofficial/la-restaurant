@@ -14,7 +14,7 @@
                 {{ order.code }}
               </v-list-item-title>
               <v-list-item-subtitle class="font-italic">
-                July 05, 2021 11:00 AM
+                {{ order.created_at }}
               </v-list-item-subtitle>
             </v-list-item-content>
             <v-list-item-action> {{ order.status }} </v-list-item-action>
@@ -54,11 +54,11 @@
           <div class="caption font-italic mt-2">Items</div>
           <v-list dense>
             <v-list-item
-              v-for="(item, index) in viewingOrder.items"
+              v-for="(item, index) in viewingOrder.order_products"
               :key="index"
             >
               <v-list-item-content>
-                <v-list-item-title>{{ item.name }}</v-list-item-title>
+                <v-list-item-title>{{ item.product.name }}</v-list-item-title>
                 <v-list-item-subtitle>
                   Php {{ item.price }} x
                   {{ item.quantity }}</v-list-item-subtitle
@@ -117,74 +117,30 @@ export default {
         note: null,
         items: [{ name: null, price: 0, quantity: 0 }],
       },
-      orders: [
-        {
-          code: "159753451",
-          customer: "John Doe Jr.",
-          address: "Mapple Drive, Honey Drive, ASU",
-          sub_total: 700.0,
-          delivery_fee: 70.0,
-          grand_total: 770.0,
-          status: "PENDING",
-          note: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus consectetur vehicula aliquet. Sed porttitor ut sapien nec pretium. Pellentesque rutrum, lacus in placerat semper, sem nisl vestibulum sem.",
-          items: [
-            { name: "Burger", price: 100, quantity: 1 },
-            { name: "Fries", price: 50, quantity: 2 },
-            { name: "Coke Float", price: 150, quantity: 3 },
-          ],
-        },
-        {
-          code: "159753452",
-          customer: "John Doe Jr.",
-          address: "Mapple Drive, Honey Drive, ASU",
-          sub_total: 700.0,
-          delivery_fee: 70.0,
-          grand_total: 770.0,
-          status: "PENDING",
-          note: null,
-          items: [
-            { name: "Burger", price: 100, quantity: 4 },
-            { name: "Fries", price: 50, quantity: 5 },
-            { name: "Coke Float", price: 150, quantity: 6 },
-          ],
-        },
-        {
-          code: "159753453",
-          customer: "John Doe Jr.",
-          address: "Mapple Drive, Honey Drive, ASU",
-          sub_total: 700.0,
-          delivery_fee: 70.0,
-          grand_total: 770.0,
-          status: "PROCESSING",
-          note: null,
-          items: [
-            { name: "Burger", price: 100, quantity: 7 },
-            { name: "Fries", price: 50, quantity: 8 },
-            { name: "Coke Float", price: 150, quantity: 9 },
-          ],
-        },
-        {
-          code: "159753454",
-          customer: "John Doe Jr.",
-          address: "Mapple Drive, Honey Drive, ASU",
-          sub_total: 700.0,
-          delivery_fee: 70.0,
-          grand_total: 770.0,
-          status: "DELIVERED",
-          note: null,
-          items: [
-            { name: "Burger", price: 100, quantity: 10 },
-            { name: "Fries", price: 50, quantity: 11 },
-            { name: "Coke Float", price: 150, quantity: 12 },
-          ],
-        },
-      ],
+      orders: [],
     };
+  },
+  mounted() {
+    this.retrieveOrders();
   },
   methods: {
     viewOrder(order) {
       this.viewingOrder = Object.assign({}, order);
       this.orderInformationDialog = true;
+    },
+
+    retrieveOrders() {
+      axios
+        .get("/api/v1/orders")
+        .then((response) => {
+            this.orders = response.data
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally((fin) => {
+          console.log(fin);
+        });
     },
   },
 };

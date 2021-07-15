@@ -15,6 +15,7 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('code')->unique();
             $table->unsignedBigInteger('customer_id')->nullable();
             $table->string('address');
             $table->double('latitude', 10, 7);
