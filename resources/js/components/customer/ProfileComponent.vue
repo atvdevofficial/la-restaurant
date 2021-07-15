@@ -107,8 +107,6 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
-
 export default {
   data() {
     return {
@@ -121,26 +119,21 @@ export default {
         (v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
       ],
 
-      //   customerInformation: {
-      //     firstName: null,
-      //     lastName: null,
-      //     contactNumber: null,
-      //     address: null,
-      //     latitude: null,
-      //     longitude: null,
-      //     email: null,
-      //   },
+      customerInformation: {
+        firstName: null,
+        lastName: null,
+        contactNumber: null,
+        address: null,
+        latitude: null,
+        longitude: null,
+        email: null,
+      },
     };
-  },
-  computed: {
-    ...mapGetters(["customerInformation"]),
   },
   mounted() {
     this.retrieveProfile();
   },
   methods: {
-    ...mapActions(["updateCustomerInformation"]),
-
     // Validate
     validate() {
       if (this.$refs.form.validate()) {
@@ -163,7 +156,7 @@ export default {
         .then((response) => {
           let data = response.data;
 
-          let customerInformation = {
+          this.customerInformation = {
             email: data.user.email,
             firstName: data.first_name,
             lastName: data.last_name,
@@ -172,8 +165,6 @@ export default {
             latitude: data.latitude,
             longitude: data.longitude,
           };
-
-          this.updateCustomerInformation(customerInformation)
         })
         .catch((error) => {
           console.log(error);
@@ -203,7 +194,7 @@ export default {
         .then((response) => {
           let data = response.data;
 
-          let customerInformation = {
+          this.customerInformation = {
             email: data.user.email,
             firstName: data.first_name,
             lastName: data.last_name,
@@ -212,8 +203,6 @@ export default {
             latitude: data.latitude,
             longitude: data.longitude,
           };
-
-          this.updateCustomerInformation(customerInformation)
         })
         .catch((error) => {
           console.log(error.response.data);
