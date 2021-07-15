@@ -22,7 +22,12 @@ class AuthController extends Controller
         if ($user) {
             if (Hash::check($validatedPassword, $user->password)) {
                 $token = $user->createToken('LaravelPasswordGrantClient')->accessToken;
-                return response(['authToken' => $token, 'userRole' => $user->role]);
+                return response([
+                    'auth_token' => $token,
+                    'role' => $user->role,
+                    'user_id' => $user->id,
+                    'profile_id' => $user->profile() ? $user->profile->id : null
+                ]);
             }
         }
 

@@ -2128,11 +2128,15 @@ __webpack_require__.r(__webpack_exports__);
         email: this.email,
         password: this.password
       }).then(function (response) {
-        var authToken = response.data.authToken;
-        var userRole = response.data.userRole; // Set session storage items
+        var authToken = response.data.auth_token;
+        var userRole = response.data.role;
+        var userId = response.data.user_id;
+        var profileId = response.data.profile_id; // Set session storage items
 
         sessionStorage.setItem("authToken", authToken);
-        sessionStorage.setItem("userRole", userRole); // Pusher authToken
+        sessionStorage.setItem("userRole", userRole);
+        sessionStorage.setItem("userId", userId);
+        sessionStorage.setItem("profileId", profileId); // Pusher authToken
         // Echo.connector.pusher.config.auth.headers["Authorization"] = "Bearer " + authToken;
         // Push to dashboard
 
@@ -4128,6 +4132,25 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -4226,32 +4249,93 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      isRetrievingProfile: false,
       isNotEditing: true,
       valid: true,
-      email: "anthonvillaflor@gmail.com",
       emailRules: [function (v) {
         return !!v || "E-mail is required";
       }, function (v) {
         return /.+@.+\..+/.test(v) || "E-mail must be valid";
       }],
-      firstName: "John",
-      lastName: "Doe",
-      contactNumber: "09051406999",
-      address: "Mapple Drive, Honey Street, Bee Colony"
+      customerInformation: {
+        firstName: null,
+        lastName: null,
+        contactNumber: null,
+        address: null,
+        latitude: null,
+        longitude: null,
+        email: null
+      }
     };
   },
+  mounted: function mounted() {
+    this.retrieveProfile();
+  },
   methods: {
+    // Validate
     validate: function validate() {
       if (this.$refs.form.validate()) {
-        // Axios
         this.isNotEditing = true;
+        this.update();
       }
     },
+    // Update
+    update: function update() {
+      var _this = this;
+
+      var profileId = sessionStorage.getItem("profileId");
+      axios.put("/api/v1/customers/" + profileId, _objectSpread(_objectSpread({}, this.customerInformation), {}, {
+        first_name: this.customerInformation.firstName,
+        last_name: this.customerInformation.lastName,
+        contact_number: this.customerInformation.contactNumber
+      })).then(function (response) {
+        var data = response.data;
+        _this.customerInformation = {
+          email: data.user.email,
+          firstName: data.first_name,
+          lastName: data.last_name,
+          contactNumber: data.contact_number,
+          address: data.address,
+          latitude: data.latitude,
+          longitude: data.longitude
+        };
+      })["catch"](function (error) {
+        console.log(error);
+      })["catch"](function (fin) {
+        console.log(fin);
+      });
+    },
+    // Edit
     updateProfile: function updateProfile() {
       this.isNotEditing = false;
     },
+    // Cancel
     cancelEditing: function cancelEditing() {
-      this.isNotEditing = true; // Revert to original information
+      this.isNotEditing = true;
+      this.retrieveProfile();
+    },
+    // Show
+    retrieveProfile: function retrieveProfile() {
+      var _this2 = this;
+
+      this.isRetrievingProfile = true;
+      var profileId = sessionStorage.getItem("profileId");
+      axios.get("/api/v1/customers/" + profileId).then(function (response) {
+        var data = response.data;
+        _this2.customerInformation = {
+          email: data.user.email,
+          firstName: data.first_name,
+          lastName: data.last_name,
+          contactNumber: data.contact_number,
+          address: data.address,
+          latitude: data.latitude,
+          longitude: data.longitude
+        };
+      })["catch"](function (error) {
+        console.log(error.response.data);
+      })["finally"](function (_) {
+        _this2.isRetrievingProfile = false;
+      });
     }
   }
 });
@@ -44159,6 +44243,26 @@ var render = function() {
         "v-row",
         { attrs: { justify: "center" } },
         [
+          _vm.isRetrievingProfile == true
+            ? _c(
+                "v-col",
+                {
+                  staticClass: "my-4",
+                  attrs: { cols: "12", sm: "10", md: "8", lg: "6", xl: "4" }
+                },
+                [
+                  _c("div", { staticClass: "caption mb-2" }, [
+                    _vm._v("Retrieving profile, please wait ...")
+                  ]),
+                  _vm._v(" "),
+                  _c("v-progress-linear", {
+                    attrs: { height: "5", indeterminate: "" }
+                  })
+                ],
+                1
+              )
+            : _vm._e(),
+          _vm._v(" "),
           _c(
             "v-col",
             { attrs: { cols: "12", sm: "10", md: "8", lg: "6", xl: "4" } },
@@ -44192,11 +44296,15 @@ var render = function() {
                                 rules: _vm.emailRules
                               },
                               model: {
-                                value: _vm.email,
+                                value: _vm.customerInformation.email,
                                 callback: function($$v) {
-                                  _vm.email = $$v
+                                  _vm.$set(
+                                    _vm.customerInformation,
+                                    "email",
+                                    $$v
+                                  )
                                 },
-                                expression: "email"
+                                expression: "customerInformation.email"
                               }
                             })
                           ],
@@ -44219,11 +44327,15 @@ var render = function() {
                                 ]
                               },
                               model: {
-                                value: _vm.firstName,
+                                value: _vm.customerInformation.firstName,
                                 callback: function($$v) {
-                                  _vm.firstName = $$v
+                                  _vm.$set(
+                                    _vm.customerInformation,
+                                    "firstName",
+                                    $$v
+                                  )
                                 },
-                                expression: "firstName"
+                                expression: "customerInformation.firstName"
                               }
                             })
                           ],
@@ -44246,11 +44358,15 @@ var render = function() {
                                 ]
                               },
                               model: {
-                                value: _vm.lastName,
+                                value: _vm.customerInformation.lastName,
                                 callback: function($$v) {
-                                  _vm.lastName = $$v
+                                  _vm.$set(
+                                    _vm.customerInformation,
+                                    "lastName",
+                                    $$v
+                                  )
                                 },
-                                expression: "lastName"
+                                expression: "customerInformation.lastName"
                               }
                             })
                           ],
@@ -44273,11 +44389,15 @@ var render = function() {
                                 ]
                               },
                               model: {
-                                value: _vm.contactNumber,
+                                value: _vm.customerInformation.contactNumber,
                                 callback: function($$v) {
-                                  _vm.contactNumber = $$v
+                                  _vm.$set(
+                                    _vm.customerInformation,
+                                    "contactNumber",
+                                    $$v
+                                  )
                                 },
-                                expression: "contactNumber"
+                                expression: "customerInformation.contactNumber"
                               }
                             })
                           ],
@@ -44302,11 +44422,15 @@ var render = function() {
                                 ]
                               },
                               model: {
-                                value: _vm.address,
+                                value: _vm.customerInformation.address,
                                 callback: function($$v) {
-                                  _vm.address = $$v
+                                  _vm.$set(
+                                    _vm.customerInformation,
+                                    "address",
+                                    $$v
+                                  )
                                 },
-                                expression: "address"
+                                expression: "customerInformation.address"
                               }
                             })
                           ],
@@ -44323,7 +44447,11 @@ var render = function() {
                                 "v-btn",
                                 {
                                   staticClass: "mt-2",
-                                  attrs: { block: "", color: "primary" },
+                                  attrs: {
+                                    block: "",
+                                    color: "primary",
+                                    disabled: _vm.isRetrievingProfile
+                                  },
                                   on: { click: _vm.updateProfile }
                                 },
                                 [
@@ -108138,8 +108266,8 @@ var opts = {};
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\Users\nthnyvllflrs\Documents\repositories\myshop-laravue\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\Users\nthnyvllflrs\Documents\repositories\myshop-laravue\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\Users\dreamers\Documents\repositories\laravue\myshop-laravue\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\Users\dreamers\Documents\repositories\laravue\myshop-laravue\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

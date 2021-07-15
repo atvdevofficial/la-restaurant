@@ -88,12 +88,16 @@ export default {
       axios
         .post("/api/v1/login", { email: this.email, password: this.password })
         .then((response) => {
-          let authToken = response.data.authToken;
-          let userRole = response.data.userRole;
+          let authToken = response.data.auth_token;
+          let userRole = response.data.role;
+          let userId = response.data.user_id;
+          let profileId = response.data.profile_id;
 
           // Set session storage items
           sessionStorage.setItem("authToken", authToken);
           sessionStorage.setItem("userRole", userRole);
+          sessionStorage.setItem("userId", userId);
+          sessionStorage.setItem("profileId", profileId);
 
           // Pusher authToken
           // Echo.connector.pusher.config.auth.headers["Authorization"] = "Bearer " + authToken;
