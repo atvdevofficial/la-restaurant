@@ -1,7 +1,14 @@
 <template>
   <v-container>
     <v-row>
-      <v-col cols="12" md="6">
+      <v-col cols="12" v-if="cartItemsCount == 0">
+        <p>
+          No products inside your cart. Add products now to satisfy your
+          cravings.
+        </p>
+      </v-col>
+
+      <v-col cols="12" md="6" v-if="cartItemsCount > 0">
         <v-card
           v-for="(product, index) in cart"
           :key="index"
@@ -21,7 +28,11 @@
             </v-list-item-action>
           </v-list-item>
         </v-card>
-        <v-dialog v-model="dialogClearCartConfirmation" max-width="320" v-if="cart.length > 0">
+        <v-dialog
+          v-model="dialogClearCartConfirmation"
+          max-width="320"
+          v-if="cart.length > 0"
+        >
           <template v-slot:activator="{ on, attrs }">
             <v-btn
               text
@@ -56,29 +67,36 @@
         </v-dialog>
       </v-col>
 
-      <v-col cols="12" md="6">
+      <v-col cols="12" md="6" v-if="cartItemsCount > 0">
         <v-card>
           <v-card-title class="justify-center"> Checkout </v-card-title>
 
           <v-card-text>
             <v-row>
               <v-col cols="12">
-                <div class="caption">Address</div>
                 <div class="font-weight-bold">
-                  <v-icon small>mdi-earth</v-icon>
-                  Mapple Driver, Honey Street, Bee Colony
+                  <v-text-field
+                    label="Address"
+                    v-model="customerInformation.address"
+                  >
+                    <template v-slot:append-outer>
+                      <v-icon @click="dialogMap = true">mdi-earth</v-icon>
+                    </template>
+                  </v-text-field>
                 </div>
               </v-col>
 
-              <v-col cols="12"
-                ><div class="caption">Notes / Instructions</div>
+              <v-col cols="12">
                 <div>
                   <v-textarea
+                    label="Notes / Instructions"
                     placeholder="No Notes / Instructions"
                     auto-grow
                     rows="1"
-                  ></v-textarea></div
-              ></v-col>
+                  >
+                  </v-textarea>
+                </div>
+              </v-col>
 
               <v-col cols="6">
                 <div class="caption">Sub Total</div>
@@ -92,7 +110,7 @@
 
               <v-col cols="6"
                 ><div class="caption">Grand Total</div>
-                <div class="font-weight-bold">
+                <div class="font-weight-bold title">
                   Php {{ parseFloat(cartSubTotal + 100).toFixed(2) }}
                 </div></v-col
               >
@@ -100,7 +118,11 @@
           </v-card-text>
         </v-card>
 
-        <v-dialog v-model="dialogCheckoutConfirmation" max-width="320" v-if="cart.length > 0">
+        <v-dialog
+          v-model="dialogCheckoutConfirmation"
+          max-width="320"
+          persistent
+        >
           <template v-slot:activator="{ on, attrs }">
             <v-btn block color="primary" v-bind="attrs" v-on="on" class="my-2">
               Checkout
@@ -108,9 +130,16 @@
           </template>
           <v-card>
             <v-card-text class="pa-4 text-center">
-              Please confirm checkout action.
+              <div v-if="isProcessing == false">
+                Please confirm checkout action.
+              </div>
+
+              <div v-if="isProcessing == true">
+                <div class="caption mb-2">Processing order, please wait...</div>
+                <v-progress-linear height="5" indeterminate></v-progress-linear>
+              </div>
             </v-card-text>
-            <v-card-actions>
+            <v-card-actions v-if="isProcessing == false">
               <v-spacer></v-spacer>
               <v-btn
                 color="default"
@@ -210,6 +239,10 @@
         >
       </v-col>
     </v-row>
+
+    <v-snackbar color="primary" v-model="snackbar.visible" timeout="2000">
+      {{ snackbar.message }}
+    </v-snackbar>
   </v-container>
 </template>
 
@@ -219,7 +252,10 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   data() {
     return {
+      isProcessing: false,
+
       editedIndex: -1,
+      dialogMap: false,
       dialogInformation: false,
       dialogCheckoutConfirmation: false,
       dialogClearCartConfirmation: false,
@@ -231,13 +267,55 @@ export default {
         price: null,
         quantity: null,
       },
+
+      customerInformation: {
+        firstName: null,
+        lastName: null,
+        contactNumber: null,
+        address: null,
+        latitude: null,
+        longitude: null,
+        email: null,
+      },
+
+      snackbar: {
+        visible: false,
+        message: "",
+      },
     };
   },
   computed: {
-    ...mapGetters(["cart", "cartSubTotal"]),
+    ...mapGetters(["cart", "cartSubTotal", "cartItemsCount"]),
+  },
+  mounted() {
+    this.retrieveCustomerProfile();
   },
   methods: {
     ...mapActions(["updateCartProduct", "removeCartProduct", "clearCartItems"]),
+
+    // Retrieve customer profile
+    retrieveCustomerProfile() {
+      let profileId = sessionStorage.getItem("profileId");
+      axios
+        .get("/api/v1/customers/" + profileId)
+        .then((response) => {
+          let data = response.data;
+
+          this.customerInformation = {
+            email: data.user.email,
+            firstName: data.first_name,
+            lastName: data.last_name,
+            contactNumber: data.contact_number,
+            address: data.address,
+            latitude: data.latitude,
+            longitude: data.longitude,
+          };
+        })
+        .catch((error) => {
+          console.log(error.response.data);
+        })
+        .finally((_) => {});
+    },
 
     clearCart() {
       this.clearCartItems();
@@ -245,8 +323,40 @@ export default {
     },
 
     checkout() {
-      this.dialogCheckoutConfirmation = false;
-      console.log("Checkout!");
+      this.isProcessing = true;
+
+      axios
+        .post("/api/v1/orders", {
+          address: this.customerInformation.address,
+          latitude: this.customerInformation.latitude,
+          longitude: this.customerInformation.longitude,
+          distance: 100,
+          products: this.cart,
+        })
+        .then((response) => {
+          this.clearCart();
+          this.snackbar = {
+            visible: true,
+            message: "Order successfuly submitted.",
+          };
+        })
+        .catch((error) => {
+          if (error.response.status == 422) {
+            this.snackbar = {
+              visible: true,
+              message: "Please check all neccessary data and try again.",
+            };
+          } else {
+            this.snackbar = {
+              visible: true,
+              message: "Something went wrong. Please try again.",
+            };
+          }
+        })
+        .finally((fin) => {
+          this.isProcessing = false;
+          this.dialogCheckoutConfirmation = false;
+        });
     },
 
     editProduct(product) {
