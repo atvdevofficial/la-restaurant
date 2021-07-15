@@ -6,8 +6,20 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
     state: {
         cart: [],
+        customerInformation: {
+            firstName: null,
+            lastName: null,
+            contactNumber: null,
+            address: null,
+            latitude: null,
+            longitude: null,
+            email: null,
+        },
     },
     getters: {
+        customerInformation(state) {
+            return state.customerInformation
+        },
         cart(state) {
             return state.cart
         },
@@ -19,6 +31,10 @@ const store = new Vuex.Store({
         }
     },
     mutations: {
+        updateCustomerInformation(state, payload) {
+            state.customerInformation = payload
+        },
+
         addCartProduct(state, payload) {
             var productExists = false;
 
@@ -55,6 +71,10 @@ const store = new Vuex.Store({
         }
     },
     actions: {
+        updateCustomerInformation(context, payload) {
+            context.commit('updateCustomerInformation', payload)
+        },
+
         addCartProduct(context, payload) {
             context.commit('addCartProduct', payload)
         },

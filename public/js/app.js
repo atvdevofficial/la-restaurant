@@ -4132,6 +4132,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -4246,6 +4247,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -4256,22 +4258,23 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         return !!v || "E-mail is required";
       }, function (v) {
         return /.+@.+\..+/.test(v) || "E-mail must be valid";
-      }],
-      customerInformation: {
-        firstName: null,
-        lastName: null,
-        contactNumber: null,
-        address: null,
-        latitude: null,
-        longitude: null,
-        email: null
-      }
+      }] //   customerInformation: {
+      //     firstName: null,
+      //     lastName: null,
+      //     contactNumber: null,
+      //     address: null,
+      //     latitude: null,
+      //     longitude: null,
+      //     email: null,
+      //   },
+
     };
   },
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(["customerInformation"])),
   mounted: function mounted() {
     this.retrieveProfile();
   },
-  methods: {
+  methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(["updateCustomerInformation"])), {}, {
     // Validate
     validate: function validate() {
       if (this.$refs.form.validate()) {
@@ -4290,7 +4293,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         contact_number: this.customerInformation.contactNumber
       })).then(function (response) {
         var data = response.data;
-        _this.customerInformation = {
+        var customerInformation = {
           email: data.user.email,
           firstName: data.first_name,
           lastName: data.last_name,
@@ -4299,6 +4302,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           latitude: data.latitude,
           longitude: data.longitude
         };
+
+        _this.updateCustomerInformation(customerInformation);
       })["catch"](function (error) {
         console.log(error);
       })["catch"](function (fin) {
@@ -4322,7 +4327,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       var profileId = sessionStorage.getItem("profileId");
       axios.get("/api/v1/customers/" + profileId).then(function (response) {
         var data = response.data;
-        _this2.customerInformation = {
+        var customerInformation = {
           email: data.user.email,
           firstName: data.first_name,
           lastName: data.last_name,
@@ -4331,13 +4336,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           latitude: data.latitude,
           longitude: data.longitude
         };
+
+        _this2.updateCustomerInformation(customerInformation);
       })["catch"](function (error) {
         console.log(error.response.data);
       })["finally"](function (_) {
         _this2.isRetrievingProfile = false;
       });
     }
-  }
+  })
 });
 
 /***/ }),
@@ -108157,9 +108164,21 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__["default"]);
 var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
   state: {
-    cart: []
+    cart: [],
+    customerInformation: {
+      firstName: null,
+      lastName: null,
+      contactNumber: null,
+      address: null,
+      latitude: null,
+      longitude: null,
+      email: null
+    }
   },
   getters: {
+    customerInformation: function customerInformation(state) {
+      return state.customerInformation;
+    },
     cart: function cart(state) {
       return state.cart;
     },
@@ -108173,6 +108192,9 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
     }
   },
   mutations: {
+    updateCustomerInformation: function updateCustomerInformation(state, payload) {
+      state.customerInformation = payload;
+    },
     addCartProduct: function addCartProduct(state, payload) {
       var productExists = false; // Check if product already exists
 
@@ -108206,6 +108228,9 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
     }
   },
   actions: {
+    updateCustomerInformation: function updateCustomerInformation(context, payload) {
+      context.commit('updateCustomerInformation', payload);
+    },
     addCartProduct: function addCartProduct(context, payload) {
       context.commit('addCartProduct', payload);
     },
