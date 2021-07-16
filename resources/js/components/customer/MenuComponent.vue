@@ -6,14 +6,17 @@
           v-model="category"
           :items="categories"
           label="Category"
+          return-object
           dense
           solo
           item-text="name"
           :disabled="isRetrievingProducts"
+          @change="changeMenuCategory"
         ></v-select>
       </v-col>
       <v-col cols="12" sm="4" lg="3"
         ><v-text-field
+          v-model="search"
           dense
           label="Search"
           append-icon="mdi-magnify"
@@ -27,7 +30,16 @@
     </v-row>
     <v-row>
       <v-col
-        v-for="(product, index) in products"
+        cols="12"
+        v-if="
+          filteredProductsBySearch.length == 0 && isRetrievingProducts == false
+        "
+        class="text-center"
+      >
+        No products found.</v-col
+      >
+      <v-col
+        v-for="(product, index) in filteredProductsBySearch"
         :key="index"
         cols="6"
         sm="4"
@@ -86,10 +98,15 @@
             Php {{ parseFloat(viewingProduct.price).toFixed(2) }} / Order
           </div>
           <div class="mt-2">{{ viewingProduct.description }}</div>
-          <div class="mt-4">
-            <v-chip small color="primary"> Beef </v-chip>
-            <v-chip small color="primary"> Juicy </v-chip>
-            <v-chip small color="primary"> Grilled </v-chip>
+          <div class="mt-4" v-if="viewingProduct.product_categories.length > 0">
+            <v-chip
+              small
+              color="primary"
+              v-for="(category, index) in viewingProduct.product_categories"
+              :key="index"
+            >
+              {{ category.name }}
+            </v-chip>
           </div>
         </v-card-text>
 
@@ -107,19 +124,15 @@
   </v-container>
 </template>
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapActions } from "vuex";
 
 export default {
   data() {
     return {
       isRetrievingProducts: true,
+      search: "",
       category: { id: 0, name: "All" },
-      categories: [
-        { id: 0, name: "All" },
-        { id: 1, name: "Chicken" },
-        { id: 2, name: "Beef" },
-        { id: 3, name: "Vegan" },
-      ],
+      categories: [{ id: 0, name: "All" }],
       snackbar: false,
       dialogInformation: false,
       viewingProduct: {
@@ -128,12 +141,28 @@ export default {
         name: null,
         description: null,
         price: null,
+        product_categories: [],
       },
       products: [],
     };
   },
   mounted() {
-    this.retrieveProducts();
+    this.retrieveProductCategories();
+    this.retrieveProducts(this.category);
+  },
+  computed: {
+    filteredProductsBySearch() {
+      return this.products.filter((product) => {
+        return this.search
+          .toLowerCase()
+          .split(" ")
+          .every(
+            (v) =>
+              product.name.toLowerCase().includes(v) ||
+              product.description.toLowerCase().includes(v)
+          );
+      });
+    },
   },
   methods: {
     ...mapActions(["addCartProduct"]),
@@ -151,20 +180,43 @@ export default {
       this.addCartProduct(this.viewingProduct);
     },
 
-    retrieveProducts() {
+    retrieveProducts(category) {
+      let url = "/api/v1/products";
+
+      if (category.id != 0) {
+        url += "?category=" + category.id;
+      }
+
       this.isRetrievingProducts = true;
 
       axios
-        .get("/api/v1/products")
+        .get(url)
         .then((response) => {
           this.products = response.data;
         })
         .catch((error) => {
-          console.log(error.response.data);
+          console.log(error);
         })
-        .finally((fin) => {
+        .finally((_) => {
           this.isRetrievingProducts = false;
         });
+    },
+
+    retrieveProductCategories() {
+      axios
+        .get("/api/v1/productCategories")
+        .then((response) => {
+          let data = response.data;
+          this.categories.push(...data);
+        })
+        .then((error) => {
+          console.log(error);
+        })
+        .then((_) => {});
+    },
+
+    changeMenuCategory() {
+      this.retrieveProducts(this.category);
     },
   },
 };

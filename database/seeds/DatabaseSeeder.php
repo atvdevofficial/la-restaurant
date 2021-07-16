@@ -18,6 +18,11 @@ class DatabaseSeeder extends Seeder
         $customer = factory(\App\Customer::class)->create(['user_id' => $customerUser->id]);
 
         // Products
-        factory(\App\Product::class, 5)->create();
+        for ($i=0; $i < 5; $i++) {
+            $productCategory = factory(\App\ProductCategory::class)->create();
+            $product = factory(\App\Product::class)->create();
+            $product->productCategories()->sync([$productCategory->id]);
+        }
+
     }
 }

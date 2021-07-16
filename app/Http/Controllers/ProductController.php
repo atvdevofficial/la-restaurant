@@ -9,6 +9,7 @@ use App\Http\Requests\Product\ProductStoreRequest;
 use App\Http\Requests\Product\ProductUpdateRequest;
 use App\Http\Resources\ProductResource;
 use App\Product;
+use App\ProductCategory;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -20,7 +21,13 @@ class ProductController extends Controller
      */
     public function index(ProductIndexRequest $request)
     {
-        $products = Product::all();
+        $category = $request->input('category') ?? null;
+
+        if ($category) {
+            $products = Product::select('products.*')->join('product_product_category', 'product_product_category.product_id', 'products.id')->where('product_product_category.product_category_id', $category)->with('productCategories')->get();
+        } else {
+            $products = Product::with('productCategories')->get();
+        }
 
         return ProductResource::collection($products);
     }
