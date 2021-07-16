@@ -10,6 +10,6 @@ $factory->define(Product::class, function (Faker $faker) {
         'name' => $faker->word,
         'description' => $faker->paragraph,
         'price' => random_int(100, 9999),
-        'image_link' => $faker->imageUrl
+        'image' => $faker->imageUrl
     ];
 });

@@ -13,6 +13,9 @@ class DatabaseSeeder extends Seeder
     {
         // $this->call(UsersTableSeeder::class);
 
+        // Administrator
+        $administrator = factory(\App\User::class)->create(['email' => 'administrator@mr.com', 'role' => 'ADMINISTRATOR']);
+
         // Customer Model
         $customerUser = factory(\App\User::class)->create(['email' => 'customer@mr.com', 'role' => 'CUSTOMER']);
         $customer = factory(\App\Customer::class)->create(['user_id' => $customerUser->id]);

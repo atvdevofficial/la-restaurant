@@ -62,7 +62,7 @@
               indeterminate
             ></v-progress-linear>
           </template>
-          <v-img height="150" :src="product.image_link"></v-img>
+          <v-img height="150" :src="product.image"></v-img>
           <v-card-title class="ma-0 pb-0 font-weight-bold"
             >{{ product.name }}
           </v-card-title>
@@ -89,7 +89,7 @@
             indeterminate
           ></v-progress-linear>
         </template>
-        <v-img height="200" :src="viewingProduct.image_link"></v-img>
+        <v-img height="200" :src="viewingProduct.image"></v-img>
         <v-card-title class="ma-0 pb-0 font-weight-bold"
           >{{ viewingProduct.name }}
         </v-card-title>
@@ -137,7 +137,7 @@ export default {
       dialogInformation: false,
       viewingProduct: {
         id: null,
-        image_link: null,
+        image: null,
         name: null,
         description: null,
         price: null,

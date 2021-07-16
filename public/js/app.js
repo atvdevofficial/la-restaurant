@@ -3131,6 +3131,49 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -3249,6 +3292,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      rules: {
+        required: [function (v) {
+          return !!v || "Field is required";
+        }],
+        maximumSize: [function (v) {
+          return !v || v.size < 2000000 || "Photo size should be less than 2 MB!";
+        }]
+      },
+      valid: false,
+      imageName: null,
+      imageData: null,
+      retrievingProducts: false,
       dialog: false,
       dialogDelete: false,
       search: "",
@@ -3263,7 +3318,8 @@ __webpack_require__.r(__webpack_exports__);
         value: "name"
       }, {
         text: "Description",
-        value: "description"
+        value: "description",
+        width: "50%"
       }, {
         text: "Price",
         value: "price"
@@ -3279,34 +3335,25 @@ __webpack_require__.r(__webpack_exports__);
         image: null,
         name: null,
         description: null,
-        price: 0
+        price: 0,
+        product_categories: [{
+          id: 0,
+          name: null
+        }]
       },
       defaultProduct: {
         id: null,
         image: null,
         name: null,
         description: null,
-        price: 0
+        price: 0,
+        product_categories: [{
+          id: 0,
+          name: null
+        }]
       },
-      products: [{
-        id: 1,
-        image: "https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-images-image_large.png?format=jpg&quality=90&v=1530129081",
-        name: "Burger",
-        description: "The Delicious Burger",
-        price: 100
-      }, {
-        id: 2,
-        image: "https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-images-image_large.png?format=jpg&quality=90&v=1530129081",
-        name: "Fries",
-        description: "The Delicious Fries",
-        price: 100
-      }, {
-        id: 3,
-        image: "https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-images-image_large.png?format=jpg&quality=90&v=1530129081",
-        name: "Coke Float",
-        description: "The Delicious Coke Float",
-        price: 100
-      }]
+      products: [],
+      categories: []
     };
   },
   computed: {
@@ -3322,7 +3369,36 @@ __webpack_require__.r(__webpack_exports__);
       val || this.closeDelete();
     }
   },
+  mounted: function mounted() {
+    this.retrieveProductCategories();
+    this.retrieveProducts();
+  },
   methods: {
+    retrieveProducts: function retrieveProducts() {
+      var _this = this;
+
+      this.retrievingProducts = true;
+      axios.get("/api/v1/products").then(function (response) {
+        _this.products = response.data;
+      }).then(function (error) {
+        console.log(error);
+      }).then(function (_) {
+        _this.retrievingProducts = false;
+      });
+    },
+    retrieveProductCategories: function retrieveProductCategories() {
+      var _this2 = this;
+
+      axios.get("/api/v1/productCategories").then(function (response) {
+        var _this2$categories;
+
+        var data = response.data;
+
+        (_this2$categories = _this2.categories).push.apply(_this2$categories, _toConsumableArray(data));
+      }).then(function (error) {
+        console.log(error);
+      }).then(function (_) {});
+    },
     editItem: function editItem(item) {
       this.editedIndex = this.products.indexOf(item);
       this.editedProduct = Object.assign({}, item);
@@ -3338,31 +3414,58 @@ __webpack_require__.r(__webpack_exports__);
       this.closeDelete();
     },
     close: function close() {
-      var _this = this;
+      var _this3 = this;
 
       this.dialog = false;
       this.$nextTick(function () {
-        _this.editedProduct = Object.assign({}, _this.defaultProduct);
-        _this.editedIndex = -1;
+        _this3.editedProduct = Object.assign({}, _this3.defaultProduct);
+        _this3.editedIndex = -1;
       });
     },
     closeDelete: function closeDelete() {
-      var _this2 = this;
+      var _this4 = this;
 
       this.dialogDelete = false;
       this.$nextTick(function () {
-        _this2.editedProduct = Object.assign({}, _this2.defaultProduct);
-        _this2.editedIndex = -1;
+        _this4.editedProduct = Object.assign({}, _this4.defaultProduct);
+        _this4.editedIndex = -1;
       });
     },
     save: function save() {
-      if (this.editedIndex > -1) {
-        Object.assign(this.products[this.editedIndex], this.editedProduct);
-      } else {
-        this.products.push(this.editedProduct);
-      }
+      if (this.$refs.form.validate()) {
+        if (this.editedIndex > -1) {
+          // Update
+          Object.assign(this.products[this.editedIndex], this.editedProduct);
+        } else {
+          // Add
+          axios.post("/api/v1/products", _objectSpread(_objectSpread({}, this.editedProduct), {}, {
+            image: this.imageData
+          })).then(function (response) {
+            console.log(response.data);
+          })["catch"](function (error) {
+            console.log(error);
+          })["finally"](function (_) {});
+          this.products.push(this.editedProduct);
+        }
 
-      this.close();
+        this.close();
+      }
+    },
+    imageUpload: function imageUpload() {
+      var _this5 = this;
+
+      try {
+        var reader = new FileReader();
+
+        reader.onload = function () {
+          _this5.imageData = reader.result;
+        };
+
+        reader.readAsDataURL(this.imageName);
+      } catch (error) {
+        this.imageName = null;
+        this.imageData = null;
+      }
     }
   }
 });
@@ -3928,7 +4031,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       dialogInformation: false,
       viewingProduct: {
         id: null,
-        image_link: null,
+        image: null,
         name: null,
         description: null,
         price: null,
@@ -41924,24 +42027,24 @@ var render = function() {
                   )
                 ],
                 1
-              )
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "v-list-item",
-            { attrs: { to: "/a/customers" } },
-            [
-              _c(
-                "v-list-item-icon",
-                [_c("v-icon", [_vm._v("mdi-account-group")])],
-                1
               ),
               _vm._v(" "),
               _c(
-                "v-list-item-content",
-                [_c("v-list-item-title", [_vm._v("Customers")])],
+                "v-list-item",
+                { attrs: { to: "/a/customers" } },
+                [
+                  _c(
+                    "v-list-item-icon",
+                    [_c("v-icon", [_vm._v("mdi-account-group")])],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-list-item-content",
+                    [_c("v-list-item-title", [_vm._v("Customers")])],
+                    1
+                  )
+                ],
                 1
               )
             ],
@@ -42559,7 +42662,8 @@ var render = function() {
           headers: _vm.headers,
           items: _vm.products,
           "items-per-page": 5,
-          search: _vm.search
+          search: _vm.search,
+          loading: _vm.retrievingProducts
         },
         scopedSlots: _vm._u([
           {
@@ -42633,92 +42737,172 @@ var render = function() {
                                   "v-container",
                                   [
                                     _c(
-                                      "v-row",
+                                      "v-form",
+                                      {
+                                        ref: "form",
+                                        attrs: { "lazy-validation": "" },
+                                        model: {
+                                          value: _vm.valid,
+                                          callback: function($$v) {
+                                            _vm.valid = $$v
+                                          },
+                                          expression: "valid"
+                                        }
+                                      },
                                       [
                                         _c(
-                                          "v-col",
-                                          { attrs: { cols: "12" } },
+                                          "v-row",
                                           [
-                                            _c("v-text-field", {
-                                              attrs: { label: "Name" },
-                                              model: {
-                                                value: _vm.editedProduct.name,
-                                                callback: function($$v) {
-                                                  _vm.$set(
-                                                    _vm.editedProduct,
-                                                    "name",
-                                                    $$v
-                                                  )
-                                                },
-                                                expression: "editedProduct.name"
-                                              }
-                                            })
-                                          ],
-                                          1
-                                        ),
-                                        _vm._v(" "),
-                                        _c(
-                                          "v-col",
-                                          { attrs: { cols: "12" } },
-                                          [
-                                            _c("v-textarea", {
-                                              attrs: { label: "Description" },
-                                              model: {
-                                                value:
-                                                  _vm.editedProduct.description,
-                                                callback: function($$v) {
-                                                  _vm.$set(
-                                                    _vm.editedProduct,
-                                                    "description",
-                                                    $$v
-                                                  )
-                                                },
-                                                expression:
-                                                  "editedProduct.description"
-                                              }
-                                            })
-                                          ],
-                                          1
-                                        ),
-                                        _vm._v(" "),
-                                        _c(
-                                          "v-col",
-                                          { attrs: { cols: "12", sm: "6" } },
-                                          [
-                                            _c("v-file-input", {
-                                              attrs: {
-                                                "show-size": "",
-                                                accept: "image/*",
-                                                label: "Image"
-                                              }
-                                            })
-                                          ],
-                                          1
-                                        ),
-                                        _vm._v(" "),
-                                        _c(
-                                          "v-col",
-                                          { attrs: { cols: "12", sm: "6" } },
-                                          [
-                                            _c("v-text-field", {
-                                              attrs: {
-                                                label: "Price",
-                                                prefix: "PHP",
-                                                type: "number"
+                                            _c(
+                                              "v-col",
+                                              {
+                                                attrs: { cols: "12", sm: "6" }
                                               },
-                                              model: {
-                                                value: _vm.editedProduct.price,
-                                                callback: function($$v) {
-                                                  _vm.$set(
-                                                    _vm.editedProduct,
-                                                    "price",
-                                                    $$v
-                                                  )
-                                                },
-                                                expression:
-                                                  "editedProduct.price"
-                                              }
-                                            })
+                                              [
+                                                _c("v-text-field", {
+                                                  attrs: {
+                                                    rules: _vm.rules.required,
+                                                    label: "Name"
+                                                  },
+                                                  model: {
+                                                    value:
+                                                      _vm.editedProduct.name,
+                                                    callback: function($$v) {
+                                                      _vm.$set(
+                                                        _vm.editedProduct,
+                                                        "name",
+                                                        $$v
+                                                      )
+                                                    },
+                                                    expression:
+                                                      "editedProduct.name"
+                                                  }
+                                                })
+                                              ],
+                                              1
+                                            ),
+                                            _vm._v(" "),
+                                            _c(
+                                              "v-col",
+                                              {
+                                                attrs: { cols: "12", sm: "6" }
+                                              },
+                                              [
+                                                _c("v-text-field", {
+                                                  attrs: {
+                                                    rules: _vm.rules.required,
+                                                    label: "Price",
+                                                    prefix: "PHP",
+                                                    type: "number"
+                                                  },
+                                                  model: {
+                                                    value:
+                                                      _vm.editedProduct.price,
+                                                    callback: function($$v) {
+                                                      _vm.$set(
+                                                        _vm.editedProduct,
+                                                        "price",
+                                                        $$v
+                                                      )
+                                                    },
+                                                    expression:
+                                                      "editedProduct.price"
+                                                  }
+                                                })
+                                              ],
+                                              1
+                                            ),
+                                            _vm._v(" "),
+                                            _c(
+                                              "v-col",
+                                              { attrs: { cols: "12" } },
+                                              [
+                                                _c("v-textarea", {
+                                                  attrs: {
+                                                    rules: _vm.rules.required,
+                                                    label: "Description"
+                                                  },
+                                                  model: {
+                                                    value:
+                                                      _vm.editedProduct
+                                                        .description,
+                                                    callback: function($$v) {
+                                                      _vm.$set(
+                                                        _vm.editedProduct,
+                                                        "description",
+                                                        $$v
+                                                      )
+                                                    },
+                                                    expression:
+                                                      "editedProduct.description"
+                                                  }
+                                                })
+                                              ],
+                                              1
+                                            ),
+                                            _vm._v(" "),
+                                            _c(
+                                              "v-col",
+                                              { attrs: { cols: "12" } },
+                                              [
+                                                _c("v-file-input", {
+                                                  attrs: {
+                                                    rules:
+                                                      _vm.rules.maximumSize,
+                                                    "persistent-hint": "",
+                                                    "show-size": "",
+                                                    accept: "image/*",
+                                                    label: "Image",
+                                                    hint:
+                                                      _vm.editedProduct.image
+                                                  },
+                                                  on: {
+                                                    change: _vm.imageUpload
+                                                  },
+                                                  model: {
+                                                    value: _vm.imageName,
+                                                    callback: function($$v) {
+                                                      _vm.imageName = $$v
+                                                    },
+                                                    expression: "imageName"
+                                                  }
+                                                })
+                                              ],
+                                              1
+                                            ),
+                                            _vm._v(" "),
+                                            _c(
+                                              "v-col",
+                                              { attrs: { cols: "12" } },
+                                              [
+                                                _c("v-select", {
+                                                  attrs: {
+                                                    rules: _vm.rules.required,
+                                                    items: _vm.categories,
+                                                    label: "Categories",
+                                                    multiple: "",
+                                                    chips: "",
+                                                    "return-object": "",
+                                                    "item-text": "name"
+                                                  },
+                                                  model: {
+                                                    value:
+                                                      _vm.editedProduct
+                                                        .product_categories,
+                                                    callback: function($$v) {
+                                                      _vm.$set(
+                                                        _vm.editedProduct,
+                                                        "product_categories",
+                                                        $$v
+                                                      )
+                                                    },
+                                                    expression:
+                                                      "editedProduct.product_categories"
+                                                  }
+                                                })
+                                              ],
+                                              1
+                                            )
                                           ],
                                           1
                                         )
@@ -42848,12 +43032,7 @@ var render = function() {
               return [
                 _c("v-img", {
                   staticClass: "grey lighten-2",
-                  attrs: {
-                    width: "75",
-                    src:
-                      "https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-images-image_large.png?format=jpg&quality=90&v=1530129081",
-                    "aspect-ratio": "1"
-                  },
+                  attrs: { width: "75", src: item.image, "aspect-ratio": "1" },
                   scopedSlots: _vm._u(
                     [
                       {
@@ -43949,7 +44128,7 @@ var render = function() {
                     ),
                     _vm._v(" "),
                     _c("v-img", {
-                      attrs: { height: "150", src: product.image_link }
+                      attrs: { height: "150", src: product.image }
                     }),
                     _vm._v(" "),
                     _c(
@@ -44038,7 +44217,7 @@ var render = function() {
               ),
               _vm._v(" "),
               _c("v-img", {
-                attrs: { height: "200", src: _vm.viewingProduct.image_link }
+                attrs: { height: "200", src: _vm.viewingProduct.image }
               }),
               _vm._v(" "),
               _c(

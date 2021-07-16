@@ -12,7 +12,7 @@ class Product extends Model
 
     protected $fillable = [
         'name', 'description',
-        'price', 'image_link'
+        'price', 'image'
     ];
 
     protected $hidden = [
@@ -29,9 +29,9 @@ class Product extends Model
             if (strpos($value, 'http') === FALSE) {
                 $destinationFolder  = 'products';
                 $imageUrl = $this->imageUploadForBase64($value, $this->name, $destinationFolder);
-                $this->attributes['image_link'] = $imageUrl;
+                $this->attributes['image'] = $imageUrl;
             } else {
-                $this->attributes['image_link'] = $value;
+                $this->attributes['image'] = $value;
             }
         }
     }

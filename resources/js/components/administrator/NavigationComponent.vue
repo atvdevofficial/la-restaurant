@@ -53,17 +53,17 @@
             </v-list-item-content>
           </v-list-item>
         </v-list-group>
-      </v-list>
 
-      <!-- Customers -->
-      <v-list-item to="/a/customers">
-        <v-list-item-icon>
-          <v-icon>mdi-account-group</v-icon>
-        </v-list-item-icon>
-        <v-list-item-content>
-          <v-list-item-title>Customers</v-list-item-title>
-        </v-list-item-content>
-      </v-list-item>
+        <!-- Customers -->
+        <v-list-item to="/a/customers">
+          <v-list-item-icon>
+            <v-icon>mdi-account-group</v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title>Customers</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
 
       <template v-slot:append>
         <v-list>
@@ -91,13 +91,13 @@ export default {
     };
   },
   methods: {
-      signout() {
-        // Clear session storage
-        sessionStorage.clear();
+    signout() {
+      // Clear session storage
+      sessionStorage.clear();
 
-        // Push to sign in
-        this.$router.push("signin");
-    }
-  }
+      // Push to sign in
+      this.$router.push("signin");
+    },
+  },
 };
 </script>

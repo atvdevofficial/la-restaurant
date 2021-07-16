@@ -5,6 +5,7 @@
       :items="products"
       :items-per-page="5"
       :search="search"
+      :loading="retrievingProducts"
     >
       <template v-slot:top>
         <v-toolbar flat>
@@ -22,35 +23,59 @@
 
               <v-card-text>
                 <v-container>
-                  <v-row>
-                    <v-col cols="12">
-                      <v-text-field
-                        v-model="editedProduct.name"
-                        label="Name"
-                      ></v-text-field>
-                    </v-col>
-                    <v-col cols="12">
-                      <v-textarea
-                        v-model="editedProduct.description"
-                        label="Description"
-                      ></v-textarea>
-                    </v-col>
-                    <v-col cols="12" sm="6">
-                      <v-file-input
-                        show-size
-                        accept="image/*"
-                        label="Image"
-                      ></v-file-input>
-                    </v-col>
-                    <v-col cols="12" sm="6">
-                      <v-text-field
-                        v-model="editedProduct.price"
-                        label="Price"
-                        prefix="PHP"
-                        type="number"
-                      ></v-text-field>
-                    </v-col>
-                  </v-row>
+                  <v-form ref="form" v-model="valid" lazy-validation>
+                    <v-row>
+                      <v-col cols="12" sm="6">
+                        <v-text-field
+                          :rules="rules.required"
+                          v-model="editedProduct.name"
+                          label="Name"
+                        ></v-text-field>
+                      </v-col>
+                      <v-col cols="12" sm="6">
+                        <v-text-field
+                          :rules="rules.required"
+                          v-model="editedProduct.price"
+                          label="Price"
+                          prefix="PHP"
+                          type="number"
+                        ></v-text-field>
+                      </v-col>
+                      <v-col cols="12">
+                        <v-textarea
+                          :rules="rules.required"
+                          v-model="editedProduct.description"
+                          label="Description"
+                        ></v-textarea>
+                      </v-col>
+                      <v-col cols="12">
+                        <v-file-input
+                          :rules="rules.maximumSize"
+                          v-model="imageName"
+                          persistent-hint
+                          show-size
+                          accept="image/*"
+                          label="Image"
+                          @change="imageUpload"
+                          :hint="editedProduct.image"
+                        >
+                        </v-file-input>
+                      </v-col>
+
+                      <v-col cols="12">
+                        <v-select
+                          :rules="rules.required"
+                          v-model="editedProduct.product_categories"
+                          :items="categories"
+                          label="Categories"
+                          multiple
+                          chips
+                          return-object
+                          item-text="name"
+                        ></v-select>
+                      </v-col>
+                    </v-row>
+                  </v-form>
                 </v-container>
               </v-card-text>
 
@@ -86,7 +111,7 @@
       <template v-slot:item.image="{ item }">
         <v-img
           width="75"
-          :src="`https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-images-image_large.png?format=jpg&quality=90&v=1530129081`"
+          :src="item.image"
           aspect-ratio="1"
           class="grey lighten-2"
         >
@@ -117,6 +142,17 @@
 export default {
   data() {
     return {
+      rules: {
+        required: [(v) => !!v || "Field is required"],
+        maximumSize: [
+          (v) =>
+            !v || v.size < 2000000 || "Photo size should be less than 2 MB!",
+        ],
+      },
+      valid: false,
+      imageName: null,
+      imageData: null,
+      retrievingProducts: false,
       dialog: false,
       dialogDelete: false,
       search: "",
@@ -124,7 +160,7 @@ export default {
         { text: "ID", value: "id" },
         { text: "Image", value: "image" },
         { text: "Name", value: "name" },
-        { text: "Description", value: "description" },
+        { text: "Description", value: "description", width: "50%" },
         { text: "Price", value: "price" },
         { text: "Actions", value: "actions", sortable: false, align: "center" },
       ],
@@ -135,6 +171,7 @@ export default {
         name: null,
         description: null,
         price: 0,
+        product_categories: [{ id: 0, name: null }],
       },
       defaultProduct: {
         id: null,
@@ -142,33 +179,10 @@ export default {
         name: null,
         description: null,
         price: 0,
+        product_categories: [{ id: 0, name: null }],
       },
-      products: [
-        {
-          id: 1,
-          image:
-            "https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-images-image_large.png?format=jpg&quality=90&v=1530129081",
-          name: "Burger",
-          description: "The Delicious Burger",
-          price: 100,
-        },
-        {
-          id: 2,
-          image:
-            "https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-images-image_large.png?format=jpg&quality=90&v=1530129081",
-          name: "Fries",
-          description: "The Delicious Fries",
-          price: 100,
-        },
-        {
-          id: 3,
-          image:
-            "https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-images-image_large.png?format=jpg&quality=90&v=1530129081",
-          name: "Coke Float",
-          description: "The Delicious Coke Float",
-          price: 100,
-        },
-      ],
+      products: [],
+      categories: [],
     };
   },
   computed: {
@@ -184,8 +198,40 @@ export default {
       val || this.closeDelete();
     },
   },
-
+  mounted() {
+    this.retrieveProductCategories();
+    this.retrieveProducts();
+  },
   methods: {
+    retrieveProducts() {
+      this.retrievingProducts = true;
+
+      axios
+        .get("/api/v1/products")
+        .then((response) => {
+          this.products = response.data;
+        })
+        .then((error) => {
+          console.log(error);
+        })
+        .then((_) => {
+          this.retrievingProducts = false;
+        });
+    },
+
+    retrieveProductCategories() {
+      axios
+        .get("/api/v1/productCategories")
+        .then((response) => {
+          let data = response.data;
+          this.categories.push(...data);
+        })
+        .then((error) => {
+          console.log(error);
+        })
+        .then((_) => {});
+    },
+
     editItem(item) {
       this.editedIndex = this.products.indexOf(item);
       this.editedProduct = Object.assign({}, item);
@@ -220,12 +266,41 @@ export default {
     },
 
     save() {
-      if (this.editedIndex > -1) {
-        Object.assign(this.products[this.editedIndex], this.editedProduct);
-      } else {
-        this.products.push(this.editedProduct);
+      if (this.$refs.form.validate()) {
+        if (this.editedIndex > -1) {
+          // Update
+          Object.assign(this.products[this.editedIndex], this.editedProduct);
+        } else {
+          // Add
+          axios
+            .post("/api/v1/products", {
+              ...this.editedProduct,
+              image: this.imageData,
+            })
+            .then((response) => {
+              console.log(response.data);
+            })
+            .catch((error) => {
+              console.log(error);
+            })
+            .finally((_) => {});
+          this.products.push(this.editedProduct);
+        }
+        this.close();
       }
-      this.close();
+    },
+
+    imageUpload() {
+      try {
+        let reader = new FileReader();
+        reader.onload = () => {
+          this.imageData = reader.result;
+        };
+        reader.readAsDataURL(this.imageName);
+      } catch (error) {
+        this.imageName = null;
+        this.imageData = null;
+      }
     },
   },
 };

@@ -20,7 +20,7 @@ class ProductTest extends TestCase
         ->assertStatus(200)
         ->assertJsonStructure([[
             'id', 'name', 'description',
-            'price', 'image_link'
+            'price', 'image'
         ]]);
     }
 
@@ -31,7 +31,7 @@ class ProductTest extends TestCase
         ->assertStatus(200)
         ->assertJsonStructure([
             'id', 'name', 'description',
-            'price', 'image_link', 'product_categories'
+            'price', 'image', 'product_categories'
         ]);
     }
 
@@ -45,7 +45,7 @@ class ProductTest extends TestCase
             'name' => $this->faker->word,
             'description' => $this->faker->paragraph,
             'price' => random_int(100, 9999),
-            'image_link' => $this->faker->imageUrl,
+            'image' => $this->faker->imageUrl,
 
             'product_categories' => [
                 $productCategory->id
@@ -58,7 +58,7 @@ class ProductTest extends TestCase
         ->assertStatus(201)
         ->assertJsonStructure([
             'id', 'name', 'description',
-            'price', 'image_link', 'product_categories'
+            'price', 'image', 'product_categories'
         ]);
     }
 
@@ -85,7 +85,7 @@ class ProductTest extends TestCase
         ->assertStatus(200)
         ->assertJsonStructure([
             'id', 'name', 'description',
-            'price', 'image_link', 'product_categories'
+            'price', 'image', 'product_categories'
         ]);
     }
 
