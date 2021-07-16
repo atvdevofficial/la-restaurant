@@ -33,7 +33,7 @@ class ProductUpdateRequest extends FormRequest
             'name' => ['required', 'string'],
             'description' => ['required', 'string'],
             'price' => ['required', 'numeric', 'min:0'],
-            'image' => ['nullable', 'mimes:png,jpg'],
+            'image' => ['nullable'],
 
             'product_categories' => ['required', 'array', 'min:1'],
             'product_categories.*' => ['required', 'exists:product_categories,id']

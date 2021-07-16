@@ -3336,10 +3336,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         name: null,
         description: null,
         price: 0,
-        product_categories: [{
-          id: 0,
-          name: null
-        }]
+        product_categories: []
       },
       defaultProduct: {
         id: null,
@@ -3347,10 +3344,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         name: null,
         description: null,
         price: 0,
-        product_categories: [{
-          id: 0,
-          name: null
-        }]
+        product_categories: []
       },
       products: [],
       categories: []
@@ -3359,6 +3353,12 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
   computed: {
     formTitle: function formTitle() {
       return this.editedIndex === -1 ? "New Product" : "Edit Product";
+    },
+    selectedCategoryIds: function selectedCategoryIds() {
+      return this.editedProduct.product_categories.map(function (x) {
+        console.log(x.name);
+        return x.id;
+      });
     }
   },
   watch: {
@@ -3410,55 +3410,79 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       this.dialogDelete = true;
     },
     deleteItemConfirm: function deleteItemConfirm() {
-      this.products.splice(this.editedIndex, 1);
-      this.closeDelete();
-    },
-    close: function close() {
       var _this3 = this;
 
-      this.dialog = false;
-      this.$nextTick(function () {
-        _this3.editedProduct = Object.assign({}, _this3.defaultProduct);
-        _this3.editedIndex = -1;
-      });
+      axios["delete"]("/api/v1/products/" + this.editedProduct.id).then(function (response) {
+        _this3.products.splice(_this3.editedIndex, 1);
+
+        _this3.closeDelete();
+      })["catch"](function (error) {
+        console.log(error);
+      })["finally"](function (_) {});
     },
-    closeDelete: function closeDelete() {
+    close: function close() {
       var _this4 = this;
 
-      this.dialogDelete = false;
+      this.dialog = false;
       this.$nextTick(function () {
         _this4.editedProduct = Object.assign({}, _this4.defaultProduct);
         _this4.editedIndex = -1;
       });
     },
+    closeDelete: function closeDelete() {
+      var _this5 = this;
+
+      this.dialogDelete = false;
+      this.$nextTick(function () {
+        _this5.editedProduct = Object.assign({}, _this5.defaultProduct);
+        _this5.editedIndex = -1;
+      });
+    },
     save: function save() {
+      var _this6 = this;
+
       if (this.$refs.form.validate()) {
         if (this.editedIndex > -1) {
           // Update
-          Object.assign(this.products[this.editedIndex], this.editedProduct);
-        } else {
-          // Add
-          axios.post("/api/v1/products", _objectSpread(_objectSpread({}, this.editedProduct), {}, {
+          axios.put("/api/v1/products/" + this.editedProduct.id, _objectSpread(_objectSpread({}, this.editedProduct), {}, {
+            product_categories: this.selectedCategoryIds,
             image: this.imageData
           })).then(function (response) {
-            console.log(response.data);
+            var data = response.data; // Update product
+
+            Object.assign(_this6.products[_this6.editedIndex], data);
+            console.log(_this6.products[_this6.editedIndex].image); // Close dialog
+
+            _this6.close();
           })["catch"](function (error) {
             console.log(error);
           })["finally"](function (_) {});
-          this.products.push(this.editedProduct);
-        }
+        } else {
+          // Add
+          axios.post("/api/v1/products", _objectSpread(_objectSpread({}, this.editedProduct), {}, {
+            product_categories: this.selectedCategoryIds,
+            image: this.imageData
+          })).then(function (response) {
+            var data = response.data; // Add new product
 
-        this.close();
+            _this6.products.push(data); // Close dialog
+
+
+            _this6.close();
+          })["catch"](function (error) {
+            console.log(error);
+          })["finally"](function (_) {});
+        }
       }
     },
     imageUpload: function imageUpload() {
-      var _this5 = this;
+      var _this7 = this;
 
       try {
         var reader = new FileReader();
 
         reader.onload = function () {
-          _this5.imageData = reader.result;
+          _this7.imageData = reader.result;
         };
 
         reader.readAsDataURL(this.imageName);
@@ -42661,7 +42685,7 @@ var render = function() {
         attrs: {
           headers: _vm.headers,
           items: _vm.products,
-          "items-per-page": 5,
+          "items-per-page": 10,
           search: _vm.search,
           loading: _vm.retrievingProducts
         },
@@ -108898,8 +108922,8 @@ var opts = {};
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\Users\dreamers\Documents\repositories\laravue\myshop-laravue\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\Users\dreamers\Documents\repositories\laravue\myshop-laravue\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\Users\nthnyvllflrs\Documents\repositories\myshop-laravue\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\Users\nthnyvllflrs\Documents\repositories\myshop-laravue\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

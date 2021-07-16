@@ -4,6 +4,7 @@ namespace App;
 
 use App\Traits\FileUpload;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
 
 class Product extends Model
@@ -23,12 +24,21 @@ class Product extends Model
     /**
      * Model mutators and accessors
      */
-    public function setImageLinkAttribute($value) {
+    public function setImageAttribute($value) {
         if ($value != null && $value != '') {
 
             if (strpos($value, 'http') === FALSE) {
+
+                // if have existing, remove
+                if ($this->image != null && $this->image != '') {
+                    Storage::delete($this->banner);
+                }
+
                 $destinationFolder  = 'products';
-                $imageUrl = $this->imageUploadForBase64($value, $this->name, $destinationFolder);
+                $productName = strtolower($this->name);
+                $productName = preg_replace('/[^A-Za-z0-9. -]/', '', $productName);
+                $trimmedProductName = str_replace(' ', '', $productName) . '_' . time();
+                $imageUrl = $this->imageUploadForBase64($value, $trimmedProductName, $destinationFolder);
                 $this->attributes['image'] = $imageUrl;
             } else {
                 $this->attributes['image'] = $value;
@@ -36,7 +46,7 @@ class Product extends Model
         }
     }
 
-    public function getImageLinkAttribute($value) {
+    public function getImageAttribute($value) {
         if (strpos($value, 'http') === FALSE) {
             return URL::to('/') . $value;
         } else {

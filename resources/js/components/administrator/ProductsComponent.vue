@@ -3,7 +3,7 @@
     <v-data-table
       :headers="headers"
       :items="products"
-      :items-per-page="5"
+      :items-per-page="10"
       :search="search"
       :loading="retrievingProducts"
     >
@@ -171,7 +171,7 @@ export default {
         name: null,
         description: null,
         price: 0,
-        product_categories: [{ id: 0, name: null }],
+        product_categories: [],
       },
       defaultProduct: {
         id: null,
@@ -179,7 +179,7 @@ export default {
         name: null,
         description: null,
         price: 0,
-        product_categories: [{ id: 0, name: null }],
+        product_categories: [],
       },
       products: [],
       categories: [],
@@ -188,6 +188,12 @@ export default {
   computed: {
     formTitle() {
       return this.editedIndex === -1 ? "New Product" : "Edit Product";
+    },
+    selectedCategoryIds() {
+      return this.editedProduct.product_categories.map((x) => {
+        console.log(x.name);
+        return x.id;
+      });
     },
   },
   watch: {
@@ -245,8 +251,16 @@ export default {
     },
 
     deleteItemConfirm() {
-      this.products.splice(this.editedIndex, 1);
-      this.closeDelete();
+      axios
+        .delete("/api/v1/products/" + this.editedProduct.id)
+        .then((response) => {
+          this.products.splice(this.editedIndex, 1);
+          this.closeDelete();
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally((_) => {});
     },
 
     close() {
@@ -269,24 +283,48 @@ export default {
       if (this.$refs.form.validate()) {
         if (this.editedIndex > -1) {
           // Update
-          Object.assign(this.products[this.editedIndex], this.editedProduct);
-        } else {
-          // Add
           axios
-            .post("/api/v1/products", {
+            .put("/api/v1/products/" + this.editedProduct.id, {
               ...this.editedProduct,
+              product_categories: this.selectedCategoryIds,
               image: this.imageData,
             })
             .then((response) => {
-              console.log(response.data);
+              let data = response.data;
+
+              // Update product
+              Object.assign(this.products[this.editedIndex], data);
+              console.log(this.products[this.editedIndex].image);
+
+              // Close dialog
+              this.close();
             })
             .catch((error) => {
               console.log(error);
             })
             .finally((_) => {});
-          this.products.push(this.editedProduct);
+        } else {
+          // Add
+          axios
+            .post("/api/v1/products", {
+              ...this.editedProduct,
+              product_categories: this.selectedCategoryIds,
+              image: this.imageData,
+            })
+            .then((response) => {
+              let data = response.data;
+
+              // Add new product
+              this.products.push(data);
+
+              // Close dialog
+              this.close();
+            })
+            .catch((error) => {
+              console.log(error);
+            })
+            .finally((_) => {});
         }
-        this.close();
       }
     },
 
