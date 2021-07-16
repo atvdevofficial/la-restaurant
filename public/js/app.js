@@ -2140,7 +2140,7 @@ __webpack_require__.r(__webpack_exports__);
         // Echo.connector.pusher.config.auth.headers["Authorization"] = "Bearer " + authToken;
         // Push to dashboard
 
-        _this.$router.push("dashboard");
+        if (userRole == "ADMINISTRATOR") _this.$router.push("/a/dashboard");else if (userRole == "CUSTOMER") _this.$router.push("/c/menu");
       })["catch"](function (error) {
         _this.errorMessage = error.response.data;
       })["finally"](function (fin) {
@@ -3985,7 +3985,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       // Clear session storage
       sessionStorage.clear(); // Push to sign in
 
-      this.$router.push("signin");
+      this.$router.push("/signin");
     }
   }
 });

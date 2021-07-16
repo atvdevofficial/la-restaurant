@@ -75,7 +75,7 @@ export default {
         sessionStorage.clear();
 
         // Push to sign in
-        this.$router.push("signin");
+        this.$router.push("/signin");
     }
   },
 };

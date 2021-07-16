@@ -103,10 +103,11 @@ export default {
           // Echo.connector.pusher.config.auth.headers["Authorization"] = "Bearer " + authToken;
 
           // Push to dashboard
-          this.$router.push("dashboard");
+          if (userRole == "ADMINISTRATOR") this.$router.push("/a/dashboard");
+          else if (userRole == "CUSTOMER") this.$router.push("/c/menu");
         })
         .catch((error) => {
-            this.errorMessage = error.response.data;
+          this.errorMessage = error.response.data;
         })
         .finally((fin) => {
           this.isSigningIn = false;
