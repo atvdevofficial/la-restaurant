@@ -15,7 +15,7 @@
         <v-btn icon to="/c/checkout"><v-icon>mdi-cart</v-icon></v-btn>
       </v-badge>
 
-      <v-btn icon><v-icon>mdi-bell</v-icon></v-btn>
+      <v-btn icon to="/c/notifications"><v-icon>mdi-bell</v-icon></v-btn>
       <v-menu bottom left min-width="150">
         <template v-slot:activator="{ on, attrs }">
           <v-btn dark icon v-bind="attrs" v-on="on">
@@ -55,11 +55,6 @@ export default {
   data() {
     return {
       toggler: true,
-      categories: [
-        { id: 1, name: "Chicken" },
-        { id: 2, name: "Beef" },
-        { id: 3, name: "Vegan" },
-      ],
     };
   },
   computed: {

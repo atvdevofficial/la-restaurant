@@ -4075,17 +4075,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      toggler: true,
-      categories: [{
-        id: 1,
-        name: "Chicken"
-      }, {
-        id: 2,
-        name: "Beef"
-      }, {
-        id: 3,
-        name: "Vegan"
-      }]
+      toggler: true
     };
   },
   computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(["cartItemsCount"])),
@@ -40944,7 +40934,7 @@ var render = function() {
     [
       _c(
         "v-row",
-        { attrs: { justify: "center", "no-gutters": "" } },
+        { attrs: { justify: "center", align: "center" } },
         [
           _c(
             "v-col",
@@ -44213,7 +44203,7 @@ var render = function() {
           _vm._v(" "),
           _c(
             "v-btn",
-            { attrs: { icon: "" } },
+            { attrs: { icon: "", to: "/c/notifications" } },
             [_c("v-icon", [_vm._v("mdi-bell")])],
             1
           ),
