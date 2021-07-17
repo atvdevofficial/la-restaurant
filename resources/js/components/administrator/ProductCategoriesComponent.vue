@@ -3,13 +3,14 @@
     <v-data-table
       :headers="headers"
       :items="productCategories"
-      :items-per-page="5"
+      :items-per-page="10"
       :search="search"
+      :loading="retrievingProductCategories"
     >
       <template v-slot:top>
         <v-toolbar flat>
           <v-spacer></v-spacer>
-          <v-dialog v-model="dialog" max-width="500px">
+          <v-dialog v-model="dialog" max-width="500px" persistent>
             <template v-slot:activator="{ on, attrs }">
               <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
                 New Product Category
@@ -22,23 +23,33 @@
 
               <v-card-text>
                 <v-container>
-                  <v-row>
-                    <v-col cols="12">
-                      <v-text-field
-                        v-model="editedProductCategory.name"
-                        label="Name"
-                      ></v-text-field>
-                    </v-col>
-                  </v-row>
+                  <v-form ref="form" v-model="valid" lazy-validation>
+                    <v-row>
+                      <v-col cols="12">
+                        <v-text-field
+                          :disabled="isProcessing"
+                          v-model="editedProductCategory.name"
+                          label="Name"
+                        ></v-text-field>
+                      </v-col>
+                    </v-row>
+                  </v-form>
                 </v-container>
               </v-card-text>
 
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="default darken-1" text @click="close">
+                <v-btn
+                  color="default darken-1"
+                  text
+                  @click="close"
+                  :disabled="isProcessing"
+                >
                   Cancel
                 </v-btn>
-                <v-btn color="primary" @click="save"> Save </v-btn>
+                <v-btn color="primary" @click="save" :loading="isProcessing">
+                  Save
+                </v-btn>
               </v-card-actions>
             </v-card>
           </v-dialog>
@@ -74,6 +85,9 @@
 export default {
   data() {
     return {
+      valid: false,
+      isProcessing: false,
+      retrievingProductCategories: false,
       dialog: false,
       dialogDelete: false,
       search: "",
@@ -91,25 +105,14 @@ export default {
         id: null,
         name: null,
       },
-      productCategories: [
-        {
-          id: 1,
-          name: "Burger",
-        },
-        {
-          id: 2,
-          name: "Fries",
-        },
-        {
-          id: 3,
-          name: "Coke Float",
-        },
-      ],
+      productCategories: [],
     };
   },
   computed: {
     formTitle() {
-      return this.editedIndex === -1 ? "New Product Category" : "Edit Product Category";
+      return this.editedIndex === -1
+        ? "New Product Category"
+        : "Edit Product Category";
     },
   },
   watch: {
@@ -120,8 +123,27 @@ export default {
       val || this.closeDelete();
     },
   },
-
+  mounted() {
+    this.retrieveProductCategories();
+  },
   methods: {
+    retrieveProductCategories() {
+      this.retrievingProductCategories = true;
+
+      axios
+        .get("/api/v1/productCategories")
+        .then((response) => {
+          let data = response.data;
+          this.productCategories = data;
+        })
+        .then((error) => {
+          console.log(error);
+        })
+        .then((_) => {
+          this.retrievingProductCategories = false;
+        });
+    },
+
     editItem(item) {
       this.editedIndex = this.productCategories.indexOf(item);
       this.editedProductCategory = Object.assign({}, item);
@@ -135,14 +157,25 @@ export default {
     },
 
     deleteItemConfirm() {
-      this.productCategories.splice(this.editedIndex, 1);
-      this.closeDelete();
+      axios
+        .delete("/api/v1/productCategories/" + this.editedProductCategory.id)
+        .then((response) => {
+          this.productCategories.splice(this.editedIndex, 1);
+          this.closeDelete();
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally((_) => {});
     },
 
     close() {
       this.dialog = false;
       this.$nextTick(() => {
-        this.editedProductCategory = Object.assign({}, this.defaultProductCategory);
+        this.editedProductCategory = Object.assign(
+          {},
+          this.defaultProductCategory
+        );
         this.editedIndex = -1;
       });
     },
@@ -150,18 +183,65 @@ export default {
     closeDelete() {
       this.dialogDelete = false;
       this.$nextTick(() => {
-        this.editedProductCategory = Object.assign({}, this.defaultProductCategory);
+        this.editedProductCategory = Object.assign(
+          {},
+          this.defaultProductCategory
+        );
         this.editedIndex = -1;
       });
     },
 
     save() {
-      if (this.editedIndex > -1) {
-        Object.assign(this.productCategories[this.editedIndex], this.editedProductCategory);
-      } else {
-        this.productCategories.push(this.editedProductCategory);
+      if (this.$refs.form.validate()) {
+        this.isProcessing = true;
+
+        if (this.editedIndex > -1) {
+          // Update
+          axios
+            .put("/api/v1/productCategories/" + this.editedProductCategory.id, {
+              ...this.editedProductCategory,
+            })
+            .then((response) => {
+              let data = response.data;
+
+              // Update product categories
+              Object.assign(
+                this.productCategories[this.editedIndex],
+                this.editedProductCategory
+              );
+
+              // Close dialog
+              this.close();
+            })
+            .catch((error) => {
+              console.log(error);
+            })
+            .finally((_) => {
+              this.isProcessing = false;
+            });
+        } else {
+          // Add
+          axios
+            .post("/api/v1/productCategories", {
+              ...this.editedProductCategory,
+            })
+            .then((response) => {
+              let data = response.data;
+
+              // Add new product
+              this.productCategories.push(data);
+
+              // Close dialog
+              this.close();
+            })
+            .catch((error) => {
+              console.log(error);
+            })
+            .finally((_) => {
+              this.isProcessing = false;
+            });
+        }
       }
-      this.close();
     },
   },
 };

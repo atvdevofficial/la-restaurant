@@ -154,7 +154,6 @@
 export default {
   data() {
     return {
-      isProcessing: false,
       rules: {
         required: [(v) => !!v || "Field is required"],
         maximumSize: [
@@ -165,6 +164,7 @@ export default {
       valid: false,
       imageName: null,
       imageData: null,
+      isProcessing: false,
       retrievingProducts: false,
       dialog: false,
       dialogDelete: false,
@@ -308,7 +308,6 @@ export default {
 
               // Update product
               Object.assign(this.products[this.editedIndex], data);
-              console.log(this.products[this.editedIndex].image);
 
               // Close dialog
               this.close();

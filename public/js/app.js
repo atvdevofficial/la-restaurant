@@ -2951,6 +2951,23 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -3026,6 +3043,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      valid: false,
+      isProcessing: false,
+      retrievingProductCategories: false,
       dialog: false,
       dialogDelete: false,
       search: "",
@@ -3050,16 +3070,7 @@ __webpack_require__.r(__webpack_exports__);
         id: null,
         name: null
       },
-      productCategories: [{
-        id: 1,
-        name: "Burger"
-      }, {
-        id: 2,
-        name: "Fries"
-      }, {
-        id: 3,
-        name: "Coke Float"
-      }]
+      productCategories: []
     };
   },
   computed: {
@@ -3075,7 +3086,23 @@ __webpack_require__.r(__webpack_exports__);
       val || this.closeDelete();
     }
   },
+  mounted: function mounted() {
+    this.retrieveProductCategories();
+  },
   methods: {
+    retrieveProductCategories: function retrieveProductCategories() {
+      var _this = this;
+
+      this.retrievingProductCategories = true;
+      axios.get("/api/v1/productCategories").then(function (response) {
+        var data = response.data;
+        _this.productCategories = data;
+      }).then(function (error) {
+        console.log(error);
+      }).then(function (_) {
+        _this.retrievingProductCategories = false;
+      });
+    },
     editItem: function editItem(item) {
       this.editedIndex = this.productCategories.indexOf(item);
       this.editedProductCategory = Object.assign({}, item);
@@ -3087,35 +3114,69 @@ __webpack_require__.r(__webpack_exports__);
       this.dialogDelete = true;
     },
     deleteItemConfirm: function deleteItemConfirm() {
-      this.productCategories.splice(this.editedIndex, 1);
-      this.closeDelete();
+      var _this2 = this;
+
+      axios["delete"]("/api/v1/productCategories/" + this.editedProductCategory.id).then(function (response) {
+        _this2.productCategories.splice(_this2.editedIndex, 1);
+
+        _this2.closeDelete();
+      })["catch"](function (error) {
+        console.log(error);
+      })["finally"](function (_) {});
     },
     close: function close() {
-      var _this = this;
+      var _this3 = this;
 
       this.dialog = false;
       this.$nextTick(function () {
-        _this.editedProductCategory = Object.assign({}, _this.defaultProductCategory);
-        _this.editedIndex = -1;
+        _this3.editedProductCategory = Object.assign({}, _this3.defaultProductCategory);
+        _this3.editedIndex = -1;
       });
     },
     closeDelete: function closeDelete() {
-      var _this2 = this;
+      var _this4 = this;
 
       this.dialogDelete = false;
       this.$nextTick(function () {
-        _this2.editedProductCategory = Object.assign({}, _this2.defaultProductCategory);
-        _this2.editedIndex = -1;
+        _this4.editedProductCategory = Object.assign({}, _this4.defaultProductCategory);
+        _this4.editedIndex = -1;
       });
     },
     save: function save() {
-      if (this.editedIndex > -1) {
-        Object.assign(this.productCategories[this.editedIndex], this.editedProductCategory);
-      } else {
-        this.productCategories.push(this.editedProductCategory);
-      }
+      var _this5 = this;
 
-      this.close();
+      if (this.$refs.form.validate()) {
+        this.isProcessing = true;
+
+        if (this.editedIndex > -1) {
+          // Update
+          axios.put("/api/v1/productCategories/" + this.editedProductCategory.id, _objectSpread({}, this.editedProductCategory)).then(function (response) {
+            var data = response.data; // Update product categories
+
+            Object.assign(_this5.productCategories[_this5.editedIndex], _this5.editedProductCategory); // Close dialog
+
+            _this5.close();
+          })["catch"](function (error) {
+            console.log(error);
+          })["finally"](function (_) {
+            _this5.isProcessing = false;
+          });
+        } else {
+          // Add
+          axios.post("/api/v1/productCategories", _objectSpread({}, this.editedProductCategory)).then(function (response) {
+            var data = response.data; // Add new product
+
+            _this5.productCategories.push(data); // Close dialog
+
+
+            _this5.close();
+          })["catch"](function (error) {
+            console.log(error);
+          })["finally"](function (_) {
+            _this5.isProcessing = false;
+          });
+        }
+      }
     }
   }
 });
@@ -3304,7 +3365,6 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      isProcessing: false,
       rules: {
         required: [function (v) {
           return !!v || "Field is required";
@@ -3316,6 +3376,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       valid: false,
       imageName: null,
       imageData: null,
+      isProcessing: false,
       retrievingProducts: false,
       dialog: false,
       dialogDelete: false,
@@ -3465,8 +3526,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
           })).then(function (response) {
             var data = response.data; // Update product
 
-            Object.assign(_this6.products[_this6.editedIndex], data);
-            console.log(_this6.products[_this6.editedIndex].image); // Close dialog
+            Object.assign(_this6.products[_this6.editedIndex], data); // Close dialog
 
             _this6.close();
           })["catch"](function (error) {
@@ -42410,8 +42470,9 @@ var render = function() {
         attrs: {
           headers: _vm.headers,
           items: _vm.productCategories,
-          "items-per-page": 5,
-          search: _vm.search
+          "items-per-page": 10,
+          search: _vm.search,
+          loading: _vm.retrievingProductCategories
         },
         scopedSlots: _vm._u([
           {
@@ -42427,7 +42488,7 @@ var render = function() {
                     _c(
                       "v-dialog",
                       {
-                        attrs: { "max-width": "500px" },
+                        attrs: { "max-width": "500px", persistent: "" },
                         scopedSlots: _vm._u([
                           {
                             key: "activator",
@@ -42485,29 +42546,49 @@ var render = function() {
                                   "v-container",
                                   [
                                     _c(
-                                      "v-row",
+                                      "v-form",
+                                      {
+                                        ref: "form",
+                                        attrs: { "lazy-validation": "" },
+                                        model: {
+                                          value: _vm.valid,
+                                          callback: function($$v) {
+                                            _vm.valid = $$v
+                                          },
+                                          expression: "valid"
+                                        }
+                                      },
                                       [
                                         _c(
-                                          "v-col",
-                                          { attrs: { cols: "12" } },
+                                          "v-row",
                                           [
-                                            _c("v-text-field", {
-                                              attrs: { label: "Name" },
-                                              model: {
-                                                value:
-                                                  _vm.editedProductCategory
-                                                    .name,
-                                                callback: function($$v) {
-                                                  _vm.$set(
-                                                    _vm.editedProductCategory,
-                                                    "name",
-                                                    $$v
-                                                  )
-                                                },
-                                                expression:
-                                                  "editedProductCategory.name"
-                                              }
-                                            })
+                                            _c(
+                                              "v-col",
+                                              { attrs: { cols: "12" } },
+                                              [
+                                                _c("v-text-field", {
+                                                  attrs: {
+                                                    disabled: _vm.isProcessing,
+                                                    label: "Name"
+                                                  },
+                                                  model: {
+                                                    value:
+                                                      _vm.editedProductCategory
+                                                        .name,
+                                                    callback: function($$v) {
+                                                      _vm.$set(
+                                                        _vm.editedProductCategory,
+                                                        "name",
+                                                        $$v
+                                                      )
+                                                    },
+                                                    expression:
+                                                      "editedProductCategory.name"
+                                                  }
+                                                })
+                                              ],
+                                              1
+                                            )
                                           ],
                                           1
                                         )
@@ -42531,7 +42612,8 @@ var render = function() {
                                   {
                                     attrs: {
                                       color: "default darken-1",
-                                      text: ""
+                                      text: "",
+                                      disabled: _vm.isProcessing
                                     },
                                     on: { click: _vm.close }
                                   },
@@ -42545,10 +42627,17 @@ var render = function() {
                                 _c(
                                   "v-btn",
                                   {
-                                    attrs: { color: "primary" },
+                                    attrs: {
+                                      color: "primary",
+                                      loading: _vm.isProcessing
+                                    },
                                     on: { click: _vm.save }
                                   },
-                                  [_vm._v(" Save ")]
+                                  [
+                                    _vm._v(
+                                      "\n                Save\n              "
+                                    )
+                                  ]
                                 )
                               ],
                               1
@@ -108957,8 +109046,8 @@ var opts = {};
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\Users\dreamers\Documents\repositories\laravue\myshop-laravue\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\Users\dreamers\Documents\repositories\laravue\myshop-laravue\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\Users\dreamers\Documents\repositories\laravue\yatad-express-web\myshop-laravue\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\Users\dreamers\Documents\repositories\laravue\yatad-express-web\myshop-laravue\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
