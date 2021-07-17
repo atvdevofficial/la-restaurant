@@ -2790,9 +2790,38 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      isRetrievingOrders: false,
       orderInformationDialog: false,
       search: "",
       viewingOrder: {
@@ -2837,105 +2866,47 @@ __webpack_require__.r(__webpack_exports__);
         sortable: false,
         align: "center"
       }],
-      orders: [{
-        code: "159753451",
-        customer: "John Doe Jr.",
-        address: "Mapple Drive, Honey Drive, ASU",
-        sub_total: 700.0,
-        delivery_fee: 70.0,
-        grand_total: 770.0,
-        status: "PENDING",
-        note: "the quick brown fox jumps over the lazy dog.",
-        items: [{
-          name: "Burger",
-          price: 100,
-          quantity: 1
-        }, {
-          name: "Fries",
-          price: 50,
-          quantity: 2
-        }, {
-          name: "Coke Float",
-          price: 150,
-          quantity: 3
-        }]
-      }, {
-        code: "159753452",
-        customer: "John Doe Jr.",
-        address: "Mapple Drive, Honey Drive, ASU",
-        sub_total: 700.0,
-        delivery_fee: 70.0,
-        grand_total: 770.0,
-        status: "PENDING",
-        note: null,
-        items: [{
-          name: "Burger",
-          price: 100,
-          quantity: 4
-        }, {
-          name: "Fries",
-          price: 50,
-          quantity: 5
-        }, {
-          name: "Coke Float",
-          price: 150,
-          quantity: 6
-        }]
-      }, {
-        code: "159753453",
-        customer: "John Doe Jr.",
-        address: "Mapple Drive, Honey Drive, ASU",
-        sub_total: 700.0,
-        delivery_fee: 70.0,
-        grand_total: 770.0,
-        status: "PROCESSING",
-        note: null,
-        items: [{
-          name: "Burger",
-          price: 100,
-          quantity: 7
-        }, {
-          name: "Fries",
-          price: 50,
-          quantity: 8
-        }, {
-          name: "Coke Float",
-          price: 150,
-          quantity: 9
-        }]
-      }, {
-        code: "159753454",
-        customer: "John Doe Jr.",
-        address: "Mapple Drive, Honey Drive, ASU",
-        sub_total: 700.0,
-        delivery_fee: 70.0,
-        grand_total: 770.0,
-        status: "DELIVERED",
-        note: null,
-        items: [{
-          name: "Burger",
-          price: 100,
-          quantity: 10
-        }, {
-          name: "Fries",
-          price: 50,
-          quantity: 11
-        }, {
-          name: "Coke Float",
-          price: 150,
-          quantity: 12
-        }]
-      }],
+      orders: [],
+      initialOrderStatus: null,
       statusList: ["PENDING", "PROCESSING", "ON-THE-WAY", "DELIVERED"]
     };
   },
+  mounted: function mounted() {
+    this.retrieveOrders();
+  },
   methods: {
+    retrieveOrders: function retrieveOrders() {
+      var _this = this;
+
+      this.isRetrievingOrders = true;
+      axios.get("/api/v1/orders").then(function (response) {
+        var data = response.data;
+        _this.orders = data;
+      })["catch"](function (error) {
+        console.log(error);
+      }).then(function (_) {
+        _this.isRetrievingOrders = false;
+      });
+    },
     viewOrder: function viewOrder(item) {
       this.viewingOrder = Object.assign({}, item);
       this.orderInformationDialog = true;
     },
-    updateStatus: function updateStatus() {
-      console.log("Status Updated");
+    updateStatus: function updateStatus(item) {
+      var _this2 = this;
+
+      var status = item.status;
+      item.status = null;
+      axios.put("/api/v1/orders/" + item.id, {
+        status: status
+      }).then(function (response) {
+        var data = response.data;
+        item.status = data.status;
+      })["catch"](function (error) {
+        item.status = _this2.initialOrderStatus;
+      })["finally"](function (_) {
+        _this2.initialOrderStatus = null;
+      });
     }
   }
 });
@@ -42193,248 +42164,337 @@ var render = function() {
           headers: _vm.headers,
           items: _vm.orders,
           "items-per-page": 5,
-          search: _vm.search
+          search: _vm.search,
+          loading: _vm.isRetrievingOrders
         },
-        scopedSlots: _vm._u([
-          {
-            key: "top",
-            fn: function() {
-              return [
-                _c(
-                  "v-dialog",
-                  {
-                    attrs: { width: "500", "retain-focus": false },
-                    model: {
-                      value: _vm.orderInformationDialog,
-                      callback: function($$v) {
-                        _vm.orderInformationDialog = $$v
-                      },
-                      expression: "orderInformationDialog"
-                    }
-                  },
-                  [
-                    _c(
-                      "v-card",
-                      [
-                        _c(
-                          "v-card-title",
-                          { staticClass: "text-h5 primary white--text" },
-                          [
-                            _vm._v(
-                              "\n            Order Information (" +
-                                _vm._s(_vm.viewingOrder.code) +
-                                ")\n          "
-                            )
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "v-card-text",
-                          [
-                            _c(
-                              "v-list",
-                              [
-                                _c("v-subheader", [_vm._v("Items")]),
-                                _vm._v(" "),
-                                _vm._l(_vm.viewingOrder.items, function(
-                                  item,
-                                  index
-                                ) {
-                                  return _c(
-                                    "v-list-item",
-                                    { key: index },
-                                    [
-                                      _c(
-                                        "v-list-item-content",
+        scopedSlots: _vm._u(
+          [
+            {
+              key: "top",
+              fn: function() {
+                return [
+                  _c(
+                    "v-dialog",
+                    {
+                      attrs: { width: "500", "retain-focus": false },
+                      model: {
+                        value: _vm.orderInformationDialog,
+                        callback: function($$v) {
+                          _vm.orderInformationDialog = $$v
+                        },
+                        expression: "orderInformationDialog"
+                      }
+                    },
+                    [
+                      _c(
+                        "v-card",
+                        [
+                          _c(
+                            "v-card-title",
+                            { staticClass: "text-h5 primary white--text" },
+                            [
+                              _vm._v(
+                                "\n            Order Information (" +
+                                  _vm._s(_vm.viewingOrder.code) +
+                                  ")\n          "
+                              )
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-card-text",
+                            [
+                              _c(
+                                "v-list",
+                                [
+                                  _c("v-subheader", [_vm._v("Products")]),
+                                  _vm._v(" "),
+                                  _vm._l(
+                                    _vm.viewingOrder.order_products,
+                                    function(item, index) {
+                                      return _c(
+                                        "v-list-item",
+                                        { key: index },
                                         [
                                           _c(
-                                            "v-list-item-title",
-                                            { staticClass: "font-weight-bold" },
-                                            [_vm._v(_vm._s(item.name))]
+                                            "v-list-item-content",
+                                            [
+                                              _c(
+                                                "v-list-item-title",
+                                                {
+                                                  staticClass:
+                                                    "font-weight-bold"
+                                                },
+                                                [
+                                                  _vm._v(
+                                                    _vm._s(item.product.name)
+                                                  )
+                                                ]
+                                              ),
+                                              _vm._v(" "),
+                                              _c("v-list-item-subtitle", [
+                                                _vm._v(
+                                                  "\n                    Php " +
+                                                    _vm._s(
+                                                      parseFloat(
+                                                        item.price
+                                                      ).toFixed(2)
+                                                    ) +
+                                                    " x\n                    " +
+                                                    _vm._s(item.quantity)
+                                                )
+                                              ])
+                                            ],
+                                            1
                                           ),
                                           _vm._v(" "),
-                                          _c("v-list-item-subtitle", [
-                                            _vm._v(
-                                              "\n                    Php " +
-                                                _vm._s(item.price) +
-                                                " x\n                    " +
-                                                _vm._s(item.quantity)
+                                          _c("v-list-item-action", [
+                                            _c(
+                                              "div",
+                                              {
+                                                staticClass: "font-weight-bold"
+                                              },
+                                              [
+                                                _vm._v(
+                                                  "\n                    Php\n                    " +
+                                                    _vm._s(
+                                                      parseFloat(
+                                                        item.price *
+                                                          item.quantity
+                                                      ).toFixed(2)
+                                                    ) +
+                                                    "\n                  "
+                                                )
+                                              ]
                                             )
                                           ])
                                         ],
                                         1
-                                      ),
-                                      _vm._v(" "),
-                                      _c("v-list-item-action", [
-                                        _c(
-                                          "div",
-                                          { staticClass: "font-weight-bold" },
-                                          [
-                                            _vm._v(
-                                              "\n                    Php " +
-                                                _vm._s(
-                                                  item.price * item.quantity
-                                                ) +
-                                                "\n                  "
-                                            )
-                                          ]
-                                        )
-                                      ])
-                                    ],
-                                    1
-                                  )
-                                }),
-                                _vm._v(" "),
-                                _vm.viewingOrder.note != null
-                                  ? _c(
-                                      "div",
-                                      [
-                                        _c("v-subheader", [_vm._v("Note")]),
-                                        _vm._v(" "),
-                                        _c(
-                                          "v-list-item",
-                                          [
-                                            _c(
-                                              "v-list-item-content",
-                                              [
-                                                _c("v-list-item-subtitle", [
-                                                  _vm._v(
-                                                    "\n                      " +
-                                                      _vm._s(
-                                                        _vm.viewingOrder.note
-                                                      )
-                                                  )
-                                                ])
-                                              ],
-                                              1
-                                            )
-                                          ],
-                                          1
-                                        )
-                                      ],
-                                      1
-                                    )
-                                  : _vm._e()
-                              ],
-                              2
-                            )
-                          ],
-                          1
-                        ),
-                        _vm._v(" "),
-                        _c("v-divider"),
-                        _vm._v(" "),
-                        _c(
-                          "v-card-actions",
-                          [
-                            _c("v-spacer"),
-                            _vm._v(" "),
-                            _c(
-                              "v-btn",
-                              {
-                                attrs: { color: "default", text: "" },
-                                on: {
-                                  click: function($event) {
-                                    _vm.orderInformationDialog = false
-                                  }
-                                }
-                              },
-                              [_vm._v("\n              Close\n            ")]
-                            )
-                          ],
-                          1
-                        )
-                      ],
-                      1
-                    )
-                  ],
-                  1
-                )
-              ]
-            },
-            proxy: true
-          },
-          {
-            key: "item.status",
-            fn: function(props) {
-              return [
-                _c(
-                  "v-edit-dialog",
-                  {
-                    attrs: {
-                      "return-value": props.item.status,
-                      large: "",
-                      persistent: ""
-                    },
-                    on: {
-                      "update:returnValue": function($event) {
-                        return _vm.$set(props.item, "status", $event)
-                      },
-                      "update:return-value": function($event) {
-                        return _vm.$set(props.item, "status", $event)
-                      },
-                      save: _vm.updateStatus
-                    },
-                    scopedSlots: _vm._u(
-                      [
-                        {
-                          key: "input",
-                          fn: function() {
-                            return [
-                              _c("div", { staticClass: "mt-4" }, [
-                                _vm._v("Update Status")
-                              ]),
+                                      )
+                                    }
+                                  ),
+                                  _vm._v(" "),
+                                  _vm.viewingOrder.note != null
+                                    ? _c(
+                                        "div",
+                                        [
+                                          _c("v-subheader", [_vm._v("Note")]),
+                                          _vm._v(" "),
+                                          _c(
+                                            "v-list-item",
+                                            [
+                                              _c(
+                                                "v-list-item-content",
+                                                [
+                                                  _c("v-list-item-subtitle", [
+                                                    _vm._v(
+                                                      "\n                      " +
+                                                        _vm._s(
+                                                          _vm.viewingOrder.note
+                                                        )
+                                                    )
+                                                  ])
+                                                ],
+                                                1
+                                              )
+                                            ],
+                                            1
+                                          )
+                                        ],
+                                        1
+                                      )
+                                    : _vm._e()
+                                ],
+                                2
+                              )
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c("v-divider"),
+                          _vm._v(" "),
+                          _c(
+                            "v-card-actions",
+                            [
+                              _c("v-spacer"),
                               _vm._v(" "),
-                              _c("v-select", {
-                                attrs: { items: _vm.statusList },
-                                model: {
-                                  value: props.item.status,
-                                  callback: function($$v) {
-                                    _vm.$set(props.item, "status", $$v)
-                                  },
-                                  expression: "props.item.status"
-                                }
-                              })
-                            ]
-                          },
-                          proxy: true
+                              _c(
+                                "v-btn",
+                                {
+                                  attrs: { color: "default", text: "" },
+                                  on: {
+                                    click: function($event) {
+                                      _vm.orderInformationDialog = false
+                                    }
+                                  }
+                                },
+                                [_vm._v("\n              Close\n            ")]
+                              )
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                ]
+              },
+              proxy: true
+            },
+            {
+              key: "item.customer",
+              fn: function(props) {
+                return [
+                  _vm._v(
+                    "\n      " +
+                      _vm._s(props.item.customer.last_name) +
+                      ",\n      " +
+                      _vm._s(props.item.customer.first_name) +
+                      "\n    "
+                  )
+                ]
+              }
+            },
+            {
+              key: "item.sub_total",
+              fn: function(props) {
+                return [
+                  _vm._v(
+                    "\n      " +
+                      _vm._s(parseFloat(props.item.sub_total).toFixed(2)) +
+                      "\n    "
+                  )
+                ]
+              }
+            },
+            {
+              key: "item.delivery_fee",
+              fn: function(props) {
+                return [
+                  _vm._v(
+                    "\n      " +
+                      _vm._s(parseFloat(props.item.delivery_fee).toFixed(2)) +
+                      "\n    "
+                  )
+                ]
+              }
+            },
+            {
+              key: "item.grand_total",
+              fn: function(props) {
+                return [
+                  _vm._v(
+                    "\n      " +
+                      _vm._s(parseFloat(props.item.grand_total).toFixed(2)) +
+                      "\n    "
+                  )
+                ]
+              }
+            },
+            {
+              key: "item.status",
+              fn: function(props) {
+                return [
+                  props.item.status == null
+                    ? _c("v-progress-circular", {
+                        attrs: {
+                          size: "20",
+                          width: "2",
+                          indeterminate: "",
+                          color: "primary"
                         }
-                      ],
-                      null,
-                      true
-                    )
-                  },
-                  [_c("div", [_vm._v(_vm._s(props.item.status))])]
-                )
-              ]
-            }
-          },
-          {
-            key: "item.actions",
-            fn: function(ref) {
-              var item = ref.item
-              return [
-                _c(
-                  "v-btn",
-                  {
-                    attrs: { icon: "" },
-                    on: {
-                      click: function($event) {
-                        return _vm.viewOrder(item)
+                      })
+                    : _vm._e(),
+                  _vm._v(" "),
+                  props.item.status != null
+                    ? _c(
+                        "v-edit-dialog",
+                        {
+                          attrs: {
+                            "return-value": props.item.status,
+                            large: "",
+                            persistent: ""
+                          },
+                          on: {
+                            "update:returnValue": function($event) {
+                              return _vm.$set(props.item, "status", $event)
+                            },
+                            "update:return-value": function($event) {
+                              return _vm.$set(props.item, "status", $event)
+                            },
+                            save: function($event) {
+                              return _vm.updateStatus(props.item)
+                            },
+                            open: function($event) {
+                              _vm.initialOrderStatus = props.item.status
+                            }
+                          },
+                          scopedSlots: _vm._u(
+                            [
+                              {
+                                key: "input",
+                                fn: function() {
+                                  return [
+                                    _c("div", { staticClass: "mt-4" }, [
+                                      _vm._v("Update Status")
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("v-select", {
+                                      attrs: { items: _vm.statusList },
+                                      model: {
+                                        value: props.item.status,
+                                        callback: function($$v) {
+                                          _vm.$set(props.item, "status", $$v)
+                                        },
+                                        expression: "props.item.status"
+                                      }
+                                    })
+                                  ]
+                                },
+                                proxy: true
+                              }
+                            ],
+                            null,
+                            true
+                          )
+                        },
+                        [_c("div", [_vm._v(_vm._s(props.item.status))])]
+                      )
+                    : _vm._e()
+                ]
+              }
+            },
+            {
+              key: "item.actions",
+              fn: function(ref) {
+                var item = ref.item
+                return [
+                  _c(
+                    "v-btn",
+                    {
+                      attrs: { icon: "" },
+                      on: {
+                        click: function($event) {
+                          return _vm.viewOrder(item)
+                        }
                       }
-                    }
-                  },
-                  [
-                    _c("v-icon", { attrs: { small: "" } }, [
-                      _vm._v(" mdi-information ")
-                    ])
-                  ],
-                  1
-                )
-              ]
+                    },
+                    [
+                      _c("v-icon", { attrs: { small: "" } }, [
+                        _vm._v(" mdi-information ")
+                      ])
+                    ],
+                    1
+                  )
+                ]
+              }
             }
-          }
-        ])
+          ],
+          null,
+          true
+        )
       })
     ],
     1

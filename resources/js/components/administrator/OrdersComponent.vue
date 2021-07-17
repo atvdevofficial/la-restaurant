@@ -8,6 +8,7 @@
       :items="orders"
       :items-per-page="5"
       :search="search"
+      :loading="isRetrievingOrders"
     >
       <template v-slot:top>
         <v-dialog
@@ -22,23 +23,24 @@
 
             <v-card-text>
               <v-list>
-                <v-subheader>Items</v-subheader>
+                <v-subheader>Products</v-subheader>
                 <v-list-item
-                  v-for="(item, index) in viewingOrder.items"
+                  v-for="(item, index) in viewingOrder.order_products"
                   :key="index"
                 >
                   <v-list-item-content>
                     <v-list-item-title class="font-weight-bold">{{
-                      item.name
+                      item.product.name
                     }}</v-list-item-title>
                     <v-list-item-subtitle>
-                      Php {{ item.price }} x
+                      Php {{ parseFloat(item.price).toFixed(2) }} x
                       {{ item.quantity }}</v-list-item-subtitle
                     >
                   </v-list-item-content>
                   <v-list-item-action>
                     <div class="font-weight-bold">
-                      Php {{ item.price * item.quantity }}
+                      Php
+                      {{ parseFloat(item.price * item.quantity).toFixed(2) }}
                     </div>
                   </v-list-item-action>
                 </v-list-item>
@@ -71,12 +73,38 @@
         </v-dialog>
       </template>
 
-      <template v-slot:item.status="props">
+      <template v-slot:[`item.customer`]="props">
+        {{ props.item.customer.last_name }},
+        {{ props.item.customer.first_name }}
+      </template>
+
+      <template v-slot:[`item.sub_total`]="props">
+        {{ parseFloat(props.item.sub_total).toFixed(2) }}
+      </template>
+
+      <template v-slot:[`item.delivery_fee`]="props">
+        {{ parseFloat(props.item.delivery_fee).toFixed(2) }}
+      </template>
+
+      <template v-slot:[`item.grand_total`]="props">
+        {{ parseFloat(props.item.grand_total).toFixed(2) }}
+      </template>
+
+      <template v-slot:[`item.status`]="props">
+        <v-progress-circular
+          size="20"
+          width="2"
+          indeterminate
+          color="primary"
+          v-if="props.item.status == null"
+        ></v-progress-circular>
         <v-edit-dialog
           :return-value.sync="props.item.status"
           large
           persistent
-          @save="updateStatus"
+          @save="updateStatus(props.item)"
+          @open="initialOrderStatus = props.item.status"
+          v-if="props.item.status != null"
         >
           <div>{{ props.item.status }}</div>
           <template v-slot:input>
@@ -89,7 +117,7 @@
         </v-edit-dialog>
       </template>
 
-      <template v-slot:item.actions="{ item }">
+      <template v-slot:[`item.actions`]="{ item }">
         <v-btn icon @click="viewOrder(item)">
           <v-icon small> mdi-information </v-icon>
         </v-btn>
@@ -102,6 +130,7 @@
 export default {
   data() {
     return {
+      isRetrievingOrders: false,
       orderInformationDialog: false,
       search: "",
       viewingOrder: {
@@ -125,79 +154,52 @@ export default {
         { text: "Status", value: "status" },
         { text: "Actions", value: "actions", sortable: false, align: "center" },
       ],
-      orders: [
-        {
-          code: "159753451",
-          customer: "John Doe Jr.",
-          address: "Mapple Drive, Honey Drive, ASU",
-          sub_total: 700.0,
-          delivery_fee: 70.0,
-          grand_total: 770.0,
-          status: "PENDING",
-          note: "the quick brown fox jumps over the lazy dog.",
-          items: [
-            { name: "Burger", price: 100, quantity: 1 },
-            { name: "Fries", price: 50, quantity: 2 },
-            { name: "Coke Float", price: 150, quantity: 3 },
-          ],
-        },
-        {
-          code: "159753452",
-          customer: "John Doe Jr.",
-          address: "Mapple Drive, Honey Drive, ASU",
-          sub_total: 700.0,
-          delivery_fee: 70.0,
-          grand_total: 770.0,
-          status: "PENDING",
-          note: null,
-          items: [
-            { name: "Burger", price: 100, quantity: 4 },
-            { name: "Fries", price: 50, quantity: 5 },
-            { name: "Coke Float", price: 150, quantity: 6 },
-          ],
-        },
-        {
-          code: "159753453",
-          customer: "John Doe Jr.",
-          address: "Mapple Drive, Honey Drive, ASU",
-          sub_total: 700.0,
-          delivery_fee: 70.0,
-          grand_total: 770.0,
-          status: "PROCESSING",
-          note: null,
-          items: [
-            { name: "Burger", price: 100, quantity: 7 },
-            { name: "Fries", price: 50, quantity: 8 },
-            { name: "Coke Float", price: 150, quantity: 9 },
-          ],
-        },
-        {
-          code: "159753454",
-          customer: "John Doe Jr.",
-          address: "Mapple Drive, Honey Drive, ASU",
-          sub_total: 700.0,
-          delivery_fee: 70.0,
-          grand_total: 770.0,
-          status: "DELIVERED",
-          note: null,
-          items: [
-            { name: "Burger", price: 100, quantity: 10 },
-            { name: "Fries", price: 50, quantity: 11 },
-            { name: "Coke Float", price: 150, quantity: 12 },
-          ],
-        },
-      ],
+      orders: [],
+      initialOrderStatus: null,
       statusList: ["PENDING", "PROCESSING", "ON-THE-WAY", "DELIVERED"],
     };
   },
+  mounted() {
+    this.retrieveOrders();
+  },
   methods: {
+    retrieveOrders() {
+      this.isRetrievingOrders = true;
+      axios
+        .get("/api/v1/orders")
+        .then((response) => {
+          let data = response.data;
+          this.orders = data;
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .then((_) => {
+          this.isRetrievingOrders = false;
+        });
+    },
+
     viewOrder(item) {
       this.viewingOrder = Object.assign({}, item);
       this.orderInformationDialog = true;
     },
 
-    updateStatus() {
-      console.log("Status Updated");
+    updateStatus(item) {
+      let status = item.status;
+      item.status = null;
+
+      axios
+        .put("/api/v1/orders/" + item.id, { status })
+        .then((response) => {
+          let data = response.data;
+          item.status = data.status;
+        })
+        .catch((error) => {
+          item.status = this.initialOrderStatus;
+        })
+        .finally((_) => {
+          this.initialOrderStatus = null;
+        });
     },
   },
 };

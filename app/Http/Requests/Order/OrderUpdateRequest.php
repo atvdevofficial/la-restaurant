@@ -41,7 +41,7 @@ class OrderUpdateRequest extends FormRequest
 
         if ($authenticatedUserRole === 'ADMINISTRATOR') {
             return [
-                'status' => ['required', 'in:CANCELLED,DECLINED,PROCESSING,ONTHEWAY,DELIVERED']
+                'status' => ['required', 'in:CANCELLED,DECLINED,PENDING,PROCESSING,ON-THE-WAY,DELIVERED']
             ];
         }
 
