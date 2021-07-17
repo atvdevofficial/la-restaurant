@@ -10,7 +10,7 @@
       <template v-slot:top>
         <v-toolbar flat>
           <v-spacer></v-spacer>
-          <v-dialog v-model="dialog" max-width="500px">
+          <v-dialog v-model="dialog" max-width="500px" persistent>
             <template v-slot:activator="{ on, attrs }">
               <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
                 New Product
@@ -27,6 +27,7 @@
                     <v-row>
                       <v-col cols="12" sm="6">
                         <v-text-field
+                          :disabled="isProcessing"
                           :rules="rules.required"
                           v-model="editedProduct.name"
                           label="Name"
@@ -34,6 +35,7 @@
                       </v-col>
                       <v-col cols="12" sm="6">
                         <v-text-field
+                          :disabled="isProcessing"
                           :rules="rules.required"
                           v-model="editedProduct.price"
                           label="Price"
@@ -43,6 +45,7 @@
                       </v-col>
                       <v-col cols="12">
                         <v-textarea
+                          :disabled="isProcessing"
                           :rules="rules.required"
                           v-model="editedProduct.description"
                           label="Description"
@@ -50,6 +53,7 @@
                       </v-col>
                       <v-col cols="12">
                         <v-file-input
+                          :disabled="isProcessing"
                           :rules="rules.maximumSize"
                           v-model="imageName"
                           persistent-hint
@@ -64,7 +68,8 @@
 
                       <v-col cols="12">
                         <v-select
-                          :rules="rules.required"
+                          :disabled="isProcessing"
+                          :rules="[(v) => !!v.length || 'Category is required']"
                           v-model="editedProduct.product_categories"
                           :items="categories"
                           label="Categories"
@@ -81,10 +86,17 @@
 
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="default darken-1" text @click="close">
+                <v-btn
+                  color="default darken-1"
+                  text
+                  @click="close"
+                  :disabled="isProcessing"
+                >
                   Cancel
                 </v-btn>
-                <v-btn color="primary" @click="save"> Save </v-btn>
+                <v-btn color="primary" @click="save" :loading="isProcessing">
+                  Save
+                </v-btn>
               </v-card-actions>
             </v-card>
           </v-dialog>
@@ -142,6 +154,7 @@
 export default {
   data() {
     return {
+      isProcessing: false,
       rules: {
         required: [(v) => !!v || "Field is required"],
         maximumSize: [
@@ -217,7 +230,7 @@ export default {
         .then((response) => {
           this.products = response.data;
         })
-        .then((error) => {
+        .catch((error) => {
           console.log(error);
         })
         .then((_) => {
@@ -232,7 +245,7 @@ export default {
           let data = response.data;
           this.categories.push(...data);
         })
-        .then((error) => {
+        .catch((error) => {
           console.log(error);
         })
         .then((_) => {});
@@ -281,6 +294,7 @@ export default {
 
     save() {
       if (this.$refs.form.validate()) {
+        this.isProcessing = true;
         if (this.editedIndex > -1) {
           // Update
           axios
@@ -302,7 +316,9 @@ export default {
             .catch((error) => {
               console.log(error);
             })
-            .finally((_) => {});
+            .finally((_) => {
+              this.isProcessing = false;
+            });
         } else {
           // Add
           axios
@@ -323,7 +339,9 @@ export default {
             .catch((error) => {
               console.log(error);
             })
-            .finally((_) => {});
+            .finally((_) => {
+              this.isProcessing = false;
+            });
         }
       }
     },

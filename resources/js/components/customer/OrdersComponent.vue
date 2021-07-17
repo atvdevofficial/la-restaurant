@@ -138,9 +138,7 @@ export default {
         .catch((error) => {
           console.log(error);
         })
-        .finally((fin) => {
-          console.log(fin);
-        });
+        .finally((_) => { });
     },
   },
 };

@@ -169,9 +169,7 @@ export default {
         .catch((error) => {
           console.log(error);
         })
-        .catch((fin) => {
-          console.log(fin);
-        });
+        .catch((_) => {});
     },
 
     // Edit

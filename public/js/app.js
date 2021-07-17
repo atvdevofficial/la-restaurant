@@ -3289,9 +3289,22 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      isProcessing: false,
       rules: {
         required: [function (v) {
           return !!v || "Field is required";
@@ -3380,7 +3393,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       this.retrievingProducts = true;
       axios.get("/api/v1/products").then(function (response) {
         _this.products = response.data;
-      }).then(function (error) {
+      })["catch"](function (error) {
         console.log(error);
       }).then(function (_) {
         _this.retrievingProducts = false;
@@ -3395,7 +3408,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         var data = response.data;
 
         (_this2$categories = _this2.categories).push.apply(_this2$categories, _toConsumableArray(data));
-      }).then(function (error) {
+      })["catch"](function (error) {
         console.log(error);
       }).then(function (_) {});
     },
@@ -3442,6 +3455,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       var _this6 = this;
 
       if (this.$refs.form.validate()) {
+        this.isProcessing = true;
+
         if (this.editedIndex > -1) {
           // Update
           axios.put("/api/v1/products/" + this.editedProduct.id, _objectSpread(_objectSpread({}, this.editedProduct), {}, {
@@ -3456,7 +3471,9 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
             _this6.close();
           })["catch"](function (error) {
             console.log(error);
-          })["finally"](function (_) {});
+          })["finally"](function (_) {
+            _this6.isProcessing = false;
+          });
         } else {
           // Add
           axios.post("/api/v1/products", _objectSpread(_objectSpread({}, this.editedProduct), {}, {
@@ -3471,7 +3488,9 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
             _this6.close();
           })["catch"](function (error) {
             console.log(error);
-          })["finally"](function (_) {});
+          })["finally"](function (_) {
+            _this6.isProcessing = false;
+          });
         }
       }
     },
@@ -4370,9 +4389,7 @@ __webpack_require__.r(__webpack_exports__);
         _this.orders = response.data;
       })["catch"](function (error) {
         console.log(error);
-      })["finally"](function (fin) {
-        console.log(fin);
-      });
+      })["finally"](function (_) {});
     }
   }
 });
@@ -4557,9 +4574,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         };
       })["catch"](function (error) {
         console.log(error);
-      })["catch"](function (fin) {
-        console.log(fin);
-      });
+      })["catch"](function (_) {});
     },
     // Edit
     updateProfile: function updateProfile() {
@@ -42703,7 +42718,7 @@ var render = function() {
                     _c(
                       "v-dialog",
                       {
-                        attrs: { "max-width": "500px" },
+                        attrs: { "max-width": "500px", persistent: "" },
                         scopedSlots: _vm._u([
                           {
                             key: "activator",
@@ -42785,6 +42800,7 @@ var render = function() {
                                               [
                                                 _c("v-text-field", {
                                                   attrs: {
+                                                    disabled: _vm.isProcessing,
                                                     rules: _vm.rules.required,
                                                     label: "Name"
                                                   },
@@ -42814,6 +42830,7 @@ var render = function() {
                                               [
                                                 _c("v-text-field", {
                                                   attrs: {
+                                                    disabled: _vm.isProcessing,
                                                     rules: _vm.rules.required,
                                                     label: "Price",
                                                     prefix: "PHP",
@@ -42843,6 +42860,7 @@ var render = function() {
                                               [
                                                 _c("v-textarea", {
                                                   attrs: {
+                                                    disabled: _vm.isProcessing,
                                                     rules: _vm.rules.required,
                                                     label: "Description"
                                                   },
@@ -42871,6 +42889,7 @@ var render = function() {
                                               [
                                                 _c("v-file-input", {
                                                   attrs: {
+                                                    disabled: _vm.isProcessing,
                                                     rules:
                                                       _vm.rules.maximumSize,
                                                     "persistent-hint": "",
@@ -42901,7 +42920,15 @@ var render = function() {
                                               [
                                                 _c("v-select", {
                                                   attrs: {
-                                                    rules: _vm.rules.required,
+                                                    disabled: _vm.isProcessing,
+                                                    rules: [
+                                                      function(v) {
+                                                        return (
+                                                          !!v.length ||
+                                                          "Category is required"
+                                                        )
+                                                      }
+                                                    ],
                                                     items: _vm.categories,
                                                     label: "Categories",
                                                     multiple: "",
@@ -42950,7 +42977,8 @@ var render = function() {
                                   {
                                     attrs: {
                                       color: "default darken-1",
-                                      text: ""
+                                      text: "",
+                                      disabled: _vm.isProcessing
                                     },
                                     on: { click: _vm.close }
                                   },
@@ -42964,10 +42992,17 @@ var render = function() {
                                 _c(
                                   "v-btn",
                                   {
-                                    attrs: { color: "primary" },
+                                    attrs: {
+                                      color: "primary",
+                                      loading: _vm.isProcessing
+                                    },
                                     on: { click: _vm.save }
                                   },
-                                  [_vm._v(" Save ")]
+                                  [
+                                    _vm._v(
+                                      "\n                Save\n              "
+                                    )
+                                  ]
                                 )
                               ],
                               1
@@ -108922,8 +108957,8 @@ var opts = {};
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\Users\nthnyvllflrs\Documents\repositories\myshop-laravue\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\Users\nthnyvllflrs\Documents\repositories\myshop-laravue\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\Users\dreamers\Documents\repositories\laravue\myshop-laravue\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\Users\dreamers\Documents\repositories\laravue\myshop-laravue\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
