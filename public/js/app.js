@@ -2674,7 +2674,7 @@ __webpack_require__.r(__webpack_exports__);
       // Clear session storage
       sessionStorage.clear(); // Push to sign in
 
-      this.$router.push("signin");
+      this.$router.push("/signin");
     }
   }
 });
@@ -3181,6 +3181,31 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToAr
 
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -43036,37 +43061,6 @@ var render = function() {
                                               "v-col",
                                               { attrs: { cols: "12" } },
                                               [
-                                                _c("v-file-input", {
-                                                  attrs: {
-                                                    disabled: _vm.isProcessing,
-                                                    rules:
-                                                      _vm.rules.maximumSize,
-                                                    "persistent-hint": "",
-                                                    "show-size": "",
-                                                    accept: "image/*",
-                                                    label: "Image",
-                                                    hint:
-                                                      _vm.editedProduct.image
-                                                  },
-                                                  on: {
-                                                    change: _vm.imageUpload
-                                                  },
-                                                  model: {
-                                                    value: _vm.imageName,
-                                                    callback: function($$v) {
-                                                      _vm.imageName = $$v
-                                                    },
-                                                    expression: "imageName"
-                                                  }
-                                                })
-                                              ],
-                                              1
-                                            ),
-                                            _vm._v(" "),
-                                            _c(
-                                              "v-col",
-                                              { attrs: { cols: "12" } },
-                                              [
                                                 _c("v-select", {
                                                   attrs: {
                                                     disabled: _vm.isProcessing,
@@ -43099,6 +43093,92 @@ var render = function() {
                                                     expression:
                                                       "editedProduct.product_categories"
                                                   }
+                                                })
+                                              ],
+                                              1
+                                            ),
+                                            _vm._v(" "),
+                                            _c(
+                                              "v-col",
+                                              { attrs: { cols: "12" } },
+                                              [
+                                                _c("v-file-input", {
+                                                  attrs: {
+                                                    disabled: _vm.isProcessing,
+                                                    rules:
+                                                      _vm.rules.maximumSize,
+                                                    "persistent-hint": "",
+                                                    "show-size": "",
+                                                    accept: "image/*",
+                                                    label: "Image"
+                                                  },
+                                                  on: {
+                                                    change: _vm.imageUpload
+                                                  },
+                                                  model: {
+                                                    value: _vm.imageName,
+                                                    callback: function($$v) {
+                                                      _vm.imageName = $$v
+                                                    },
+                                                    expression: "imageName"
+                                                  }
+                                                })
+                                              ],
+                                              1
+                                            ),
+                                            _vm._v(" "),
+                                            _c(
+                                              "v-col",
+                                              {
+                                                staticClass:
+                                                  "d-flex justify-center align-center",
+                                                attrs: { cols: "12" }
+                                              },
+                                              [
+                                                _c("v-img", {
+                                                  staticClass: "grey lighten-2",
+                                                  attrs: {
+                                                    width: "150",
+                                                    src:
+                                                      _vm.editedProduct.image,
+                                                    "aspect-ratio": "1"
+                                                  },
+                                                  scopedSlots: _vm._u([
+                                                    {
+                                                      key: "placeholder",
+                                                      fn: function() {
+                                                        return [
+                                                          _c(
+                                                            "v-row",
+                                                            {
+                                                              staticClass:
+                                                                "fill-height ma-0",
+                                                              attrs: {
+                                                                align: "center",
+                                                                justify:
+                                                                  "center"
+                                                              }
+                                                            },
+                                                            [
+                                                              _c(
+                                                                "v-progress-circular",
+                                                                {
+                                                                  attrs: {
+                                                                    indeterminate:
+                                                                      "",
+                                                                    color:
+                                                                      "primary"
+                                                                  }
+                                                                }
+                                                              )
+                                                            ],
+                                                            1
+                                                          )
+                                                        ]
+                                                      },
+                                                      proxy: true
+                                                    }
+                                                  ])
                                                 })
                                               ],
                                               1
@@ -109106,8 +109186,8 @@ var opts = {};
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\Users\dreamers\Documents\repositories\laravue\yatad-express-web\myshop-laravue\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\Users\dreamers\Documents\repositories\laravue\yatad-express-web\myshop-laravue\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\Users\nthnyvllflrs\Documents\repositories\myshop-laravue\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\Users\nthnyvllflrs\Documents\repositories\myshop-laravue\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

@@ -51,20 +51,6 @@
                           label="Description"
                         ></v-textarea>
                       </v-col>
-                      <v-col cols="12">
-                        <v-file-input
-                          :disabled="isProcessing"
-                          :rules="rules.maximumSize"
-                          v-model="imageName"
-                          persistent-hint
-                          show-size
-                          accept="image/*"
-                          label="Image"
-                          @change="imageUpload"
-                          :hint="editedProduct.image"
-                        >
-                        </v-file-input>
-                      </v-col>
 
                       <v-col cols="12">
                         <v-select
@@ -78,6 +64,45 @@
                           return-object
                           item-text="name"
                         ></v-select>
+                      </v-col>
+
+                      <v-col cols="12">
+                        <v-file-input
+                          :disabled="isProcessing"
+                          :rules="rules.maximumSize"
+                          v-model="imageName"
+                          persistent-hint
+                          show-size
+                          accept="image/*"
+                          label="Image"
+                          @change="imageUpload"
+                        >
+                        </v-file-input>
+                      </v-col>
+
+                      <v-col
+                        cols="12"
+                        class="d-flex justify-center align-center"
+                      >
+                        <v-img
+                          width="150"
+                          :src="editedProduct.image"
+                          aspect-ratio="1"
+                          class="grey lighten-2"
+                        >
+                          <template v-slot:placeholder>
+                            <v-row
+                              class="fill-height ma-0"
+                              align="center"
+                              justify="center"
+                            >
+                              <v-progress-circular
+                                indeterminate
+                                color="primary"
+                              ></v-progress-circular>
+                            </v-row>
+                          </template>
+                        </v-img>
                       </v-col>
                     </v-row>
                   </v-form>
