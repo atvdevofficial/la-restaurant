@@ -5,7 +5,7 @@
       :items="products"
       :items-per-page="10"
       :search="search"
-      :loading="retrievingProducts"
+      :loading="isRetrievingProducts"
     >
       <template v-slot:top>
         <v-toolbar flat>
@@ -190,7 +190,7 @@ export default {
       imageName: null,
       imageData: null,
       isProcessing: false,
-      retrievingProducts: false,
+      isRetrievingProducts: false,
       dialog: false,
       dialogDelete: false,
       search: "",
@@ -248,7 +248,7 @@ export default {
   },
   methods: {
     retrieveProducts() {
-      this.retrievingProducts = true;
+      this.isRetrievingProducts = true;
 
       axios
         .get("/api/v1/products")
@@ -259,7 +259,7 @@ export default {
           console.log(error);
         })
         .then((_) => {
-          this.retrievingProducts = false;
+          this.isRetrievingProducts = false;
         });
     },
 

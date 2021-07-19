@@ -2342,6 +2342,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2352,56 +2353,35 @@ __webpack_require__.r(__webpack_exports__);
         text: "ID",
         value: "id"
       }, {
+        text: "Email",
+        value: "user.email"
+      }, {
         text: "Name",
         value: "name"
       }, {
         text: "Address",
         value: "address"
       }, {
-        text: "Phone Number",
-        value: "phone_number"
+        text: "Contact Number",
+        value: "contact_number"
       }, {
         text: "Actions",
         value: "actions",
         sortable: false,
         align: "center"
       }],
-      customers: [{
-        id: 1,
-        name: "John Doe",
-        address: "Mapple Street",
-        phone_number: "999-9999",
-        orders: {
-          total: 0,
-          delivered: 0,
-          cancelled: 0
-        }
-      }, {
-        id: 2,
-        name: "Mila Ei",
-        address: "Apple Corner",
-        phone_number: "999-9999",
-        orders: {
-          total: 0,
-          delivered: 0,
-          cancelled: 0
-        }
-      }, {
-        id: 3,
-        name: "Robert Bob",
-        address: "Oakwood Drive",
-        phone_number: "999-9999",
-        orders: {
-          total: 0,
-          delivered: 0,
-          cancelled: 0
-        }
-      }],
       viewingCustomer: {
         id: null,
-        name: null,
+        first_name: null,
+        last_name: null,
+        contact_number: null,
         address: null,
-        phone_number: null,
+        latitude: null,
+        longitude: null,
+        user: {
+          id: null,
+          email: null
+        },
         orders: {
           total: 0,
           delivered: 0,
@@ -2410,16 +2390,24 @@ __webpack_require__.r(__webpack_exports__);
       },
       defaultCustomer: {
         id: null,
-        name: null,
+        first_name: null,
+        last_name: null,
+        contact_number: null,
         address: null,
-        phone_number: null,
+        latitude: null,
+        longitude: null,
+        user: {
+          id: null,
+          email: null
+        },
         orders: {
           total: 0,
           delivered: 0,
           cancelled: 0
         }
       },
-      editedIndex: -1
+      editedIndex: -1,
+      customers: []
     };
   },
   watch: {
@@ -2427,7 +2415,23 @@ __webpack_require__.r(__webpack_exports__);
       val || this.closeDelete();
     }
   },
+  mounted: function mounted() {
+    this.retrieveCustomers();
+  },
   methods: {
+    retrieveCustomers: function retrieveCustomers() {
+      var _this = this;
+
+      this.isRetrievingCustomers = true;
+      axios.get("/api/v1/customers").then(function (response) {
+        var data = response.data;
+        _this.customers = data;
+      })["catch"](function (error) {
+        console.log(error);
+      })["finally"](function (_) {
+        _this.isRetrievingCustomers = false;
+      });
+    },
     viewCustomer: function viewCustomer(item) {
       this.viewingCustomer = Object.assign({}, item);
       this.customerInformationDialog = true;
@@ -2438,25 +2442,32 @@ __webpack_require__.r(__webpack_exports__);
       this.dialogDelete = true;
     },
     deleteCustomerConfirm: function deleteCustomerConfirm() {
-      this.customers.splice(this.editedIndex, 1);
-      this.closeDelete();
+      var _this2 = this;
+
+      axios["delete"]("/api/v1/customers/" + this.viewingCustomer.id).then(function (response) {
+        _this2.customers.splice(_this2.editedIndex, 1);
+
+        _this2.closeDelete();
+      })["catch"](function (error) {
+        console.log(error);
+      })["finally"](function (_) {});
     },
     close: function close() {
-      var _this = this;
+      var _this3 = this;
 
       this.customerInformationDialog = false;
       this.$nextTick(function () {
-        _this.viewingCustomer = Object.assign({}, _this.defaultCustomer);
-        _this.editedIndex = -1;
+        _this3.viewingCustomer = Object.assign({}, _this3.defaultCustomer);
+        _this3.editedIndex = -1;
       });
     },
     closeDelete: function closeDelete() {
-      var _this2 = this;
+      var _this4 = this;
 
       this.dialogDelete = false;
       this.$nextTick(function () {
-        _this2.viewingCustomer = Object.assign({}, _this2.defaultCustomer);
-        _this2.editedIndex = -1;
+        _this4.viewingCustomer = Object.assign({}, _this4.defaultCustomer);
+        _this4.editedIndex = -1;
       });
     }
   }
@@ -3373,7 +3384,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       imageName: null,
       imageData: null,
       isProcessing: false,
-      retrievingProducts: false,
+      isRetrievingProducts: false,
       dialog: false,
       dialogDelete: false,
       search: "",
@@ -3447,13 +3458,13 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     retrieveProducts: function retrieveProducts() {
       var _this = this;
 
-      this.retrievingProducts = true;
+      this.isRetrievingProducts = true;
       axios.get("/api/v1/products").then(function (response) {
         _this.products = response.data;
       })["catch"](function (error) {
         console.log(error);
       }).then(function (_) {
-        _this.retrievingProducts = false;
+        _this.isRetrievingProducts = false;
       });
     },
     retrieveProductCategories: function retrieveProductCategories() {
@@ -41532,7 +41543,9 @@ var render = function() {
                           [
                             _vm._v(
                               "\n            Customer Information (" +
-                                _vm._s(_vm.viewingCustomer.name) +
+                                _vm._s(_vm.viewingCustomer.last_name) +
+                                ",\n            " +
+                                _vm._s(_vm.viewingCustomer.first_name) +
                                 ")\n          "
                             )
                           ]
@@ -41545,6 +41558,17 @@ var render = function() {
                             _c(
                               "v-row",
                               [
+                                _c("v-col", { attrs: { cols: "12" } }, [
+                                  _vm._v(" --- Insert Map Here --- ")
+                                ]),
+                                _vm._v(" "),
+                                _c(
+                                  "v-col",
+                                  { attrs: { cols: "12" } },
+                                  [_c("v-divider")],
+                                  1
+                                ),
+                                _vm._v(" "),
                                 _c(
                                   "v-col",
                                   { attrs: { cols: "4" } },
@@ -41559,16 +41583,7 @@ var render = function() {
                                             _c(
                                               "div",
                                               { staticClass: "title" },
-                                              [
-                                                _vm._v(
-                                                  "\n                      " +
-                                                    _vm._s(
-                                                      _vm.viewingCustomer.orders
-                                                        .total
-                                                    ) +
-                                                    "\n                    "
-                                                )
-                                              ]
+                                              [_vm._v("0")]
                                             )
                                           ]
                                         ),
@@ -41599,16 +41614,7 @@ var render = function() {
                                             _c(
                                               "div",
                                               { staticClass: "title" },
-                                              [
-                                                _vm._v(
-                                                  "\n                      " +
-                                                    _vm._s(
-                                                      _vm.viewingCustomer.orders
-                                                        .delivered
-                                                    ) +
-                                                    "\n                    "
-                                                )
-                                              ]
+                                              [_vm._v("0")]
                                             )
                                           ]
                                         ),
@@ -41639,16 +41645,7 @@ var render = function() {
                                             _c(
                                               "div",
                                               { staticClass: "title" },
-                                              [
-                                                _vm._v(
-                                                  "\n                      " +
-                                                    _vm._s(
-                                                      _vm.viewingCustomer.orders
-                                                        .cancelled
-                                                    ) +
-                                                    "\n                    "
-                                                )
-                                              ]
+                                              [_vm._v("0")]
                                             )
                                           ]
                                         ),
@@ -41718,7 +41715,7 @@ var render = function() {
                       [
                         _c("v-card-text", { staticClass: "pa-4 text-center" }, [
                           _vm._v(
-                            "\n              Are you sure you want to delete this customer?\n            "
+                            "\n            Are you sure you want to delete this customer?\n          "
                           )
                         ]),
                         _vm._v(" "),
@@ -41742,7 +41739,7 @@ var render = function() {
                                 attrs: { color: "primary darken-1" },
                                 on: { click: _vm.deleteCustomerConfirm }
                               },
-                              [_vm._v("\n                Yes\n              ")]
+                              [_vm._v("\n              Yes\n            ")]
                             ),
                             _vm._v(" "),
                             _c("v-spacer")
@@ -41758,6 +41755,21 @@ var render = function() {
               ]
             },
             proxy: true
+          },
+          {
+            key: "item.name",
+            fn: function(ref) {
+              var item = ref.item
+              return [
+                _vm._v(
+                  "\n      " +
+                    _vm._s(item.last_name) +
+                    ", " +
+                    _vm._s(item.first_name) +
+                    "\n    "
+                )
+              ]
+            }
           },
           {
             key: "item.actions",
@@ -42876,7 +42888,7 @@ var render = function() {
           items: _vm.products,
           "items-per-page": 10,
           search: _vm.search,
-          loading: _vm.retrievingProducts
+          loading: _vm.isRetrievingProducts
         },
         scopedSlots: _vm._u([
           {
