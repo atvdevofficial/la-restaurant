@@ -91,30 +91,37 @@
       </template>
 
       <template v-slot:[`item.status`]="props">
-        <v-progress-circular
-          size="20"
-          width="2"
-          indeterminate
-          color="primary"
-          v-if="props.item.status == null"
-        ></v-progress-circular>
-        <v-edit-dialog
-          :return-value.sync="props.item.status"
-          large
-          persistent
-          @save="updateStatus(props.item)"
-          @open="initialOrderStatus = props.item.status"
-          v-if="props.item.status != null"
-        >
-          <div>{{ props.item.status }}</div>
-          <template v-slot:input>
-            <div class="mt-4">Update Status</div>
-            <v-select
-              :items="statusList"
-              v-model="props.item.status"
-            ></v-select>
-          </template>
-        </v-edit-dialog>
+          <div v-if="statusListWhereUpdateDisabled.includes(props.item.status)">
+              {{ props.item.status }}
+          </div>
+        <div v-if="!statusListWhereUpdateDisabled.includes(props.item.status)">
+          <v-progress-circular
+            size="20"
+            width="2"
+            indeterminate
+            color="primary"
+            v-if="props.item.status == null"
+          ></v-progress-circular>
+          <v-edit-dialog
+            :return-value.sync="props.item.status"
+            large
+            persistent
+            @save="updateStatus(props.item)"
+            @cancel="editCancel(props.item)"
+            @open="onOpenEditOrderStatus(props.item)"
+            @close="onCloseEditOrderStatus(props.item)"
+            v-if="props.item.status != null"
+          >
+            <div>{{ props.item.status }}</div>
+            <template v-slot:input>
+              <div class="mt-4">Update Status</div>
+              <v-select
+                :items="statusList"
+                v-model="viewingOrder.status"
+              ></v-select>
+            </template>
+          </v-edit-dialog>
+        </div>
       </template>
 
       <template v-slot:[`item.actions`]="{ item }">
@@ -130,6 +137,7 @@
 export default {
   data() {
     return {
+      editedIndex: -1,
       isRetrievingOrders: false,
       orderInformationDialog: false,
       search: "",
@@ -156,7 +164,14 @@ export default {
       ],
       orders: [],
       initialOrderStatus: null,
-      statusList: ["PENDING", "PROCESSING", "ON-THE-WAY", "DELIVERED"],
+      statusList: [
+        "DECLINED",
+        "PENDING",
+        "PROCESSING",
+        "ON-THE-WAY",
+        "DELIVERED",
+      ],
+      statusListWhereUpdateDisabled: ["CANCELLED", "DELIVERED"],
     };
   },
   mounted() {
@@ -184,22 +199,32 @@ export default {
       this.orderInformationDialog = true;
     },
 
+    editCancel(item) {
+      // Intentionally left blank
+    },
+
+    onCloseEditOrderStatus(item) {
+      // Intentionally left blank
+    },
+
+    onOpenEditOrderStatus(item) {
+      this.viewingOrder = Object.assign({}, item);
+    },
+
     updateStatus(item) {
-      let status = item.status;
+      let originalStatus = item.status;
       item.status = null;
 
       axios
-        .put("/api/v1/orders/" + item.id, { status })
+        .put("/api/v1/orders/" + item.id, { status: this.viewingOrder.status })
         .then((response) => {
           let data = response.data;
           item.status = data.status;
         })
         .catch((error) => {
-          item.status = this.initialOrderStatus;
+          item.status = originalStatus;
         })
-        .finally((_) => {
-          this.initialOrderStatus = null;
-        });
+        .finally((_) => {});
     },
   },
 };

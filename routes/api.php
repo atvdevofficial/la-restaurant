@@ -40,6 +40,8 @@ Route::group(['middleware' => 'forceJsonResponse'], function () {
             // Route::get('/user', function() { return request()->user(); });
             // Route::put('/user/change-password', 'UserController@changePassword');
 
+            Route::get('/dashboard', 'DashboardController')->name('dashboard');
+
             Route::apiResource('customers', 'CustomerController');
 
             Route::apiResource('productCategories', 'ProductCategoryController')

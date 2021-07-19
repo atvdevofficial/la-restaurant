@@ -2237,6 +2237,64 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/addons/AnimatedInteger.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/addons/AnimatedInteger.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "animated-integer",
+  props: {
+    value: {
+      type: Number,
+      required: true
+    }
+  },
+  data: function data() {
+    return {
+      tweeningValue: 0
+    };
+  },
+  watch: {
+    value: function value(newValue, oldValue) {
+      this.tween(oldValue, newValue);
+    }
+  },
+  mounted: function mounted() {
+    this.tween(0, this.value);
+  },
+  methods: {
+    tween: function tween(startValue, endValue) {
+      var vm = this;
+
+      function animate() {
+        if (TWEEN.update()) {
+          requestAnimationFrame(animate);
+        }
+      }
+
+      new TWEEN.Tween({
+        tweeningValue: startValue
+      }).to({
+        tweeningValue: endValue
+      }, 500).onUpdate(function () {
+        vm.tweeningValue = this.tweeningValue.toFixed(2);
+      }).start();
+      animate();
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/administrator/CustomersComponent.vue?vue&type=script&lang=js&":
 /*!*******************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/administrator/CustomersComponent.vue?vue&type=script&lang=js& ***!
@@ -2522,48 +2580,80 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       totalGross: [{
         icon: "mdi-cash",
-        amount: "10,000.00",
-        subtitle: "Total Gross Today | 5 Order(s)"
+        amount: 0.00,
+        orders: 0,
+        subtitle: "Total Gross Today"
       }, {
         icon: "mdi-cash",
-        amount: "10,000.00",
-        subtitle: "Total Gross Weekly | 10 Order(s)"
+        amount: 0.00,
+        orders: 0,
+        subtitle: "Total Gross Weekly"
       }, {
         icon: "mdi-cash",
-        amount: "10,000.00",
-        subtitle: "Total Gross Monthly | 15 Order(s)"
+        amount: 0.00,
+        orders: 0,
+        subtitle: "Total Gross Monthly"
       }, {
         icon: "mdi-cash",
-        amount: "10,000.00",
-        subtitle: "Total Gross Yearly | 20 Order(s)"
+        amount: 0.00,
+        orders: 0,
+        subtitle: "Total Gross"
       }],
       orderStatusTotals: [{
         icon: "mdi-sigma",
         title: "Total Orders",
-        value: 50,
+        value: 0,
         color: "primary"
       }, {
         icon: "mdi-check",
         title: "Completed Orders",
-        value: 50,
+        value: 0,
         color: "green"
       }, {
         icon: "mdi-cancel",
         title: "Cancelled Orders",
-        value: 50,
+        value: 0,
         color: "red"
       }, {
         icon: "mdi-information",
         title: "Other Orders",
-        value: 50,
+        value: 0,
         color: "cyan"
       }]
     };
+  },
+  mounted: function mounted() {
+    this.retrieveDashboard();
+  },
+  methods: {
+    retrieveDashboard: function retrieveDashboard() {
+      var _this = this;
+
+      axios.get("/api/v1/dashboard").then(function (response) {
+        var data = response.data;
+        _this.totalGross[0].amount = data.sales.daily.sum;
+        _this.totalGross[0].orders = data.sales.daily.count;
+        _this.totalGross[1].amount = data.sales.weekly.sum;
+        _this.totalGross[1].orders = data.sales.weekly.count;
+        _this.totalGross[2].amount = data.sales.monthly.sum;
+        _this.totalGross[2].orders = data.sales.monthly.count;
+        _this.totalGross[3].amount = data.sales.overall.sum;
+        _this.totalGross[3].orders = data.sales.overall.count;
+        _this.orderStatusTotals[0].value = data.orders.total;
+        _this.orderStatusTotals[1].value = data.orders.delivered;
+        _this.orderStatusTotals[2].value = data.orders.cancelled;
+        _this.orderStatusTotals[3].value = data.orders.others;
+      })["catch"](function (error) {
+        console.log(error);
+      })["finally"](function (_) {});
+    }
   }
 });
 
@@ -2674,7 +2764,7 @@ __webpack_require__.r(__webpack_exports__);
       // Clear session storage
       sessionStorage.clear(); // Push to sign in
 
-      this.$router.push("signin");
+      this.$router.push("/signin");
     }
   }
 });
@@ -2818,9 +2908,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      editedIndex: -1,
       isRetrievingOrders: false,
       orderInformationDialog: false,
       search: "",
@@ -2868,7 +2966,8 @@ __webpack_require__.r(__webpack_exports__);
       }],
       orders: [],
       initialOrderStatus: null,
-      statusList: ["PENDING", "PROCESSING", "ON-THE-WAY", "DELIVERED"]
+      statusList: ["DECLINED", "PENDING", "PROCESSING", "ON-THE-WAY", "DELIVERED"],
+      statusListWhereUpdateDisabled: ["CANCELLED", "DELIVERED"]
     };
   },
   mounted: function mounted() {
@@ -2892,21 +2991,24 @@ __webpack_require__.r(__webpack_exports__);
       this.viewingOrder = Object.assign({}, item);
       this.orderInformationDialog = true;
     },
+    editCancel: function editCancel(item) {// Intentionally left blank
+    },
+    onCloseEditOrderStatus: function onCloseEditOrderStatus(item) {// Intentionally left blank
+    },
+    onOpenEditOrderStatus: function onOpenEditOrderStatus(item) {
+      this.viewingOrder = Object.assign({}, item);
+    },
     updateStatus: function updateStatus(item) {
-      var _this2 = this;
-
-      var status = item.status;
+      var originalStatus = item.status;
       item.status = null;
       axios.put("/api/v1/orders/" + item.id, {
-        status: status
+        status: this.viewingOrder.status
       }).then(function (response) {
         var data = response.data;
         item.status = data.status;
       })["catch"](function (error) {
-        item.status = _this2.initialOrderStatus;
-      })["finally"](function (_) {
-        _this2.initialOrderStatus = null;
-      });
+        item.status = originalStatus;
+      })["finally"](function (_) {});
     }
   }
 });
@@ -41454,6 +41556,30 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/addons/AnimatedInteger.vue?vue&type=template&id=458fdaaa&":
+/*!*************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/addons/AnimatedInteger.vue?vue&type=template&id=458fdaaa& ***!
+  \*************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("span", [_vm._v(_vm._s(_vm.tweeningValue))])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/administrator/CustomersComponent.vue?vue&type=template&id=199d4a15&":
 /*!***********************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/administrator/CustomersComponent.vue?vue&type=template&id=199d4a15& ***!
@@ -41822,16 +41948,28 @@ var render = function() {
                       _vm._v(" "),
                       _c("v-spacer"),
                       _vm._v(" "),
-                      _c("div", { staticClass: "title" }, [
-                        _vm._v("Php " + _vm._s(item.amount))
-                      ])
+                      _c(
+                        "div",
+                        { staticClass: "title" },
+                        [
+                          _vm._v("\n            Php "),
+                          _c("animated-integer", {
+                            attrs: { value: item.amount }
+                          })
+                        ],
+                        1
+                      )
                     ],
                     1
                   ),
                   _vm._v(" "),
                   _c("v-card-text", [
                     _vm._v(
-                      "\n          " + _vm._s(item.subtitle) + "\n        "
+                      "\n          " +
+                        _vm._s(item.subtitle) +
+                        " | " +
+                        _vm._s(item.orders) +
+                        " Order(s)\n        "
                     )
                   ])
                 ],
@@ -42397,70 +42535,111 @@ var render = function() {
               key: "item.status",
               fn: function(props) {
                 return [
-                  props.item.status == null
-                    ? _c("v-progress-circular", {
-                        attrs: {
-                          size: "20",
-                          width: "2",
-                          indeterminate: "",
-                          color: "primary"
-                        }
-                      })
+                  _vm.statusListWhereUpdateDisabled.includes(props.item.status)
+                    ? _c("div", [
+                        _vm._v(
+                          "\n            " +
+                            _vm._s(props.item.status) +
+                            "\n        "
+                        )
+                      ])
                     : _vm._e(),
                   _vm._v(" "),
-                  props.item.status != null
+                  !_vm.statusListWhereUpdateDisabled.includes(props.item.status)
                     ? _c(
-                        "v-edit-dialog",
-                        {
-                          attrs: {
-                            "return-value": props.item.status,
-                            large: "",
-                            persistent: ""
-                          },
-                          on: {
-                            "update:returnValue": function($event) {
-                              return _vm.$set(props.item, "status", $event)
-                            },
-                            "update:return-value": function($event) {
-                              return _vm.$set(props.item, "status", $event)
-                            },
-                            save: function($event) {
-                              return _vm.updateStatus(props.item)
-                            },
-                            open: function($event) {
-                              _vm.initialOrderStatus = props.item.status
-                            }
-                          },
-                          scopedSlots: _vm._u(
-                            [
-                              {
-                                key: "input",
-                                fn: function() {
-                                  return [
-                                    _c("div", { staticClass: "mt-4" }, [
-                                      _vm._v("Update Status")
-                                    ]),
-                                    _vm._v(" "),
-                                    _c("v-select", {
-                                      attrs: { items: _vm.statusList },
-                                      model: {
-                                        value: props.item.status,
-                                        callback: function($$v) {
-                                          _vm.$set(props.item, "status", $$v)
+                        "div",
+                        [
+                          props.item.status == null
+                            ? _c("v-progress-circular", {
+                                attrs: {
+                                  size: "20",
+                                  width: "2",
+                                  indeterminate: "",
+                                  color: "primary"
+                                }
+                              })
+                            : _vm._e(),
+                          _vm._v(" "),
+                          props.item.status != null
+                            ? _c(
+                                "v-edit-dialog",
+                                {
+                                  attrs: {
+                                    "return-value": props.item.status,
+                                    large: "",
+                                    persistent: ""
+                                  },
+                                  on: {
+                                    "update:returnValue": function($event) {
+                                      return _vm.$set(
+                                        props.item,
+                                        "status",
+                                        $event
+                                      )
+                                    },
+                                    "update:return-value": function($event) {
+                                      return _vm.$set(
+                                        props.item,
+                                        "status",
+                                        $event
+                                      )
+                                    },
+                                    save: function($event) {
+                                      return _vm.updateStatus(props.item)
+                                    },
+                                    cancel: function($event) {
+                                      return _vm.editCancel(props.item)
+                                    },
+                                    open: function($event) {
+                                      return _vm.onOpenEditOrderStatus(
+                                        props.item
+                                      )
+                                    },
+                                    close: function($event) {
+                                      return _vm.onCloseEditOrderStatus(
+                                        props.item
+                                      )
+                                    }
+                                  },
+                                  scopedSlots: _vm._u(
+                                    [
+                                      {
+                                        key: "input",
+                                        fn: function() {
+                                          return [
+                                            _c("div", { staticClass: "mt-4" }, [
+                                              _vm._v("Update Status")
+                                            ]),
+                                            _vm._v(" "),
+                                            _c("v-select", {
+                                              attrs: { items: _vm.statusList },
+                                              model: {
+                                                value: _vm.viewingOrder.status,
+                                                callback: function($$v) {
+                                                  _vm.$set(
+                                                    _vm.viewingOrder,
+                                                    "status",
+                                                    $$v
+                                                  )
+                                                },
+                                                expression:
+                                                  "viewingOrder.status"
+                                              }
+                                            })
+                                          ]
                                         },
-                                        expression: "props.item.status"
+                                        proxy: true
                                       }
-                                    })
-                                  ]
+                                    ],
+                                    null,
+                                    true
+                                  )
                                 },
-                                proxy: true
-                              }
-                            ],
-                            null,
-                            true
-                          )
-                        },
-                        [_c("div", [_vm._v(_vm._s(props.item.status))])]
+                                [_c("div", [_vm._v(_vm._s(props.item.status))])]
+                              )
+                            : _vm._e()
+                        ],
+                        1
                       )
                     : _vm._e()
                 ]
@@ -107370,6 +107549,11 @@ window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.
 
 Vue.component('app', __webpack_require__(/*! ./components/App.vue */ "./resources/js/components/App.vue")["default"]);
 /**
+ * Import addon components
+ */
+
+Vue.component('animated-integer', __webpack_require__(/*! ./components/addons/AnimatedInteger.vue */ "./resources/js/components/addons/AnimatedInteger.vue")["default"]);
+/**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
@@ -107937,6 +108121,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_UnauthenticatedComponent_vue_vue_type_template_id_1aedf752___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_UnauthenticatedComponent_vue_vue_type_template_id_1aedf752___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/addons/AnimatedInteger.vue":
+/*!************************************************************!*\
+  !*** ./resources/js/components/addons/AnimatedInteger.vue ***!
+  \************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _AnimatedInteger_vue_vue_type_template_id_458fdaaa___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./AnimatedInteger.vue?vue&type=template&id=458fdaaa& */ "./resources/js/components/addons/AnimatedInteger.vue?vue&type=template&id=458fdaaa&");
+/* harmony import */ var _AnimatedInteger_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./AnimatedInteger.vue?vue&type=script&lang=js& */ "./resources/js/components/addons/AnimatedInteger.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _AnimatedInteger_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _AnimatedInteger_vue_vue_type_template_id_458fdaaa___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _AnimatedInteger_vue_vue_type_template_id_458fdaaa___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/addons/AnimatedInteger.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/addons/AnimatedInteger.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************!*\
+  !*** ./resources/js/components/addons/AnimatedInteger.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_AnimatedInteger_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./AnimatedInteger.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/addons/AnimatedInteger.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_AnimatedInteger_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/addons/AnimatedInteger.vue?vue&type=template&id=458fdaaa&":
+/*!*******************************************************************************************!*\
+  !*** ./resources/js/components/addons/AnimatedInteger.vue?vue&type=template&id=458fdaaa& ***!
+  \*******************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AnimatedInteger_vue_vue_type_template_id_458fdaaa___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./AnimatedInteger.vue?vue&type=template&id=458fdaaa& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/addons/AnimatedInteger.vue?vue&type=template&id=458fdaaa&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AnimatedInteger_vue_vue_type_template_id_458fdaaa___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AnimatedInteger_vue_vue_type_template_id_458fdaaa___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
