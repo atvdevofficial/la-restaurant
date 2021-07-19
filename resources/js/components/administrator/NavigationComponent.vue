@@ -4,7 +4,7 @@
       <v-app-bar-nav-icon @click="toggler = !toggler"></v-app-bar-nav-icon>
       <v-toolbar-title>MyRestaurant.com</v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn icon><v-icon>mdi-bell</v-icon></v-btn>
+      <v-btn icon to="/a/notifications"><v-icon>mdi-bell</v-icon></v-btn>
     </v-app-bar>
 
     <v-navigation-drawer v-model="toggler" app clipped>

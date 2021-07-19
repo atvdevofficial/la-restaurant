@@ -42830,7 +42830,7 @@ var render = function() {
           _vm._v(" "),
           _c(
             "v-btn",
-            { attrs: { icon: "" } },
+            { attrs: { icon: "", to: "/a/notifications" } },
             [_c("v-icon", [_vm._v("mdi-bell")])],
             1
           )
