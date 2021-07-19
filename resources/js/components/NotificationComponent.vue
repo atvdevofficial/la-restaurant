@@ -6,15 +6,16 @@
           <v-list-item
             three-line
             v-for="(notification, index) in notifications"
-            :key="index">
+            :key="index"
+          >
             <v-list-item-content>
               <v-list-item-title class="font-weight-bold">
-                {{ notification.title }}
+                {{ notification.data.title }}
               </v-list-item-title>
               <v-list-item-subtitle>
-                {{ notification.body }}
+                {{ notification.data.body }}
               </v-list-item-subtitle>
-               <v-list-item-subtitle class="font-italic mt-2">
+              <v-list-item-subtitle class="font-italic mt-2">
                 {{ notification.created_at }}
               </v-list-item-subtitle>
             </v-list-item-content>
@@ -29,16 +30,25 @@
 export default {
   data() {
     return {
-      notifications: [
-          { title: 'Sample Notification', body: 'Sample Notification Body', created_at: '2021-07-16 13:30:30'}
-      ],
+      notifications: [],
     };
   },
   mounted() {
     this.retrieveNotifications();
   },
   methods: {
-    retrieveNotifications() {},
+    retrieveNotifications() {
+      axios
+        .get("/api/v1/notifications")
+        .then((response) => {
+          let data = response.data;
+          this.notifications = data;
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .then((_) => {});
+    },
   },
 };
 </script>

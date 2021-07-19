@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -39,6 +40,10 @@ Route::group(['middleware' => 'forceJsonResponse'], function () {
 
             // Route::get('/user', function() { return request()->user(); });
             // Route::put('/user/change-password', 'UserController@changePassword');
+
+            Route::get('/notifications', function(Request $request) {
+                return $request->user()->notifications;
+            });
 
             Route::get('/dashboard', 'DashboardController')->name('dashboard');
 

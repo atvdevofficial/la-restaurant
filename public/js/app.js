@@ -2021,21 +2021,27 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      notifications: [{
-        title: 'Sample Notification',
-        body: 'Sample Notification Body',
-        created_at: '2021-07-16 13:30:30'
-      }]
+      notifications: []
     };
   },
   mounted: function mounted() {
     this.retrieveNotifications();
   },
   methods: {
-    retrieveNotifications: function retrieveNotifications() {}
+    retrieveNotifications: function retrieveNotifications() {
+      var _this = this;
+
+      axios.get("/api/v1/notifications").then(function (response) {
+        var data = response.data;
+        _this.notifications = data;
+      })["catch"](function (error) {
+        console.log(error);
+      }).then(function (_) {});
+    }
   }
 });
 
@@ -41529,7 +41535,7 @@ var render = function() {
                             [
                               _vm._v(
                                 "\n              " +
-                                  _vm._s(notification.title) +
+                                  _vm._s(notification.data.title) +
                                   "\n            "
                               )
                             ]
@@ -41538,7 +41544,7 @@ var render = function() {
                           _c("v-list-item-subtitle", [
                             _vm._v(
                               "\n              " +
-                                _vm._s(notification.body) +
+                                _vm._s(notification.data.body) +
                                 "\n            "
                             )
                           ]),
