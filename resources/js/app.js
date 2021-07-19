@@ -16,7 +16,12 @@ window.Vue = require('vue');
  * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
  */
 
- Vue.component('app', require('./components/App.vue').default);
+Vue.component('app', require('./components/App.vue').default);
+
+/**
+ * Import addon components
+ */
+Vue.component('animated-integer', require('./components/addons/AnimatedInteger.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

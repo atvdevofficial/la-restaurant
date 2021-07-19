@@ -13,10 +13,12 @@
           <v-card-title>
             <v-icon v-text="item.icon" large color="primary"></v-icon>
             <v-spacer></v-spacer>
-            <div class="title">Php {{ item.amount }}</div>
+            <div class="title">
+              Php <animated-integer :value="item.amount"></animated-integer>
+            </div>
           </v-card-title>
           <v-card-text>
-            {{ item.subtitle }}
+            {{ item.subtitle }} | {{ item.orders }} Order(s)
           </v-card-text>
         </v-card>
       </v-col>
@@ -54,52 +56,89 @@ export default {
       totalGross: [
         {
           icon: "mdi-cash",
-          amount: "10,000.00",
-          subtitle: "Total Gross Today | 5 Order(s)",
+          amount: 0.00,
+          orders: 0,
+          subtitle: "Total Gross Today",
         },
         {
           icon: "mdi-cash",
-          amount: "10,000.00",
-          subtitle: "Total Gross Weekly | 10 Order(s)",
+          amount: 0.00,
+          orders: 0,
+          subtitle: "Total Gross Weekly",
         },
         {
           icon: "mdi-cash",
-          amount: "10,000.00",
-          subtitle: "Total Gross Monthly | 15 Order(s)",
+          amount: 0.00,
+          orders: 0,
+          subtitle: "Total Gross Monthly",
         },
         {
           icon: "mdi-cash",
-          amount: "10,000.00",
-          subtitle: "Total Gross Yearly | 20 Order(s)",
+          amount: 0.00,
+          orders: 0,
+          subtitle: "Total Gross",
         },
       ],
       orderStatusTotals: [
         {
           icon: "mdi-sigma",
           title: "Total Orders",
-          value: 50,
+          value: 0,
           color: "primary",
         },
         {
           icon: "mdi-check",
           title: "Completed Orders",
-          value: 50,
+          value: 0,
           color: "green",
         },
         {
           icon: "mdi-cancel",
           title: "Cancelled Orders",
-          value: 50,
+          value: 0,
           color: "red",
         },
         {
           icon: "mdi-information",
           title: "Other Orders",
-          value: 50,
+          value: 0,
           color: "cyan",
         },
       ],
     };
+  },
+  mounted() {
+      this.retrieveDashboard();
+  },
+  methods: {
+    retrieveDashboard() {
+      axios
+        .get("/api/v1/dashboard")
+        .then((response) => {
+            let data = response.data
+
+            this.totalGross[0].amount = data.sales.daily.sum
+            this.totalGross[0].orders = data.sales.daily.count
+
+            this.totalGross[1].amount = data.sales.weekly.sum
+            this.totalGross[1].orders = data.sales.weekly.count
+
+            this.totalGross[2].amount = data.sales.monthly.sum
+            this.totalGross[2].orders = data.sales.monthly.count
+
+            this.totalGross[3].amount = data.sales.overall.sum
+            this.totalGross[3].orders = data.sales.overall.count
+
+            this.orderStatusTotals[0].value = data.orders.total
+            this.orderStatusTotals[1].value = data.orders.delivered
+            this.orderStatusTotals[2].value = data.orders.cancelled
+            this.orderStatusTotals[3].value = data.orders.others
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally((_) => {});
+    },
   },
 };
 </script>

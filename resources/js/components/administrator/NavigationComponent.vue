@@ -4,7 +4,7 @@
       <v-app-bar-nav-icon @click="toggler = !toggler"></v-app-bar-nav-icon>
       <v-toolbar-title>MyRestaurant.com</v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn icon><v-icon>mdi-bell</v-icon></v-btn>
+      <v-btn icon to="/a/notifications"><v-icon>mdi-bell</v-icon></v-btn>
     </v-app-bar>
 
     <v-navigation-drawer v-model="toggler" app clipped>
@@ -61,6 +61,16 @@
           </v-list-item-icon>
           <v-list-item-content>
             <v-list-item-title>Customers</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+
+        <!-- Delivery -->
+        <v-list-item to="/a/deliveryFees">
+          <v-list-item-icon>
+            <v-icon>mdi-map-marker-distance</v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title>Delivery Fees</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list>

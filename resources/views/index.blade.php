@@ -19,6 +19,7 @@
         <div id="app">
             <app></app>
         </div>
+        <script src="https://cdn.jsdelivr.net/npm/tween.js@16.3.4"></script>
         <script src="{{ asset('js/app.js') }}"></script>
     </body>
 </html>

@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests\DeliveryFee;
+namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
-class DeliveryFeeUpdateRequest extends FormRequest
+class DashboardRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -29,12 +29,8 @@ class DeliveryFeeUpdateRequest extends FormRequest
      */
     public function rules()
     {
-        $deliveryFee = $this->route('deliveryFee');
-
         return [
-            'from' => ['required', 'numeric', 'unique:delivery_fees,from,' . $deliveryFee->id],
-            'to' => ['required', 'numeric', 'unique:delivery_fees,to,' . $deliveryFee->id],
-            'fee' => ['required', 'numeric'],
+            //
         ];
     }
 }
