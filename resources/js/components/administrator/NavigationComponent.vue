@@ -63,6 +63,16 @@
             <v-list-item-title>Customers</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+
+        <!-- Delivery -->
+        <v-list-item to="/a/deliveryFees">
+          <v-list-item-icon>
+            <v-icon>mdi-map-marker-distance</v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title>Delivery Fees</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
       </v-list>
 
       <template v-slot:append>

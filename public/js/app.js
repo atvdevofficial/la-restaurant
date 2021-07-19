@@ -2659,6 +2659,293 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/administrator/DeliveryFeeComponent.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/administrator/DeliveryFeeComponent.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      valid: false,
+      isProcessing: false,
+      dialog: false,
+      dialogDelete: false,
+      retrievingDeliveryFees: false,
+      editedIndex: -1,
+      editedDeliveryFee: {
+        id: null,
+        from: null,
+        to: null,
+        fee: null
+      },
+      defaultDeliveryFee: {
+        id: null,
+        from: null,
+        to: null,
+        fee: null
+      },
+      headers: [{
+        text: "From",
+        value: "from",
+        align: "center"
+      }, {
+        text: "To",
+        value: "to",
+        align: "center"
+      }, {
+        text: "Fee",
+        value: "fee",
+        align: "center"
+      }, {
+        text: "Actions",
+        value: "actions",
+        sortable: false,
+        align: "center"
+      }],
+      deliveryFees: []
+    };
+  },
+  computed: {
+    formTitle: function formTitle() {
+      return this.editedIndex === -1 ? "New Delivery Fee" : "Edit Delivery Fee";
+    }
+  },
+  watch: {
+    dialog: function dialog(val) {
+      val || this.close();
+    },
+    dialogDelete: function dialogDelete(val) {
+      val || this.closeDelete();
+    }
+  },
+  mounted: function mounted() {
+    this.retrieveDeliveryFees();
+  },
+  methods: {
+    retrieveDeliveryFees: function retrieveDeliveryFees() {
+      var _this = this;
+
+      this.retrievingDeliveryFees = true;
+      axios.get("/api/v1/deliveryFees").then(function (response) {
+        var data = response.data;
+        _this.deliveryFees = data;
+      })["catch"](function (error) {
+        console.log(error);
+      }).then(function (_) {
+        _this.retrievingDeliveryFees = false;
+      });
+    },
+    editItem: function editItem(item) {
+      this.editedIndex = this.deliveryFees.indexOf(item);
+      this.editedDeliveryFee = Object.assign({}, item);
+      this.dialog = true;
+    },
+    deleteItem: function deleteItem(item) {
+      this.editedIndex = this.deliveryFees.indexOf(item);
+      this.editedDeliveryFee = Object.assign({}, item);
+      this.dialogDelete = true;
+    },
+    deleteItemConfirm: function deleteItemConfirm() {
+      var _this2 = this;
+
+      axios["delete"]("/api/v1/deliveryFees/" + this.editedDeliveryFee.id).then(function (response) {
+        _this2.deliveryFees.splice(_this2.editedIndex, 1);
+
+        _this2.closeDelete();
+      })["catch"](function (error) {
+        console.log(error);
+      })["finally"](function (_) {});
+    },
+    close: function close() {
+      var _this3 = this;
+
+      this.dialog = false;
+      this.$nextTick(function () {
+        _this3.editedDeliveryFee = Object.assign({}, _this3.defaultProduct);
+        _this3.editedIndex = -1;
+      });
+    },
+    closeDelete: function closeDelete() {
+      var _this4 = this;
+
+      this.dialogDelete = false;
+      this.$nextTick(function () {
+        _this4.editedDeliveryFee = Object.assign({}, _this4.defaultProduct);
+        _this4.editedIndex = -1;
+      });
+    },
+    save: function save() {
+      var _this5 = this;
+
+      if (this.$refs.form.validate()) {
+        this.isProcessing = true;
+
+        if (this.editedIndex > -1) {
+          // Update
+          axios.put("/api/v1/deliveryFees/" + this.editedDeliveryFee.id, _objectSpread({}, this.editedDeliveryFee)).then(function (response) {
+            var data = response.data; // Update product
+
+            Object.assign(_this5.deliveryFees[_this5.editedIndex], data); // Close dialog
+
+            _this5.close();
+          })["catch"](function (error) {
+            console.log(error);
+          })["finally"](function (_) {
+            _this5.isProcessing = false;
+          });
+        } else {
+          // Add
+          axios.post("/api/v1/deliveryFees", _objectSpread({}, this.editedDeliveryFee)).then(function (response) {
+            var data = response.data; // Add new product
+
+            _this5.deliveryFees.push(data); // Close dialog
+
+
+            _this5.close();
+          })["catch"](function (error) {
+            console.log(error);
+          })["finally"](function (_) {
+            _this5.isProcessing = false;
+          });
+        }
+      }
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/administrator/NavigationComponent.vue?vue&type=script&lang=js&":
 /*!********************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/administrator/NavigationComponent.vue?vue&type=script&lang=js& ***!
@@ -2668,6 +2955,16 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -42038,6 +42335,462 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/administrator/DeliveryFeeComponent.vue?vue&type=template&id=ec40ad50&":
+/*!*************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/administrator/DeliveryFeeComponent.vue?vue&type=template&id=ec40ad50& ***!
+  \*************************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "v-container",
+    { attrs: { fluid: "" } },
+    [
+      _c("v-data-table", {
+        attrs: {
+          headers: _vm.headers,
+          items: _vm.deliveryFees,
+          "items-per-page": 10,
+          loading: _vm.retrievingDeliveryFees
+        },
+        scopedSlots: _vm._u(
+          [
+            {
+              key: "top",
+              fn: function() {
+                return [
+                  _c(
+                    "v-toolbar",
+                    { attrs: { flat: "" } },
+                    [
+                      _c("v-spacer"),
+                      _vm._v(" "),
+                      _c(
+                        "v-dialog",
+                        {
+                          attrs: { "max-width": "500px", persistent: "" },
+                          scopedSlots: _vm._u([
+                            {
+                              key: "activator",
+                              fn: function(ref) {
+                                var on = ref.on
+                                var attrs = ref.attrs
+                                return [
+                                  _c(
+                                    "v-btn",
+                                    _vm._g(
+                                      _vm._b(
+                                        {
+                                          staticClass: "mb-2",
+                                          attrs: { color: "primary", dark: "" }
+                                        },
+                                        "v-btn",
+                                        attrs,
+                                        false
+                                      ),
+                                      on
+                                    ),
+                                    [
+                                      _vm._v(
+                                        "\n              New Delivery Fee\n            "
+                                      )
+                                    ]
+                                  )
+                                ]
+                              }
+                            }
+                          ]),
+                          model: {
+                            value: _vm.dialog,
+                            callback: function($$v) {
+                              _vm.dialog = $$v
+                            },
+                            expression: "dialog"
+                          }
+                        },
+                        [
+                          _vm._v(" "),
+                          _c(
+                            "v-card",
+                            [
+                              _c("v-card-title", [
+                                _c("span", { staticClass: "text-h5" }, [
+                                  _vm._v(_vm._s(_vm.formTitle))
+                                ])
+                              ]),
+                              _vm._v(" "),
+                              _c(
+                                "v-card-text",
+                                [
+                                  _c(
+                                    "v-container",
+                                    [
+                                      _c(
+                                        "v-form",
+                                        {
+                                          ref: "form",
+                                          attrs: { "lazy-validation": "" },
+                                          model: {
+                                            value: _vm.valid,
+                                            callback: function($$v) {
+                                              _vm.valid = $$v
+                                            },
+                                            expression: "valid"
+                                          }
+                                        },
+                                        [
+                                          _c(
+                                            "v-row",
+                                            [
+                                              _c(
+                                                "v-col",
+                                                {
+                                                  attrs: { cols: "12", sm: "6" }
+                                                },
+                                                [
+                                                  _c("v-text-field", {
+                                                    attrs: {
+                                                      disabled:
+                                                        _vm.isProcessing,
+                                                      rules: [
+                                                        function(v) {
+                                                          return (
+                                                            v > -1 ||
+                                                            "Field is required"
+                                                          )
+                                                        }
+                                                      ],
+                                                      label: "From",
+                                                      suffix: "Meter(s)",
+                                                      type: "number"
+                                                    },
+                                                    model: {
+                                                      value:
+                                                        _vm.editedDeliveryFee
+                                                          .from,
+                                                      callback: function($$v) {
+                                                        _vm.$set(
+                                                          _vm.editedDeliveryFee,
+                                                          "from",
+                                                          $$v
+                                                        )
+                                                      },
+                                                      expression:
+                                                        "editedDeliveryFee.from"
+                                                    }
+                                                  })
+                                                ],
+                                                1
+                                              ),
+                                              _vm._v(" "),
+                                              _c(
+                                                "v-col",
+                                                {
+                                                  attrs: { cols: "12", sm: "6" }
+                                                },
+                                                [
+                                                  _c("v-text-field", {
+                                                    attrs: {
+                                                      disabled:
+                                                        _vm.isProcessing,
+                                                      rules: [
+                                                        function(v) {
+                                                          return (
+                                                            !!v ||
+                                                            "Field is required"
+                                                          )
+                                                        }
+                                                      ],
+                                                      label: "To",
+                                                      suffix: "Meter(s)",
+                                                      type: "number"
+                                                    },
+                                                    model: {
+                                                      value:
+                                                        _vm.editedDeliveryFee
+                                                          .to,
+                                                      callback: function($$v) {
+                                                        _vm.$set(
+                                                          _vm.editedDeliveryFee,
+                                                          "to",
+                                                          $$v
+                                                        )
+                                                      },
+                                                      expression:
+                                                        "editedDeliveryFee.to"
+                                                    }
+                                                  })
+                                                ],
+                                                1
+                                              ),
+                                              _vm._v(" "),
+                                              _c(
+                                                "v-col",
+                                                {
+                                                  attrs: { cols: "12", sm: "6" }
+                                                },
+                                                [
+                                                  _c("v-text-field", {
+                                                    attrs: {
+                                                      disabled:
+                                                        _vm.isProcessing,
+                                                      rules: [
+                                                        function(v) {
+                                                          return (
+                                                            !!v ||
+                                                            "Field is required"
+                                                          )
+                                                        }
+                                                      ],
+                                                      label: "Fee",
+                                                      prefix: "PHP",
+                                                      type: "number"
+                                                    },
+                                                    model: {
+                                                      value:
+                                                        _vm.editedDeliveryFee
+                                                          .fee,
+                                                      callback: function($$v) {
+                                                        _vm.$set(
+                                                          _vm.editedDeliveryFee,
+                                                          "fee",
+                                                          $$v
+                                                        )
+                                                      },
+                                                      expression:
+                                                        "editedDeliveryFee.fee"
+                                                    }
+                                                  })
+                                                ],
+                                                1
+                                              )
+                                            ],
+                                            1
+                                          )
+                                        ],
+                                        1
+                                      )
+                                    ],
+                                    1
+                                  )
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-card-actions",
+                                [
+                                  _c("v-spacer"),
+                                  _vm._v(" "),
+                                  _c(
+                                    "v-btn",
+                                    {
+                                      attrs: {
+                                        color: "default darken-1",
+                                        text: "",
+                                        disabled: _vm.isProcessing
+                                      },
+                                      on: { click: _vm.close }
+                                    },
+                                    [
+                                      _vm._v(
+                                        "\n                Cancel\n              "
+                                      )
+                                    ]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "v-btn",
+                                    {
+                                      attrs: {
+                                        color: "primary",
+                                        loading: _vm.isProcessing
+                                      },
+                                      on: { click: _vm.save }
+                                    },
+                                    [
+                                      _vm._v(
+                                        "\n                Save\n              "
+                                      )
+                                    ]
+                                  )
+                                ],
+                                1
+                              )
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-dialog",
+                        {
+                          attrs: { "max-width": "320" },
+                          model: {
+                            value: _vm.dialogDelete,
+                            callback: function($$v) {
+                              _vm.dialogDelete = $$v
+                            },
+                            expression: "dialogDelete"
+                          }
+                        },
+                        [
+                          _c(
+                            "v-card",
+                            [
+                              _c(
+                                "v-card-text",
+                                { staticClass: "pa-4 text-center" },
+                                [
+                                  _vm._v(
+                                    "\n              Are you sure you want to delete this delivery fee?\n            "
+                                  )
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-card-actions",
+                                [
+                                  _c("v-spacer"),
+                                  _vm._v(" "),
+                                  _c(
+                                    "v-btn",
+                                    {
+                                      attrs: { color: "default", text: "" },
+                                      on: { click: _vm.closeDelete }
+                                    },
+                                    [_vm._v(" No ")]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "v-btn",
+                                    {
+                                      attrs: { color: "primary darken-1" },
+                                      on: { click: _vm.deleteItemConfirm }
+                                    },
+                                    [
+                                      _vm._v(
+                                        "\n                Yes\n              "
+                                      )
+                                    ]
+                                  ),
+                                  _vm._v(" "),
+                                  _c("v-spacer")
+                                ],
+                                1
+                              )
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                ]
+              },
+              proxy: true
+            },
+            {
+              key: "item.from",
+              fn: function(ref) {
+                var item = ref.item
+                return [
+                  _vm._v(
+                    "\n      " +
+                      _vm._s(parseFloat(item.from).toFixed(1)) +
+                      " Meter(s)\n    "
+                  )
+                ]
+              }
+            },
+            {
+              key: "item.to",
+              fn: function(ref) {
+                var item = ref.item
+                return [
+                  _vm._v(
+                    "\n      " +
+                      _vm._s(parseFloat(item.to).toFixed(1)) +
+                      " Meter(s)\n    "
+                  )
+                ]
+              }
+            },
+            {
+              key: "item.fee",
+              fn: function(ref) {
+                var item = ref.item
+                return [
+                  _vm._v(
+                    "\n      Php " +
+                      _vm._s(parseFloat(item.fee).toFixed(2)) +
+                      "\n    "
+                  )
+                ]
+              }
+            },
+            {
+              key: "item.actions",
+              fn: function(ref) {
+                var item = ref.item
+                return [
+                  _c(
+                    "v-icon",
+                    {
+                      staticClass: "mr-2",
+                      attrs: { small: "" },
+                      on: {
+                        click: function($event) {
+                          return _vm.editItem(item)
+                        }
+                      }
+                    },
+                    [_vm._v(" mdi-pencil ")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-icon",
+                    {
+                      attrs: { small: "" },
+                      on: {
+                        click: function($event) {
+                          return _vm.deleteItem(item)
+                        }
+                      }
+                    },
+                    [_vm._v(" mdi-delete ")]
+                  )
+                ]
+              }
+            }
+          ],
+          null,
+          true
+        )
+      })
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/administrator/NavigationComponent.vue?vue&type=template&id=491b7eac&":
 /*!************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/administrator/NavigationComponent.vue?vue&type=template&id=491b7eac& ***!
@@ -42250,6 +43003,25 @@ var render = function() {
                   _c(
                     "v-list-item-content",
                     [_c("v-list-item-title", [_vm._v("Customers")])],
+                    1
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-list-item",
+                { attrs: { to: "/a/deliveryFees" } },
+                [
+                  _c(
+                    "v-list-item-icon",
+                    [_c("v-icon", [_vm._v("mdi-map-marker-distance")])],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-list-item-content",
+                    [_c("v-list-item-title", [_vm._v("Delivery Fees")])],
                     1
                   )
                 ],
@@ -108333,6 +109105,75 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/administrator/DeliveryFeeComponent.vue":
+/*!************************************************************************!*\
+  !*** ./resources/js/components/administrator/DeliveryFeeComponent.vue ***!
+  \************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _DeliveryFeeComponent_vue_vue_type_template_id_ec40ad50___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./DeliveryFeeComponent.vue?vue&type=template&id=ec40ad50& */ "./resources/js/components/administrator/DeliveryFeeComponent.vue?vue&type=template&id=ec40ad50&");
+/* harmony import */ var _DeliveryFeeComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./DeliveryFeeComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/administrator/DeliveryFeeComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _DeliveryFeeComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _DeliveryFeeComponent_vue_vue_type_template_id_ec40ad50___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _DeliveryFeeComponent_vue_vue_type_template_id_ec40ad50___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/administrator/DeliveryFeeComponent.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/administrator/DeliveryFeeComponent.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************************!*\
+  !*** ./resources/js/components/administrator/DeliveryFeeComponent.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_DeliveryFeeComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./DeliveryFeeComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/administrator/DeliveryFeeComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_DeliveryFeeComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/administrator/DeliveryFeeComponent.vue?vue&type=template&id=ec40ad50&":
+/*!*******************************************************************************************************!*\
+  !*** ./resources/js/components/administrator/DeliveryFeeComponent.vue?vue&type=template&id=ec40ad50& ***!
+  \*******************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DeliveryFeeComponent_vue_vue_type_template_id_ec40ad50___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./DeliveryFeeComponent.vue?vue&type=template&id=ec40ad50& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/administrator/DeliveryFeeComponent.vue?vue&type=template&id=ec40ad50&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DeliveryFeeComponent_vue_vue_type_template_id_ec40ad50___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DeliveryFeeComponent_vue_vue_type_template_id_ec40ad50___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/components/administrator/NavigationComponent.vue":
 /*!***********************************************************************!*\
   !*** ./resources/js/components/administrator/NavigationComponent.vue ***!
@@ -109046,10 +109887,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_administrator_ProductsComponent_vue__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/administrator/ProductsComponent.vue */ "./resources/js/components/administrator/ProductsComponent.vue");
 /* harmony import */ var _components_administrator_ProductCategoriesComponent_vue__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./components/administrator/ProductCategoriesComponent.vue */ "./resources/js/components/administrator/ProductCategoriesComponent.vue");
 /* harmony import */ var _components_administrator_CustomersComponent_vue__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./components/administrator/CustomersComponent.vue */ "./resources/js/components/administrator/CustomersComponent.vue");
-/* harmony import */ var _components_customer_MenuComponent_vue__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./components/customer/MenuComponent.vue */ "./resources/js/components/customer/MenuComponent.vue");
-/* harmony import */ var _components_customer_CheckoutComponent_vue__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./components/customer/CheckoutComponent.vue */ "./resources/js/components/customer/CheckoutComponent.vue");
-/* harmony import */ var _components_customer_OrdersComponent_vue__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./components/customer/OrdersComponent.vue */ "./resources/js/components/customer/OrdersComponent.vue");
-/* harmony import */ var _components_customer_ProfileComponent_vue__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./components/customer/ProfileComponent.vue */ "./resources/js/components/customer/ProfileComponent.vue");
+/* harmony import */ var _components_administrator_DeliveryFeeComponent_vue__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./components/administrator/DeliveryFeeComponent.vue */ "./resources/js/components/administrator/DeliveryFeeComponent.vue");
+/* harmony import */ var _components_customer_MenuComponent_vue__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./components/customer/MenuComponent.vue */ "./resources/js/components/customer/MenuComponent.vue");
+/* harmony import */ var _components_customer_CheckoutComponent_vue__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./components/customer/CheckoutComponent.vue */ "./resources/js/components/customer/CheckoutComponent.vue");
+/* harmony import */ var _components_customer_OrdersComponent_vue__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./components/customer/OrdersComponent.vue */ "./resources/js/components/customer/OrdersComponent.vue");
+/* harmony import */ var _components_customer_ProfileComponent_vue__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./components/customer/ProfileComponent.vue */ "./resources/js/components/customer/ProfileComponent.vue");
 var _modules, _objectSpread2, _objectSpread3;
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
@@ -109057,6 +109899,7 @@ function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (O
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 
 
@@ -109120,6 +109963,12 @@ var routes = [{
       "default": _components_administrator_CustomersComponent_vue__WEBPACK_IMPORTED_MODULE_12__["default"]
     }
   }, {
+    path: '/a/deliveryFees',
+    name: 'deliveryFees',
+    components: {
+      "default": _components_administrator_DeliveryFeeComponent_vue__WEBPACK_IMPORTED_MODULE_13__["default"]
+    }
+  }, {
     path: '/a/notifications',
     name: 'administratorNotifications',
     components: {
@@ -109134,25 +109983,25 @@ var routes = [{
     path: '/c/menu',
     name: 'menu',
     components: {
-      "default": _components_customer_MenuComponent_vue__WEBPACK_IMPORTED_MODULE_13__["default"]
+      "default": _components_customer_MenuComponent_vue__WEBPACK_IMPORTED_MODULE_14__["default"]
     }
   }, {
     path: '/c/checkout',
     name: 'checkout',
     components: {
-      "default": _components_customer_CheckoutComponent_vue__WEBPACK_IMPORTED_MODULE_14__["default"]
+      "default": _components_customer_CheckoutComponent_vue__WEBPACK_IMPORTED_MODULE_15__["default"]
     }
   }, {
     path: '/c/orders',
     name: 'customerOrders',
     components: {
-      "default": _components_customer_OrdersComponent_vue__WEBPACK_IMPORTED_MODULE_15__["default"]
+      "default": _components_customer_OrdersComponent_vue__WEBPACK_IMPORTED_MODULE_16__["default"]
     }
   }, {
     path: '/c/profile',
     name: 'profile',
     components: {
-      "default": _components_customer_ProfileComponent_vue__WEBPACK_IMPORTED_MODULE_16__["default"]
+      "default": _components_customer_ProfileComponent_vue__WEBPACK_IMPORTED_MODULE_17__["default"]
     }
   }, {
     path: '/c/notifications',
@@ -109185,7 +110034,7 @@ var modules = (_modules = {
   dashboard: true,
   orders: true,
   products: true
-}, _defineProperty(_modules, "orders", true), _defineProperty(_modules, "productCategories", true), _defineProperty(_modules, "customers", true), _defineProperty(_modules, "administratorNotifications", true), _defineProperty(_modules, "menu", true), _defineProperty(_modules, "checkout", true), _defineProperty(_modules, "customerOrders", true), _defineProperty(_modules, "profile", true), _defineProperty(_modules, "customerNotifications", true), _defineProperty(_modules, 404, true), _defineProperty(_modules, 401, true), _modules);
+}, _defineProperty(_modules, "orders", true), _defineProperty(_modules, "productCategories", true), _defineProperty(_modules, "customers", true), _defineProperty(_modules, "deliveryFees", true), _defineProperty(_modules, "administratorNotifications", true), _defineProperty(_modules, "menu", true), _defineProperty(_modules, "checkout", true), _defineProperty(_modules, "customerOrders", true), _defineProperty(_modules, "profile", true), _defineProperty(_modules, "customerNotifications", true), _defineProperty(_modules, 404, true), _defineProperty(_modules, 401, true), _modules);
 var modulePermissions = {
   administrator: _objectSpread(_objectSpread({}, modules), {}, {
     "default": 'dashboard',
@@ -109204,13 +110053,13 @@ var modulePermissions = {
     dashboard: false,
     orders: false,
     products: false
-  }, _defineProperty(_objectSpread2, "orders", false), _defineProperty(_objectSpread2, "productCategories", false), _defineProperty(_objectSpread2, "customers", false), _defineProperty(_objectSpread2, "administratorNotifications", false), _objectSpread2)),
+  }, _defineProperty(_objectSpread2, "orders", false), _defineProperty(_objectSpread2, "productCategories", false), _defineProperty(_objectSpread2, "customers", false), _defineProperty(_objectSpread2, "deliveryFees", false), _defineProperty(_objectSpread2, "administratorNotifications", false), _objectSpread2)),
   unauthenticated: _objectSpread(_objectSpread({}, modules), {}, (_objectSpread3 = {
     "default": 'signin',
     dashboard: false,
     orders: false,
     products: false
-  }, _defineProperty(_objectSpread3, "orders", false), _defineProperty(_objectSpread3, "productCategories", false), _defineProperty(_objectSpread3, "customers", false), _defineProperty(_objectSpread3, "menu", false), _defineProperty(_objectSpread3, "checkout", false), _defineProperty(_objectSpread3, "customerOrders", false), _defineProperty(_objectSpread3, "profile", false), _objectSpread3))
+  }, _defineProperty(_objectSpread3, "orders", false), _defineProperty(_objectSpread3, "productCategories", false), _defineProperty(_objectSpread3, "customers", false), _defineProperty(_objectSpread3, "deliveryFees", false), _defineProperty(_objectSpread3, "administratorNotifications", false), _defineProperty(_objectSpread3, "menu", false), _defineProperty(_objectSpread3, "checkout", false), _defineProperty(_objectSpread3, "customerOrders", false), _defineProperty(_objectSpread3, "profile", false), _defineProperty(_objectSpread3, "customerNotifications", false), _objectSpread3))
 };
 router.beforeEach(function (to, from, next) {
   var _sessionStorage$getIt;

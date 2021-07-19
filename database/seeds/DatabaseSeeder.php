@@ -27,5 +27,9 @@ class DatabaseSeeder extends Seeder
             $product->productCategories()->sync([$productCategory->id]);
         }
 
+        // Delivery Fees
+        factory(\App\DeliveryFee::class)->create(['from' => 0, 'to' => 3, 'fee' => 50]);
+        factory(\App\DeliveryFee::class)->create(['from' => 3, 'to' => 6, 'fee' => 75]);
+        factory(\App\DeliveryFee::class)->create(['from' => 6, 'to' => 9, 'fee' => 100]);
     }
 }

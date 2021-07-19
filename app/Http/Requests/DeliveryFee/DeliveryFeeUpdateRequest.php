@@ -29,9 +29,11 @@ class DeliveryFeeUpdateRequest extends FormRequest
      */
     public function rules()
     {
+        $deliveryFee = $this->route('deliveryFee');
+
         return [
-            'from' => ['required', 'numeric', 'unique:delivery_fees,from'],
-            'to' => ['required', 'numeric', 'unique:delivery_fees,to'],
+            'from' => ['required', 'numeric', 'unique:delivery_fees,from,' . $deliveryFee->id],
+            'to' => ['required', 'numeric', 'unique:delivery_fees,to,' . $deliveryFee->id],
             'fee' => ['required', 'numeric'],
         ];
     }
