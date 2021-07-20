@@ -1,7 +1,7 @@
 <template>
-  <v-container class="ma-0 pa-0">
+  <v-container>
     <v-text-field v-model="search" v-show="false"></v-text-field>
-    <v-row justify="center" no-gutters>
+    <v-row justify="center" align="center" no-gutters>
       <v-col cols="12" sm="10" md="8" lg="6" xl="4">
         <v-list class="pa-0">
           <v-list-item
@@ -92,6 +92,38 @@
         <v-divider></v-divider>
 
         <v-card-actions>
+          <v-dialog v-model="dialogCancel" max-width="320">
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn color="error" text v-bind="attrs" v-on="on" v-show="!statusListWhereCancellationDisabled.includes(viewingOrder.status)">
+                Cancel Order
+              </v-btn>
+            </template>
+            <v-card>
+              <v-card-text class="pa-4 text-center">
+                Are you sure you want to cancel this order?
+              </v-card-text>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn
+                  color="default"
+                  text
+                  @click="dialogCancel = false"
+                  :disabled="isProcessing"
+                >
+                  No
+                </v-btn>
+                <v-btn
+                  color="primary darken-1"
+                  @click="cancelOrderConfirm"
+                  :loading="isProcessing"
+                >
+                  Yes
+                </v-btn>
+                <v-spacer></v-spacer>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+
           <v-spacer></v-spacer>
           <v-btn color="default" text @click="orderInformationDialog = false">
             Close
@@ -106,8 +138,11 @@
 export default {
   data() {
     return {
-      search: this.$route.params.code ?? '',
+      isProcessing: false,
+      dialogCancel: false,
+      search: this.$route.params.code ?? "",
       orderInformationDialog: false,
+      editedIndex: -1,
       viewingOrder: {
         code: null,
         customer: null,
@@ -120,6 +155,7 @@ export default {
         items: [{ name: null, price: 0, quantity: 0 }],
       },
       orders: [],
+      statusListWhereCancellationDisabled: ["CANCELLED", "DECLINED", "DELIVERED"],
     };
   },
   computed: {
@@ -137,6 +173,7 @@ export default {
   },
   methods: {
     viewOrder(order) {
+      this.editedIndex = this.orders.indexOf(order);
       this.viewingOrder = Object.assign({}, order);
       this.orderInformationDialog = true;
     },
@@ -151,6 +188,23 @@ export default {
           console.log(error);
         })
         .finally((_) => {});
+    },
+
+    cancelOrderConfirm() {
+      this.isProcessing = true;
+      axios
+        .put("/api/v1/orders/" + this.viewingOrder.id, { status: "CANCELLED" })
+        .then((response) => {
+          this.orders[this.editedIndex].status = "CANCELLED";
+          this.dialogCancel = false;
+          this.orderInformationDialog = false;
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally((_) => {
+          this.isProcessing = false;
+        });
     },
   },
 };

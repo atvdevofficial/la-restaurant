@@ -1,0 +1,36 @@
++--------+---------------+--------------------------------------------+---------------------------+-----------------------------------------------------------+--------------------------------+
+| Domain | Method        | URI                                        | Name                      | Action                                                    | Middleware                     |
++--------+---------------+--------------------------------------------+---------------------------+-----------------------------------------------------------+--------------------------------+
+|        | GET|HEAD      | api/v1/customers                           | customers.index           | App\Http\Controllers\CustomerController@index             | api,forceJsonResponse,auth:api |
+|        | POST          | api/v1/customers                           | customers.store           | App\Http\Controllers\CustomerController@store             | api,forceJsonResponse,auth:api |
+|        | PUT|PATCH     | api/v1/customers/{customer}                | customers.update          | App\Http\Controllers\CustomerController@update            | api,forceJsonResponse,auth:api |
+|        | DELETE        | api/v1/customers/{customer}                | customers.destroy         | App\Http\Controllers\CustomerController@destroy           | api,forceJsonResponse,auth:api |
+|        | GET|HEAD      | api/v1/customers/{customer}                | customers.show            | App\Http\Controllers\CustomerController@show              | api,forceJsonResponse,auth:api |
+|        | GET|HEAD      | api/v1/dashboard                           | dashboard                 | App\Http\Controllers\DashboardController                  | api,forceJsonResponse,auth:api |
+|        | POST          | api/v1/deliveryFees                        | deliveryFees.store        | App\Http\Controllers\DeliveryFeeController@store          | api,forceJsonResponse,auth:api |
+|        | GET|HEAD      | api/v1/deliveryFees                        | deliveryFees.index        | App\Http\Controllers\DeliveryFeeController@index          | api,forceJsonResponse          |
+|        | DELETE        | api/v1/deliveryFees/{deliveryFee}          | deliveryFees.destroy      | App\Http\Controllers\DeliveryFeeController@destroy        | api,forceJsonResponse,auth:api |
+|        | PUT|PATCH     | api/v1/deliveryFees/{deliveryFee}          | deliveryFees.update       | App\Http\Controllers\DeliveryFeeController@update         | api,forceJsonResponse,auth:api |
+|        | GET|HEAD      | api/v1/deliveryFees/{deliveryFee}          | deliveryFees.show         | App\Http\Controllers\DeliveryFeeController@show           | api,forceJsonResponse          |
+|        | POST          | api/v1/login                               |                           | App\Http\Controllers\AuthController@login                 | api,forceJsonResponse          |
+|        | GET|HEAD      | api/v1/notifications                       |                           | Closure                                                   | api,forceJsonResponse,auth:api |
+|        | POST          | api/v1/orders                              | orders.store              | App\Http\Controllers\OrderController@store                | api,forceJsonResponse,auth:api |
+|        | GET|HEAD      | api/v1/orders                              | orders.index              | App\Http\Controllers\OrderController@index                | api,forceJsonResponse,auth:api |
+|        | DELETE        | api/v1/orders/{order}                      | orders.destroy            | App\Http\Controllers\OrderController@destroy              | api,forceJsonResponse,auth:api |
+|        | PUT|PATCH     | api/v1/orders/{order}                      | orders.update             | App\Http\Controllers\OrderController@update               | api,forceJsonResponse,auth:api |
+|        | GET|HEAD      | api/v1/orders/{order}                      | orders.show               | App\Http\Controllers\OrderController@show                 | api,forceJsonResponse,auth:api |
+|        | GET|HEAD      | api/v1/productCategories                   | productCategories.index   | App\Http\Controllers\ProductCategoryController@index      | api,forceJsonResponse          |
+|        | POST          | api/v1/productCategories                   | productCategories.store   | App\Http\Controllers\ProductCategoryController@store      | api,forceJsonResponse,auth:api |
+|        | PUT|PATCH     | api/v1/productCategories/{productCategory} | productCategories.update  | App\Http\Controllers\ProductCategoryController@update     | api,forceJsonResponse,auth:api |
+|        | DELETE        | api/v1/productCategories/{productCategory} | productCategories.destroy | App\Http\Controllers\ProductCategoryController@destroy    | api,forceJsonResponse,auth:api |
+|        | GET|HEAD      | api/v1/productCategories/{productCategory} | productCategories.show    | App\Http\Controllers\ProductCategoryController@show       | api,forceJsonResponse          |
+|        | POST          | api/v1/products                            | products.store            | App\Http\Controllers\ProductController@store              | api,forceJsonResponse,auth:api |
+|        | GET|HEAD      | api/v1/products                            | products.index            | App\Http\Controllers\ProductController@index              | api,forceJsonResponse          |
+|        | DELETE        | api/v1/products/{product}                  | products.destroy          | App\Http\Controllers\ProductController@destroy            | api,forceJsonResponse,auth:api |
+|        | PUT|PATCH     | api/v1/products/{product}                  | products.update           | App\Http\Controllers\ProductController@update             | api,forceJsonResponse,auth:api |
+|        | GET|HEAD      | api/v1/products/{product}                  | products.show             | App\Http\Controllers\ProductController@show               | api,forceJsonResponse          |
+|        | GET|HEAD      | auth/callback/{provider}                   |                           | App\Http\Controllers\GoogleLoginController@runCallback    | web                            |
+|        | GET|HEAD      | auth/{provider}                            |                           | App\Http\Controllers\GoogleLoginController@redirectGoogle | web                            |
+|        | GET|POST|HEAD | broadcasting/auth                          |                           | Illuminate\Broadcasting\BroadcastController@authenticate  | auth:api                       |
+|        | GET|HEAD      | {any}                                      |                           | Closure                                                   | web                            |
++--------+---------------+--------------------------------------------+---------------------------+-----------------------------------------------------------+--------------------------------+
