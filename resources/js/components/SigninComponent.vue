@@ -100,7 +100,7 @@ export default {
           sessionStorage.setItem("profileId", profileId);
 
           // Pusher authToken
-          // Echo.connector.pusher.config.auth.headers["Authorization"] = "Bearer " + authToken;
+          Echo.connector.pusher.config.auth.headers["Authorization"] = "Bearer " + authToken;
 
           // Push to dashboard
           if (userRole == "ADMINISTRATOR") this.$router.push("/a/dashboard");

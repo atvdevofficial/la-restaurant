@@ -1,11 +1,12 @@
 <template>
   <v-container class="ma-0 pa-0">
+    <v-text-field v-model="search" v-show="false"></v-text-field>
     <v-row justify="center" no-gutters>
       <v-col cols="12" sm="10" md="8" lg="6" xl="4">
         <v-list class="pa-0">
           <v-list-item
             two-line
-            v-for="(order, index) in orders"
+            v-for="(order, index) in filteredOrdersBySearch"
             :key="index"
             @click="viewOrder(order)"
           >
@@ -105,6 +106,7 @@
 export default {
   data() {
     return {
+      search: this.$route.params.code ?? '',
       orderInformationDialog: false,
       viewingOrder: {
         code: null,
@@ -120,6 +122,16 @@ export default {
       orders: [],
     };
   },
+  computed: {
+    filteredOrdersBySearch() {
+      return this.orders.filter((order) => {
+        return this.search
+          .toLowerCase()
+          .split(" ")
+          .every((v) => order.code.toLowerCase().includes(v));
+      });
+    },
+  },
   mounted() {
     this.retrieveOrders();
   },
@@ -133,12 +145,12 @@ export default {
       axios
         .get("/api/v1/orders")
         .then((response) => {
-            this.orders = response.data
+          this.orders = response.data;
         })
         .catch((error) => {
           console.log(error);
         })
-        .finally((_) => { });
+        .finally((_) => {});
     },
   },
 };

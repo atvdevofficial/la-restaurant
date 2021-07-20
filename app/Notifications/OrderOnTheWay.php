@@ -32,7 +32,7 @@ class OrderOnTheWay extends Notification
      */
     public function via($notifiable)
     {
-        return ['database'];
+        return ['database', 'broadcast'];
     }
 
     /**
@@ -45,7 +45,11 @@ class OrderOnTheWay extends Notification
     {
         return [
             'title' => 'Order On The Way',
-            'body' => 'Your order is on its way.'
+            'body' => 'Your order is on its way.',
+            'data' => [
+                'id' => $this->order->id,
+                'code' => $this->order->code,
+            ]
         ];
     }
 }

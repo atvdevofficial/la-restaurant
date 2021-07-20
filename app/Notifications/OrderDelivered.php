@@ -32,7 +32,7 @@ class OrderDelivered extends Notification
      */
     public function via($notifiable)
     {
-        return ['database'];
+        return ['database', 'broadcast'];
     }
 
     /**
@@ -45,7 +45,11 @@ class OrderDelivered extends Notification
     {
         return [
             'title' => 'Order Delivered',
-            'body' => 'Your order was delivered.'
+            'body' => 'Your order was delivered.',
+            'data' => [
+                'id' => $this->order->id,
+                'code' => $this->order->code,
+            ]
         ];
     }
 }

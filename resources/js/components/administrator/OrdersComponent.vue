@@ -1,5 +1,6 @@
 <template>
   <v-container fluid>
+    <v-text-field v-model="search" v-show="false"></v-text-field>
     <div class="caption font-italic ma-1">
       Note: Click the status of the corresponding order to update.
     </div>
@@ -91,9 +92,9 @@
       </template>
 
       <template v-slot:[`item.status`]="props">
-          <div v-if="statusListWhereUpdateDisabled.includes(props.item.status)">
-              {{ props.item.status }}
-          </div>
+        <div v-if="statusListWhereUpdateDisabled.includes(props.item.status)">
+          {{ props.item.status }}
+        </div>
         <div v-if="!statusListWhereUpdateDisabled.includes(props.item.status)">
           <v-progress-circular
             size="20"
@@ -140,7 +141,7 @@ export default {
       editedIndex: -1,
       isRetrievingOrders: false,
       orderInformationDialog: false,
-      search: "",
+      search: this.$route.params.code,
       viewingOrder: {
         code: null,
         customer: null,

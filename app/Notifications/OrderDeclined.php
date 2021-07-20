@@ -32,7 +32,7 @@ class OrderDeclined extends Notification
      */
     public function via($notifiable)
     {
-        return ['database'];
+        return ['database', 'broadcast'];
     }
 
     /**
@@ -45,7 +45,11 @@ class OrderDeclined extends Notification
     {
         return [
             'title' => 'Order Declined',
-            'body' => 'Your order was declined.'
+            'body' => 'Your order was declined.',
+            'data' => [
+                'id' => $this->order->id,
+                'code' => $this->order->code,
+            ]
         ];
     }
 }

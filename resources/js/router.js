@@ -42,7 +42,7 @@ const routes = [
         component: ScaffoldComponent,
         children: [
             { path: '/a/dashboard', name: 'dashboard', components: { default: DashboardComponent } },
-            { path: '/a/orders', name: 'orders', components: { default: OrdersComponent } },
+            { path: '/a/orders', name: 'orders', components: { default: OrdersComponent }, props: { code: null } },
             { path: '/a/products', name: 'products', components: { default: ProductsComponent } },
             { path: '/a/productCategories', name: 'productCategories', components: { default: ProductCategoriesComponent } },
             { path: '/a/customers', name: 'customers', components: { default: CustomersComponent } },
@@ -57,7 +57,7 @@ const routes = [
         children: [
             { path: '/c/menu', name: 'menu', components: { default: MenuComponent } },
             { path: '/c/checkout', name: 'checkout', components: { default: CheckoutComponent } },
-            { path: '/c/orders', name: 'customerOrders', components: { default: CustomerOrderComponent } },
+            { path: '/c/orders', name: 'customerOrders', components: { default: CustomerOrderComponent }, props: { code: null }  },
             { path: '/c/profile', name: 'profile', components: { default: ProfileComponent } },
             { path: '/c/notifications', name: 'customerNotifications', components: { default: NotificationsComponent } },
         ]

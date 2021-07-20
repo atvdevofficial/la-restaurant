@@ -32,7 +32,7 @@ class NewOrder extends Notification
      */
     public function via($notifiable)
     {
-        return ['database'];
+        return ['database', 'broadcast'];
     }
 
     /**
@@ -45,7 +45,11 @@ class NewOrder extends Notification
     {
         return [
             'title' => 'New Order',
-            'body' => 'A new order has been submitted.'
+            'body' => 'A new order has been submitted.',
+            'data' => [
+                'id' => $this->order->id,
+                'code' => $this->order->code,
+            ]
         ];
     }
 }
