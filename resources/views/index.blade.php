@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Template</title>
+        <title>My Restaurant</title>
         <meta content="" name="descriptison">
         <meta content="" name="keywords">
 

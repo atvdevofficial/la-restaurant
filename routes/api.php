@@ -57,6 +57,7 @@ Route::group(['middleware' => 'forceJsonResponse'], function () {
 
             Route::apiResource('orders', 'OrderController');
 
+            Route::get('delivery-fees/calculate', 'DeliveryFeeController@calculate')->name('deliveryFees.calculate');
             Route::apiResource('deliveryFees', 'DeliveryFeeController')
                 ->only(['store', 'update', 'destroy']);
         });

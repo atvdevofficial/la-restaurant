@@ -27,7 +27,9 @@
         "laravel-echo": "^1.11.0",
         "pusher-js": "^7.0.3",
         "vue-router": "^3.5.2",
+        "vue2-google-maps": "^0.10.7",
         "vuetify": "^2.5.5",
-        "vuex": "^3.6.2"
+        "vuex": "^3.6.2",
+        "vuex-persistedstate": "^4.0.0"
     }
 }

@@ -80,7 +80,42 @@
                     v-model="customerInformation.address"
                   >
                     <template v-slot:append-outer>
-                      <v-icon @click="dialogMap = true">mdi-earth</v-icon>
+                      <v-dialog v-model="dialogMap" width="500">
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-icon v-bind="attrs" v-on="on">mdi-earth</v-icon>
+                        </template>
+
+                        <v-card>
+                          <v-card-title></v-card-title>
+
+                          <v-card-text>
+                            <GmapMap
+                              style="width: 100%; height: 400px"
+                              :zoom="15"
+                              :center="centerCoordinates"
+                            >
+                              <GmapMarker
+                                @dragend="mapMarkerDragEnd"
+                                :draggable="true"
+                                :position="positionCoordinates"
+                              />
+                            </GmapMap>
+                          </v-card-text>
+
+                          <v-divider></v-divider>
+
+                          <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn
+                              color="default"
+                              text
+                              @click="dialogMap = false"
+                            >
+                              Close
+                            </v-btn>
+                          </v-card-actions>
+                        </v-card>
+                      </v-dialog>
                     </template>
                   </v-text-field>
                 </div>
@@ -105,15 +140,32 @@
 
               <v-col cols="6"
                 ><div class="caption">Delivery Fee</div>
-                <div>Php {{ parseFloat(100).toFixed(2) }}</div></v-col
-              >
+                <div>
+                  <span v-if="!isCalculating && deliveryFee != null">
+                    Php {{ parseFloat(deliveryFee).toFixed(2) }} (
+                    {{ parseFloat(deliveryDistance / 1000).toFixed(3) }} KM )
+                  </span>
+                  <span
+                    v-if="isCalculating && deliveryFee != null"
+                    class="font-italic"
+                  >
+                    Calculating Delivery Fee. Please Wait...
+                  </span>
+                  <span
+                    v-if="!isCalculating && deliveryFee == null"
+                    class="font-italic"
+                  >
+                    Location Out Of Reach.
+                  </span>
+                </div>
+              </v-col>
 
               <v-col cols="6"
                 ><div class="caption">Grand Total</div>
                 <div class="font-weight-bold title">
                   Php {{ parseFloat(cartSubTotal + 100).toFixed(2) }}
-                </div></v-col
-              >
+                </div>
+              </v-col>
             </v-row>
           </v-card-text>
         </v-card>
@@ -124,7 +176,14 @@
           persistent
         >
           <template v-slot:activator="{ on, attrs }">
-            <v-btn block color="primary" v-bind="attrs" v-on="on" class="my-2">
+            <v-btn
+              block
+              color="primary"
+              v-bind="attrs"
+              v-on="on"
+              class="my-2"
+              :disabled="deliveryFee == null"
+            >
               Checkout
             </v-btn>
           </template>
@@ -252,6 +311,7 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   data() {
     return {
+      isCalculating: false,
       isProcessing: false,
 
       editedIndex: -1,
@@ -278,17 +338,26 @@ export default {
         email: null,
       },
 
+      deliveryFee: null,
+      deliveryDistance: 0,
+
       snackbar: {
         visible: false,
         message: "",
       },
+
+      // Google Maps Variables
+      centerCoordinates: { lat: 6.9214, lng: 122.079 },
+      positionCoordinates: { lat: 6.9214, lng: 122.079 },
     };
   },
   computed: {
     ...mapGetters(["cart", "cartSubTotal", "cartItemsCount"]),
   },
   mounted() {
+    this.getUserGeolocation();
     this.retrieveCustomerProfile();
+    // this.calculateDeliveryFee();
   },
   methods: {
     ...mapActions(["updateCartProduct", "removeCartProduct", "clearCartItems"]),
@@ -385,6 +454,64 @@ export default {
     deleteProduct() {
       this.removeCartProduct(this.cart[this.editedIndex]);
       this.dialogInformation = false;
+    },
+
+    mapMarkerDragEnd(event) {
+      var userGeolocationLatitude = event.latLng.lat();
+      var userGeolocationLongitude = event.latLng.lng();
+      this.positionCoordinates = {
+        lat: userGeolocationLatitude,
+        lng: userGeolocationLongitude,
+      };
+
+      this.calculateDeliveryFee();
+    },
+
+    // Get User Geolocation
+    getUserGeolocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(this.setUserGeolocation);
+      } else {
+        window.clearInterval(window.locationInterval);
+        alert("Geolocation is not supported by this browser.");
+      }
+    },
+
+    // Set User Geolocation
+    setUserGeolocation(position) {
+      var userGeolocationLatitude = position.coords.latitude;
+      var userGeolocationLongitude = position.coords.longitude;
+      this.centerCoordinates = {
+        lat: userGeolocationLatitude,
+        lng: userGeolocationLongitude,
+      };
+      this.positionCoordinates = this.centerCoordinates;
+
+      this.calculateDeliveryFee();
+    },
+
+    calculateDeliveryFee() {
+      console.log('Calculate Delivery Fee: ' + Date.now());
+      this.isCalculating = true;
+      axios
+        .get("/api/v1/delivery-fees/calculate", {
+          params: {
+            latitude: this.positionCoordinates.lat,
+            longitude: this.positionCoordinates.lng,
+          },
+        })
+        .then((response) => {
+          var data = response.data;
+
+          this.deliveryFee = data.fee;
+          this.deliveryDistance = data.distance;
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally((_) => {
+          this.isCalculating = false;
+        });
     },
   },
 };

@@ -28,7 +28,7 @@ Vue.component('animated-integer', require('./components/addons/AnimatedInteger.v
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
-
+import './google-maps.js'
 import router from './router.js'
 import vuetify from './vuetify.js'
 import store from './store'
