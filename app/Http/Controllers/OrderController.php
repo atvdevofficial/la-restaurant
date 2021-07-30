@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\DeliveryFee;
 use App\Http\Requests\Order\OrderDestroyRequest;
 use App\Http\Requests\Order\OrderIndexRequest;
 use App\Http\Requests\Order\OrderShowRequest;
@@ -56,13 +57,20 @@ class OrderController extends Controller
             'longitude' => $request->validated()['longitude'],
             'distance' => $request->validated()['distance'],
             'sub_total' => 99999,
-            'delivery_fee' => 99999,
+            'delivery_fee' => null,
             'grand_total' => 99999,
             'status' => 'PENDING'
         ];
 
         // Delivery Fee
-        $orderData['delivery_fee'] = 100;
+        $distance = $orderData['distance'];
+        $deliveryFee = DeliveryFee::where('from', '<=', $distance)->where('to', '>=', $distance)->first();
+        $fee = $deliveryFee ? $deliveryFee->fee : null;
+
+        if ($fee)
+            $orderData['delivery_fee'] = $fee;
+        else
+            return response(['message' => 'Location Out Of Reach.'], 422);
 
         // Order Products
         $subTotal = 0; $orderProductsInfo = [];

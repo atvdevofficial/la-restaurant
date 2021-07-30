@@ -422,7 +422,7 @@ export default {
             };
           }
         })
-        .finally((fin) => {
+        .finally(_ => {
           this.isProcessing = false;
           this.dialogCheckoutConfirmation = false;
         });
