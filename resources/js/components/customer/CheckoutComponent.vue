@@ -422,7 +422,7 @@ export default {
             };
           }
         })
-        .finally(_ => {
+        .finally((_) => {
           this.isProcessing = false;
           this.dialogCheckoutConfirmation = false;
         });
@@ -464,6 +464,7 @@ export default {
         lng: userGeolocationLongitude,
       };
 
+      this.reverseGeocode();
       this.calculateDeliveryFee();
     },
 
@@ -491,7 +492,7 @@ export default {
     },
 
     calculateDeliveryFee() {
-      console.log('Calculate Delivery Fee: ' + Date.now());
+      console.log("Calculate Delivery Fee: " + Date.now());
       this.isCalculating = true;
       axios
         .get("/api/v1/delivery-fees/calculate", {
@@ -512,6 +513,26 @@ export default {
         .finally((_) => {
           this.isCalculating = false;
         });
+    },
+
+    reverseGeocode() {
+      axios.defaults.headers.post["Content-Type"] =
+        "application/x-www-form-urlencoded";
+      axios
+        .get(
+          "https://maps.google.com/maps/api/geocode/json?latlng=" +
+            this.positionCoordinates.lat +
+            "," +
+            this.positionCoordinates.lng +
+            "&key=AIzaSyCTtgC7N8qY_76MrE0fgdZM9_C4dHOcpEw"
+        )
+        .then((response) => {
+          console.log(response.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => (this.loading = false));
     },
   },
 };

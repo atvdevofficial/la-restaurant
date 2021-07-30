@@ -20,12 +20,26 @@
 
             <v-card-text class="mt-4">
               <v-row>
-                <v-col cols="12"> --- Insert Map Here --- </v-col>
+                <v-col cols="12">
+                  <GmapMap
+                    style="width: 100%; height: 400px"
+                    :zoom="10"
+                    :center="centerCoordinates"
+                  >
+                    <GmapMarker
+                      @dragend="mapMarkerDragEnd"
+                      :draggable="true"
+                      :position="positionCoordinates"
+                    />
+                  </GmapMap>
+                </v-col>
                 <v-col cols="12"><v-divider></v-divider></v-col>
                 <v-col cols="4">
                   <v-card>
                     <v-card-title class="justify-center">
-                      <div class="title">0</div>
+                      <div class="title">
+                        {{ viewingCustomer.order_count.total }}
+                      </div>
                     </v-card-title>
                     <v-card-text class="text-center"> Orders </v-card-text>
                   </v-card>
@@ -33,7 +47,9 @@
                 <v-col cols="4">
                   <v-card>
                     <v-card-title class="justify-center">
-                      <div class="title">0</div>
+                      <div class="title">
+                        {{ viewingCustomer.order_count.delivered }}
+                      </div>
                     </v-card-title>
                     <v-card-text class="text-center"> Delivered </v-card-text>
                   </v-card>
@@ -41,7 +57,9 @@
                 <v-col cols="4">
                   <v-card>
                     <v-card-title class="justify-center">
-                      <div class="title">0</div>
+                      <div class="title">
+                        {{ viewingCustomer.order_count.cancelled }}
+                      </div>
                     </v-card-title>
                     <v-card-text class="text-center"> Cancelled </v-card-text>
                   </v-card>
@@ -122,7 +140,7 @@ export default {
           id: null,
           email: null,
         },
-        orders: {
+        order_count: {
           total: 0,
           delivered: 0,
           cancelled: 0,
@@ -140,7 +158,7 @@ export default {
           id: null,
           email: null,
         },
-        orders: {
+        order_count: {
           total: 0,
           delivered: 0,
           cancelled: 0,
@@ -148,6 +166,10 @@ export default {
       },
       editedIndex: -1,
       customers: [],
+
+      // Google Maps Variables
+      centerCoordinates: { lat: 6.9214, lng: 122.079 },
+      positionCoordinates: { lat: 6.9214, lng: 122.079 },
     };
   },
   watch: {
@@ -179,6 +201,11 @@ export default {
 
     viewCustomer(item) {
       this.viewingCustomer = Object.assign({}, item);
+      this.positionCoordinates = {
+        lat: this.viewingCustomer.latitude,
+        lng: this.viewingCustomer.longitude,
+      };
+      this.centerCoordinates = this.positionCoordinates;
       this.customerInformationDialog = true;
     },
 

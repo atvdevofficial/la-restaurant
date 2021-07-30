@@ -13,6 +13,8 @@ class Customer extends Model
 
     protected $cascadeDeletes = ['user'];
 
+    protected $appends = ['order_count'];
+
     protected $fillable = [
         'user_id',
         'first_name', 'last_name', 'contact_number',
@@ -23,6 +25,17 @@ class Customer extends Model
         'user_id',
         'created_at', 'updated_at'
     ];
+
+    /**
+     * Model accessors and mutators
+     */
+    public function getOrderCountAttribute($value) {
+        return [
+            'total' => $this->orders->count(),
+            'delivered' => $this->orders()->whereStatus('DELIVERED')->count(),
+            'cancelled' => $this->orders()->whereStatus('CANCELLED')->count(),
+        ];
+    }
 
     /**
      * Model relationships
