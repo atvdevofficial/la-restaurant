@@ -1,6 +1,16 @@
 <template>
   <v-container>
-    <v-text-field v-model="search" v-show="false"></v-text-field>
+    <div>
+      <v-row justify="center" align="center" no-gutters>
+        <v-col cols="12" sm="10" md="8" lg="6" xl="4">
+          <v-text-field
+            v-model="search"
+            placeholder="Search orders"
+            append-icon="mdi-magnify"
+          ></v-text-field>
+        </v-col>
+      </v-row>
+    </div>
     <v-row justify="center" align="center" no-gutters>
       <v-col cols="12" sm="10" md="8" lg="6" xl="4">
         <v-list class="pa-0">
@@ -94,7 +104,17 @@
         <v-card-actions>
           <v-dialog v-model="dialogCancel" max-width="320">
             <template v-slot:activator="{ on, attrs }">
-              <v-btn color="error" text v-bind="attrs" v-on="on" v-show="!statusListWhereCancellationDisabled.includes(viewingOrder.status)">
+              <v-btn
+                color="error"
+                text
+                v-bind="attrs"
+                v-on="on"
+                v-show="
+                  !statusListWhereCancellationDisabled.includes(
+                    viewingOrder.status
+                  )
+                "
+              >
                 Cancel Order
               </v-btn>
             </template>
@@ -155,7 +175,11 @@ export default {
         items: [{ name: null, price: 0, quantity: 0 }],
       },
       orders: [],
-      statusListWhereCancellationDisabled: ["CANCELLED", "DECLINED", "DELIVERED"],
+      statusListWhereCancellationDisabled: [
+        "CANCELLED",
+        "DECLINED",
+        "DELIVERED",
+      ],
     };
   },
   computed: {

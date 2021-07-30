@@ -1,6 +1,14 @@
 <template>
   <v-container fluid>
-    <v-text-field v-model="search" v-show="false"></v-text-field>
+    <v-row justify="end" align="center" no-gutters>
+        <v-col cols="12" sm="10" md="8" lg="6" xl="4">
+          <v-text-field
+            v-model="search"
+            placeholder="Search orders"
+            append-icon="mdi-magnify"
+          ></v-text-field>
+        </v-col>
+      </v-row>
     <div class="caption font-italic ma-1">
       Note: Click the status of the corresponding order to update.
     </div>

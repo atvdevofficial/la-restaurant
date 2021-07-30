@@ -22,7 +22,7 @@
       <v-col cols="12" sm="10" md="8" lg="6">
         <v-list class="pa-0">
           <v-list-item
-            three-line
+            two-line
             v-for="(notification, index) in notifications"
             :key="index"
             @click="viewOrder(notification.data.data.code)"
@@ -36,10 +36,12 @@
               <v-list-item-subtitle>
                 {{ notification.data.body }}
               </v-list-item-subtitle>
-              <v-list-item-subtitle class="font-italic mt-2">
-                {{ notification.created_at }}
-              </v-list-item-subtitle>
+
             </v-list-item-content>
+
+            <v-list-item-action>
+              {{ notification.created_at }}
+            </v-list-item-action>
           </v-list-item>
         </v-list>
       </v-col>
