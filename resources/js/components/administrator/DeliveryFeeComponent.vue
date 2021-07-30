@@ -27,7 +27,8 @@
                       <v-col cols="12" sm="6">
                         <v-text-field
                           :disabled="isProcessing"
-                          :rules="[(v) => v > -1 || 'Field is required']"
+                          :rules="[(v) => !!v || 'Field is required']"
+                          :error-messages="serverValidationErrors.from"
                           v-model="editedDeliveryFee.from"
                           label="From"
                           suffix="Meter(s)"
@@ -38,6 +39,7 @@
                         <v-text-field
                           :disabled="isProcessing"
                           :rules="[(v) => !!v || 'Field is required']"
+                          :error-messages="serverValidationErrors.to"
                           v-model="editedDeliveryFee.to"
                           label="To"
                           suffix="Meter(s)"
@@ -48,6 +50,7 @@
                         <v-text-field
                           :disabled="isProcessing"
                           :rules="[(v) => !!v || 'Field is required']"
+                          :error-messages="serverValidationErrors.fee"
                           v-model="editedDeliveryFee.fee"
                           label="Fee"
                           prefix="PHP"
@@ -147,6 +150,8 @@ export default {
         { text: "Actions", value: "actions", sortable: false, align: "center" },
       ],
       deliveryFees: [],
+
+      serverValidationErrors: { from: null, to: null, fee: null },
     };
   },
   computed: {
@@ -218,6 +223,7 @@ export default {
 
     closeDelete() {
       this.dialogDelete = false;
+      this.serverValidationErrors = { from: null, to: null, fee: null };
       this.$nextTick(() => {
         this.editedDeliveryFee = Object.assign({}, this.defaultProduct);
         this.editedIndex = -1;
@@ -241,7 +247,9 @@ export default {
               this.close();
             })
             .catch((error) => {
-              console.log(error);
+              if (error.response.status == 422) {
+                this.serverValidationErrors = error.response.data.errors;
+              }
             })
             .finally((_) => {
               this.isProcessing = false;
@@ -260,7 +268,9 @@ export default {
               this.close();
             })
             .catch((error) => {
-              console.log(error);
+              if (error.response.status == 422) {
+                this.serverValidationErrors = error.response.data.errors;
+              }
             })
             .finally((_) => {
               this.isProcessing = false;

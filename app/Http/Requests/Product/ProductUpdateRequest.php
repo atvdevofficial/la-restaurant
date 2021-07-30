@@ -29,8 +29,10 @@ class ProductUpdateRequest extends FormRequest
      */
     public function rules()
     {
+        $product = $this->route('product');
+
         return [
-            'name' => ['required', 'string'],
+            'name' => ['required', 'string', 'unique:products,name,' . $product->id],
             'description' => ['required', 'string'],
             'price' => ['required', 'numeric', 'min:0'],
             'image' => ['nullable'],

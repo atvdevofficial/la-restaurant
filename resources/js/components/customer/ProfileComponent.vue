@@ -13,6 +13,8 @@
         <div class="caption mb-2">Retrieving profile, please wait ...</div>
         <v-progress-linear height="5" indeterminate></v-progress-linear>
       </v-col>
+    </v-row>
+    <v-row justify="center">
       <v-col cols="12" sm="10" md="8" lg="6" xl="4">
         <v-form ref="form" v-model="valid" lazy-validation>
           <v-row no-gutters>
@@ -23,6 +25,7 @@
                   v-model="customerInformation.email"
                   label="Email"
                   :rules="emailRules"
+                  :error-messages="serverValidationErrors.email"
                 ></v-text-field>
               </div>
             </v-col>
@@ -33,6 +36,7 @@
                   v-model="customerInformation.firstName"
                   label="First Name"
                   :rules="[(v) => !!v || 'Field is required']"
+                  :error-messages="serverValidationErrors.first_name"
                 ></v-text-field>
               </div>
             </v-col>
@@ -43,6 +47,7 @@
                   v-model="customerInformation.lastName"
                   label="Last Name"
                   :rules="[(v) => !!v || 'Field is required']"
+                  :error-messages="serverValidationErrors.last_name"
                 ></v-text-field>
               </div>
             </v-col>
@@ -53,6 +58,7 @@
                   v-model="customerInformation.contactNumber"
                   label="Contact Number"
                   :rules="[(v) => !!v || 'Field is required']"
+                  :error-messages="serverValidationErrors.contact_number"
                 ></v-text-field>
               </div>
             </v-col>
@@ -65,6 +71,7 @@
                   rows="1"
                   auto-grow
                   :rules="[(v) => !!v || 'Field is required']"
+                  :error-messages="serverValidationErrors.address"
                 ></v-textarea>
               </div>
             </v-col>
@@ -128,6 +135,17 @@ export default {
         longitude: null,
         email: null,
       },
+
+      serverValidationErrors: {
+        email: null,
+        password: null,
+        first_name: null,
+        last_name: null,
+        contact_number: null,
+        address: null,
+        latitude: null,
+        longitude: null,
+      },
     };
   },
   mounted() {
@@ -137,7 +155,6 @@ export default {
     // Validate
     validate() {
       if (this.$refs.form.validate()) {
-        this.isNotEditing = true;
         this.update();
       }
     },
@@ -165,9 +182,13 @@ export default {
             latitude: data.latitude,
             longitude: data.longitude,
           };
+
+          this.cancelEditing();
         })
         .catch((error) => {
-          console.log(error);
+          if (error.response.status == 422) {
+            this.serverValidationErrors = error.response.data.errors;
+          }
         })
         .catch((_) => {});
     },
@@ -180,6 +201,16 @@ export default {
     // Cancel
     cancelEditing() {
       this.isNotEditing = true;
+      this.serverValidationErrors = {
+        email: null,
+        password: null,
+        first_name: null,
+        last_name: null,
+        contact_number: null,
+        address: null,
+        latitude: null,
+        longitude: null,
+      };
       this.retrieveProfile();
     },
 

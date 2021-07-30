@@ -28,6 +28,8 @@
                       <v-col cols="12">
                         <v-text-field
                           :disabled="isProcessing"
+                          :rules="[(v) => !!v || 'Field is required']"
+                          :error-messages="serverValidationErrors.name"
                           v-model="editedProductCategory.name"
                           label="Name"
                         ></v-text-field>
@@ -106,6 +108,7 @@ export default {
         name: null,
       },
       productCategories: [],
+      serverValidationErrors: { name: null }
     };
   },
   computed: {
@@ -171,6 +174,7 @@ export default {
 
     close() {
       this.dialog = false;
+      this.serverValidationErrors = { name: null };
       this.$nextTick(() => {
         this.editedProductCategory = Object.assign(
           {},
@@ -214,7 +218,9 @@ export default {
               this.close();
             })
             .catch((error) => {
-              console.log(error);
+              if (error.response.status == 422) {
+                this.serverValidationErrors = error.response.data.errors;
+              }
             })
             .finally((_) => {
               this.isProcessing = false;
@@ -235,7 +241,9 @@ export default {
               this.close();
             })
             .catch((error) => {
-              console.log(error);
+              if (error.response.status == 422) {
+                this.serverValidationErrors = error.response.data.errors;
+              }
             })
             .finally((_) => {
               this.isProcessing = false;

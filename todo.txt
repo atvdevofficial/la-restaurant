@@ -1,4 +1,4 @@
-Orders order by desc
-API response for validations
+Customer details (administrator)
+Password (administrator)
 Aesthetics
 etc

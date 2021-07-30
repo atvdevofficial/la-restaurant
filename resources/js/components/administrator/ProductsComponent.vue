@@ -29,6 +29,7 @@
                         <v-text-field
                           :disabled="isProcessing"
                           :rules="rules.required"
+                          :error-messages="serverValidationErrors.name"
                           v-model="editedProduct.name"
                           label="Name"
                         ></v-text-field>
@@ -37,6 +38,7 @@
                         <v-text-field
                           :disabled="isProcessing"
                           :rules="rules.required"
+                          :error-messages="serverValidationErrors.price"
                           v-model="editedProduct.price"
                           label="Price"
                           prefix="PHP"
@@ -47,6 +49,7 @@
                         <v-textarea
                           :disabled="isProcessing"
                           :rules="rules.required"
+                          :error-messages="serverValidationErrors.description"
                           v-model="editedProduct.description"
                           label="Description"
                         ></v-textarea>
@@ -56,6 +59,7 @@
                         <v-select
                           :disabled="isProcessing"
                           :rules="[(v) => !!v.length || 'Category is required']"
+                          :error-messages="serverValidationErrors.product_categories"
                           v-model="editedProduct.product_categories"
                           :items="categories"
                           label="Categories"
@@ -70,6 +74,7 @@
                         <v-file-input
                           :disabled="isProcessing"
                           :rules="rules.maximumSize"
+                          :error-messages="serverValidationErrors.image"
                           v-model="imageName"
                           persistent-hint
                           show-size
@@ -83,6 +88,7 @@
                       <v-col
                         cols="12"
                         class="d-flex justify-center align-center"
+                        v-if="!!editedProduct.image"
                       >
                         <v-img
                           width="150"
@@ -221,6 +227,13 @@ export default {
       },
       products: [],
       categories: [],
+      serverValidationErrors: {
+        name: null,
+        description: null,
+        price: null,
+        image: null,
+        product_categories: null,
+      },
     };
   },
   computed: {
@@ -303,6 +316,13 @@ export default {
 
     close() {
       this.dialog = false;
+      this.serverValidationErrors = {
+        name: null,
+        description: null,
+        price: null,
+        image: null,
+        product_categories: null,
+      };
       this.$nextTick(() => {
         this.editedProduct = Object.assign({}, this.defaultProduct);
         this.editedIndex = -1;
@@ -338,7 +358,9 @@ export default {
               this.close();
             })
             .catch((error) => {
-              console.log(error);
+              if (error.response.status == 422) {
+                this.serverValidationErrors = error.response.data.errors;
+              }
             })
             .finally((_) => {
               this.isProcessing = false;
@@ -361,7 +383,9 @@ export default {
               this.close();
             })
             .catch((error) => {
-              console.log(error);
+              if (error.response.status == 422) {
+                this.serverValidationErrors = error.response.data.errors;
+              }
             })
             .finally((_) => {
               this.isProcessing = false;
