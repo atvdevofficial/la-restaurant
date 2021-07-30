@@ -27,7 +27,7 @@ class OrderController extends Controller
         $authenticatedUserRole = Auth::user()->role;
 
         if ($authenticatedUserRole === 'ADMINISTRATOR') {
-            $orders = Order::with('customer', 'orderProducts', 'orderProducts.product')->get();
+            $orders = Order::with('customer', 'orderProducts', 'orderProducts.product')->orderBy('id', 'desc')->get();
         }
 
         if ($authenticatedUserRole === 'CUSTOMER') {
