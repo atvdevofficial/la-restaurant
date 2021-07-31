@@ -15,6 +15,7 @@ import ProductsComponent from './components/administrator/ProductsComponent.vue'
 import ProductCategoriesComponent from './components/administrator/ProductCategoriesComponent.vue'
 import CustomersComponent from './components/administrator/CustomersComponent.vue'
 import DeliveryFeeComponent from './components/administrator/DeliveryFeeComponent.vue'
+import AdministratorProfile from './components/administrator/ProfileComponent.vue'
 
 import MenuComponent from './components/customer/MenuComponent.vue'
 import CheckoutComponent from './components/customer/CheckoutComponent.vue'
@@ -48,6 +49,7 @@ const routes = [
             { path: '/a/customers', name: 'customers', components: { default: CustomersComponent } },
             { path: '/a/deliveryFees', name: 'deliveryFees', components: { default: DeliveryFeeComponent } },
             { path: '/a/notifications', name: 'administratorNotifications', components: { default: NotificationsComponent } },
+            { path: '/a/profile', name: 'administratorProfile', components: { default: AdministratorProfile } },
         ]
     },
     {
@@ -89,7 +91,7 @@ const modules = {
     landing: true, signin: true,
 
     // Administrator
-    dashboard: true, orders: true, products: true, orders: true, productCategories: true, customers: true, deliveryFees: true, administratorNotifications: true,
+    dashboard: true, orders: true, products: true, orders: true, productCategories: true, customers: true, deliveryFees: true, administratorNotifications: true, administratorProfile: true,
     // Customer
     menu: true, checkout: true, customerOrders: true, profile: true, customerNotifications: true,
 
@@ -108,12 +110,12 @@ const modulePermissions = {
         ...modules,
         default: 'menu',
         landing: false, signin: false,
-        dashboard: false, orders: false, products: false, orders: false, productCategories: false, customers: false, deliveryFees: false, administratorNotifications: false,
+        dashboard: false, orders: false, products: false, orders: false, productCategories: false, customers: false, deliveryFees: false, administratorNotifications: false, administratorProfile: false,
     },
     unauthenticated: {
         ...modules,
         default: 'signin',
-        dashboard: false, orders: false, products: false, orders: false, productCategories: false, customers: false, deliveryFees: false, administratorNotifications: false,
+        dashboard: false, orders: false, products: false, orders: false, productCategories: false, customers: false, deliveryFees: false, administratorNotifications: false, administratorProfile: false,
         menu: false, checkout: false, customerOrders: false, profile: false, customerNotifications: false,
     }
 }

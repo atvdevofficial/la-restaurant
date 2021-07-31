@@ -15,16 +15,11 @@ class UserController extends Controller
      */
     public function changePassword(ChangePasswordRequest $request) {
         $currentUser = Auth::user();
+        $password = $request->validated()['password'];
 
-        $oldPassword = $request->validated()['old_password'];
-        $newPassword = $request->validated()['new_password'];
+        $currentUser->password = $password;
+        $currentUser->save();
 
-        if (Hash::check($oldPassword, $currentUser->password)) {
-            $currentUser->password = $newPassword;
-            $currentUser->save();
-            return response('Password changed successfully');
-        } else {
-            return response('Old password does not match', 401);
-        }
+        return response('Password changed successfully');
     }
 }

@@ -5,6 +5,7 @@
       <v-toolbar-title>MyRestaurant.com</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-btn icon to="/a/notifications"><v-icon>mdi-bell</v-icon></v-btn>
+      <v-btn icon to="/a/profile"><v-icon>mdi-account-circle</v-icon></v-btn>
     </v-app-bar>
 
     <v-navigation-drawer v-model="toggler" app clipped>
