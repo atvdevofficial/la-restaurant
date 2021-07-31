@@ -2493,8 +2493,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -13825,10 +13823,8 @@ var render = function() {
                                       [
                                         _c("GmapMarker", {
                                           attrs: {
-                                            draggable: true,
                                             position: _vm.positionCoordinates
-                                          },
-                                          on: { dragend: _vm.mapMarkerDragEnd }
+                                          }
                                         })
                                       ],
                                       1

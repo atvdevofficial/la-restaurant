@@ -39,7 +39,7 @@ Route::group(['middleware' => 'forceJsonResponse'], function () {
             // Route::post('/logout', 'AuthController@logout');
 
             // Route::get('/user', function() { return request()->user(); });
-            // Route::put('/user/change-password', 'UserController@changePassword');
+            Route::put('/user/change-password', 'UserController@changePassword');
 
             Route::get('/notifications', function (Request $request) {
                 return $request->user()->notifications;

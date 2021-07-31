@@ -27,8 +27,6 @@
                     :center="centerCoordinates"
                   >
                     <GmapMarker
-                      @dragend="mapMarkerDragEnd"
-                      :draggable="true"
                       :position="positionCoordinates"
                     />
                   </GmapMap>
