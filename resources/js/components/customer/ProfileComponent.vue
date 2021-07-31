@@ -33,6 +33,16 @@
               <div>
                 <v-text-field
                   :disabled="isNotEditing"
+                  v-model="customerInformation.password"
+                  label="Password"
+                  type="password"
+                ></v-text-field>
+              </div>
+            </v-col>
+            <v-col cols="12">
+              <div>
+                <v-text-field
+                  :disabled="isNotEditing"
                   v-model="customerInformation.firstName"
                   label="First Name"
                   :rules="[(v) => !!v || 'Field is required']"
@@ -134,6 +144,7 @@ export default {
         latitude: null,
         longitude: null,
         email: null,
+        password: null,
       },
 
       serverValidationErrors: {

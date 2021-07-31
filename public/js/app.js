@@ -5545,6 +5545,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -5563,7 +5573,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         address: null,
         latitude: null,
         longitude: null,
-        email: null
+        email: null,
+        password: null
       },
       serverValidationErrors: {
         email: null,
@@ -18748,6 +18759,33 @@ var render = function() {
                                   )
                                 },
                                 expression: "customerInformation.email"
+                              }
+                            })
+                          ],
+                          1
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("v-col", { attrs: { cols: "12" } }, [
+                        _c(
+                          "div",
+                          [
+                            _c("v-text-field", {
+                              attrs: {
+                                disabled: _vm.isNotEditing,
+                                label: "Password",
+                                type: "password"
+                              },
+                              model: {
+                                value: _vm.customerInformation.password,
+                                callback: function($$v) {
+                                  _vm.$set(
+                                    _vm.customerInformation,
+                                    "password",
+                                    $$v
+                                  )
+                                },
+                                expression: "customerInformation.password"
                               }
                             })
                           ],

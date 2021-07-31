@@ -1,4 +1,3 @@
-Password (administrator)
 Aesthetics
 Snackbar (global)
 etc
