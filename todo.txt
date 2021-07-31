@@ -1,4 +1,3 @@
-Customer details (administrator)
 Password (administrator)
 Aesthetics
 etc

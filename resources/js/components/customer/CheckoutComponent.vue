@@ -105,6 +105,13 @@
                           <v-divider></v-divider>
 
                           <v-card-actions>
+                            <v-btn
+                              color="primary"
+                              text
+                              @click="getUserGeolocation"
+                            >
+                              Use Current Location
+                            </v-btn>
                             <v-spacer></v-spacer>
                             <v-btn
                               color="default"
@@ -355,9 +362,7 @@ export default {
     ...mapGetters(["cart", "cartSubTotal", "cartItemsCount"]),
   },
   mounted() {
-    this.getUserGeolocation();
     this.retrieveCustomerProfile();
-    // this.calculateDeliveryFee();
   },
   methods: {
     ...mapActions(["updateCartProduct", "removeCartProduct", "clearCartItems"]),
@@ -379,6 +384,9 @@ export default {
             latitude: data.latitude,
             longitude: data.longitude,
           };
+
+          this.centerCoordinates = { lat: data.latitude, lng: data.longitude };
+          this.positionCoordinates = this.centerCoordinates;
         })
         .catch((error) => {
           console.log(error.response.data);
@@ -488,11 +496,11 @@ export default {
       };
       this.positionCoordinates = this.centerCoordinates;
 
+      this.reverseGeocode();
       this.calculateDeliveryFee();
     },
 
     calculateDeliveryFee() {
-      console.log("Calculate Delivery Fee: " + Date.now());
       this.isCalculating = true;
       axios
         .get("/api/v1/delivery-fees/calculate", {
@@ -516,18 +524,16 @@ export default {
     },
 
     reverseGeocode() {
-      axios.defaults.headers.post["Content-Type"] =
-        "application/x-www-form-urlencoded";
       axios
-        .get(
-          "https://maps.google.com/maps/api/geocode/json?latlng=" +
-            this.positionCoordinates.lat +
-            "," +
-            this.positionCoordinates.lng +
-            "&key=AIzaSyCTtgC7N8qY_76MrE0fgdZM9_C4dHOcpEw"
-        )
+        .get("/api/v1/reverse-geocode", {
+          params: {
+            latitude: this.positionCoordinates.lat,
+            longitude: this.positionCoordinates.lng,
+          },
+        })
         .then((response) => {
-          console.log(response.data);
+          var data = response.data;
+          this.customerInformation.address = data
         })
         .catch((error) => {
           console.log(error);
