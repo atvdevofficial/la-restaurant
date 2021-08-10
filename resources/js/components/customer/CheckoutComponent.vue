@@ -405,9 +405,9 @@ export default {
       axios
         .post("/api/v1/orders", {
           address: this.customerInformation.address,
-          latitude: this.customerInformation.latitude,
-          longitude: this.customerInformation.longitude,
-          distance: 100,
+          latitude: this.positionCoordinates.lat,
+          longitude: this.positionCoordinates.lng,
+          distance: this.deliveryDistance,
           products: this.cart,
         })
         .then((response) => {
@@ -533,7 +533,7 @@ export default {
         })
         .then((response) => {
           var data = response.data;
-          this.customerInformation.address = data
+          this.customerInformation.address = data;
         })
         .catch((error) => {
           console.log(error);

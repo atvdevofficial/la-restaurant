@@ -4711,9 +4711,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.isProcessing = true;
       axios.post("/api/v1/orders", {
         address: this.customerInformation.address,
-        latitude: this.customerInformation.latitude,
-        longitude: this.customerInformation.longitude,
-        distance: 100,
+        latitude: this.positionCoordinates.lat,
+        longitude: this.positionCoordinates.lng,
+        distance: this.deliveryDistance,
         products: this.cart
       }).then(function (response) {
         _this2.clearCart();
