@@ -5,7 +5,7 @@
         <v-form ref="form" v-model="valid">
           <v-card>
             <v-card-title class="justify-center">
-              MyRestaurant.com
+              La Restaurant
             </v-card-title>
 
             <v-card-text>

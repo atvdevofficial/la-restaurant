@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-app-bar app clipped-left dark class="elevation-0" color="primary">
-      <v-toolbar-title>MyRestaurant.com</v-toolbar-title>
+      <v-toolbar-title>La Restaurant</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-btn icon to="/c/menu"><v-icon>mdi-food</v-icon></v-btn>
 
