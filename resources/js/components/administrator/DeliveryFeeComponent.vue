@@ -118,6 +118,14 @@
         <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
       </template>
     </v-data-table>
+
+    <v-snackbar
+      :color="snackbar.color"
+      v-model="snackbar.visible"
+      timeout="2000"
+    >
+      {{ snackbar.message }}
+    </v-snackbar>
   </v-container>
 </template>
 
@@ -125,6 +133,11 @@
 export default {
   data() {
     return {
+      snackbar: {
+        visible: false,
+        color: "primary",
+        message: "",
+      },
       valid: false,
       isProcessing: false,
       dialog: false,
@@ -181,9 +194,14 @@ export default {
           this.deliveryFees = data;
         })
         .catch((error) => {
-          console.log(error);
+          this.snackbar = {
+            visible: true,
+            color: "error",
+            message:
+              "Something went wrong while retrieving delivery fees. Please try again.",
+          };
         })
-        .then((_) => {
+        .finally((_) => {
           this.retrievingDeliveryFees = false;
         });
     },
@@ -208,7 +226,12 @@ export default {
           this.closeDelete();
         })
         .catch((error) => {
-          console.log(error);
+          this.snackbar = {
+            visible: true,
+            color: "error",
+            message:
+              "Something went wrong while deleting delivery fee. Please try again.",
+          };
         })
         .finally((_) => {});
     },

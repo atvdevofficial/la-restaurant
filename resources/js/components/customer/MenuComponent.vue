@@ -118,8 +118,12 @@
       </v-card>
     </v-dialog>
 
-    <v-snackbar color="primary" v-model="snackbar" timeout="2000">
-      {{ viewingProduct.name }} added to Cart
+    <v-snackbar
+      :color="snackbar.color"
+      v-model="snackbar.visible"
+      timeout="2000"
+    >
+      {{ snackbar.message }}
     </v-snackbar>
   </v-container>
 </template>
@@ -129,11 +133,16 @@ import { mapActions } from "vuex";
 export default {
   data() {
     return {
+      snackbar: {
+        visible: false,
+        color: "primary",
+        message: "",
+      },
+
       isRetrievingProducts: true,
       search: "",
       category: { id: 0, name: "All" },
       categories: [{ id: 0, name: "All" }],
-      snackbar: false,
       dialogInformation: false,
       viewingProduct: {
         id: null,
@@ -195,7 +204,12 @@ export default {
           this.products = response.data;
         })
         .catch((error) => {
-          console.log(error);
+          this.snackbar = {
+            visible: true,
+            color: "error",
+            message:
+              "Something went wrong while retrieving products. Please try again.",
+          };
         })
         .finally((_) => {
           this.isRetrievingProducts = false;
@@ -209,10 +223,15 @@ export default {
           let data = response.data;
           this.categories.push(...data);
         })
-        .then((error) => {
-          console.log(error);
+        .catch((error) => {
+          this.snackbar = {
+            visible: true,
+            color: "error",
+            message:
+              "Something went wrong while retrieving product categories. Please try again.",
+          };
         })
-        .then((_) => {});
+        .finally((_) => {});
     },
 
     changeMenuCategory() {

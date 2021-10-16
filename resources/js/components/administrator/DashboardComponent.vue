@@ -46,6 +46,14 @@
       </v-col>
     </v-row>
     <v-divider class="my-4"></v-divider>
+
+    <v-snackbar
+      :color="snackbar.color"
+      v-model="snackbar.visible"
+      timeout="2000"
+    >
+      {{ snackbar.message }}
+    </v-snackbar>
   </v-container>
 </template>
 
@@ -53,28 +61,33 @@
 export default {
   data() {
     return {
+      snackbar: {
+        visible: false,
+        color: "primary",
+        message: "",
+      },
       totalGross: [
         {
           icon: "mdi-cash",
-          amount: 0.00,
+          amount: 0.0,
           orders: 0,
           subtitle: "Total Gross Today",
         },
         {
           icon: "mdi-cash",
-          amount: 0.00,
+          amount: 0.0,
           orders: 0,
           subtitle: "Total Gross Weekly",
         },
         {
           icon: "mdi-cash",
-          amount: 0.00,
+          amount: 0.0,
           orders: 0,
           subtitle: "Total Gross Monthly",
         },
         {
           icon: "mdi-cash",
-          amount: 0.00,
+          amount: 0.0,
           orders: 0,
           subtitle: "Total Gross",
         },
@@ -108,34 +121,39 @@ export default {
     };
   },
   mounted() {
-      this.retrieveDashboard();
+    this.retrieveDashboard();
   },
   methods: {
     retrieveDashboard() {
       axios
         .get("/api/v1/dashboard")
         .then((response) => {
-            let data = response.data
+          let data = response.data;
 
-            this.totalGross[0].amount = data.sales.daily.sum
-            this.totalGross[0].orders = data.sales.daily.count
+          this.totalGross[0].amount = data.sales.daily.sum;
+          this.totalGross[0].orders = data.sales.daily.count;
 
-            this.totalGross[1].amount = data.sales.weekly.sum
-            this.totalGross[1].orders = data.sales.weekly.count
+          this.totalGross[1].amount = data.sales.weekly.sum;
+          this.totalGross[1].orders = data.sales.weekly.count;
 
-            this.totalGross[2].amount = data.sales.monthly.sum
-            this.totalGross[2].orders = data.sales.monthly.count
+          this.totalGross[2].amount = data.sales.monthly.sum;
+          this.totalGross[2].orders = data.sales.monthly.count;
 
-            this.totalGross[3].amount = data.sales.overall.sum
-            this.totalGross[3].orders = data.sales.overall.count
+          this.totalGross[3].amount = data.sales.overall.sum;
+          this.totalGross[3].orders = data.sales.overall.count;
 
-            this.orderStatusTotals[0].value = data.orders.total
-            this.orderStatusTotals[1].value = data.orders.delivered
-            this.orderStatusTotals[2].value = data.orders.cancelled
-            this.orderStatusTotals[3].value = data.orders.others
+          this.orderStatusTotals[0].value = data.orders.total;
+          this.orderStatusTotals[1].value = data.orders.delivered;
+          this.orderStatusTotals[2].value = data.orders.cancelled;
+          this.orderStatusTotals[3].value = data.orders.others;
         })
         .catch((error) => {
-          console.log(error);
+          this.snackbar = {
+            visible: true,
+            color: "error",
+            message:
+              "Something went wrong while retrieving dashboard. Please try again.",
+          };
         })
         .finally((_) => {});
     },

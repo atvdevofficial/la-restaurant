@@ -50,8 +50,6 @@ export default {
   mounted() {
     Echo.private("App.User." + sessionStorage.getItem("userId")).notification(
       (notification) => {
-        console.log(notification);
-
         this.snackbar.title = notification.title;
         this.snackbar.body = notification.body;
 

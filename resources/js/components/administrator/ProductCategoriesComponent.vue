@@ -80,6 +80,14 @@
         <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
       </template>
     </v-data-table>
+
+    <v-snackbar
+      :color="snackbar.color"
+      v-model="snackbar.visible"
+      timeout="2000"
+    >
+      {{ snackbar.message }}
+    </v-snackbar>
   </v-container>
 </template>
 
@@ -87,6 +95,11 @@
 export default {
   data() {
     return {
+      snackbar: {
+        visible: false,
+        color: "primary",
+        message: "",
+      },
       valid: false,
       isProcessing: false,
       retrievingProductCategories: false,
@@ -108,7 +121,7 @@ export default {
         name: null,
       },
       productCategories: [],
-      serverValidationErrors: { name: null }
+      serverValidationErrors: { name: null },
     };
   },
   computed: {
@@ -139,10 +152,15 @@ export default {
           let data = response.data;
           this.productCategories = data;
         })
-        .then((error) => {
-          console.log(error);
+        .catch((error) => {
+          this.snackbar = {
+            visible: true,
+            color: "error",
+            message:
+              "Something went wrong while retrieving product categories. Please try again.",
+          };
         })
-        .then((_) => {
+        .finally((_) => {
           this.retrievingProductCategories = false;
         });
     },
@@ -167,7 +185,12 @@ export default {
           this.closeDelete();
         })
         .catch((error) => {
-          console.log(error);
+          this.snackbar = {
+            visible: true,
+            color: "error",
+            message:
+              "Something went wrong while deleting product category. Please try again.",
+          };
         })
         .finally((_) => {});
     },

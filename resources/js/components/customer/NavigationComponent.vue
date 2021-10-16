@@ -61,17 +61,13 @@ export default {
     ...mapGetters(["cartItemsCount"]),
   },
   methods: {
-    navMenuClicked(menuId) {
-      console.log(menuId);
-    },
-
     signout() {
-        // Clear session storage
-        sessionStorage.clear();
+      // Clear session storage
+      sessionStorage.clear();
 
-        // Push to sign in
-        this.$router.push("/signin");
-    }
+      // Push to sign in
+      this.$router.push("/signin");
+    },
   },
 };
 </script>

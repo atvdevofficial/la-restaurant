@@ -26,9 +26,7 @@
                     :zoom="10"
                     :center="centerCoordinates"
                   >
-                    <GmapMarker
-                      :position="positionCoordinates"
-                    />
+                    <GmapMarker :position="positionCoordinates" />
                   </GmapMap>
                 </v-col>
                 <v-col cols="12"><v-divider></v-divider></v-col>
@@ -108,6 +106,14 @@
         <v-icon small @click="deleteCustomer(item)"> mdi-delete </v-icon>
       </template>
     </v-data-table>
+
+    <v-snackbar
+      :color="snackbar.color"
+      v-model="snackbar.visible"
+      timeout="2000"
+    >
+      {{ snackbar.message }}
+    </v-snackbar>
   </v-container>
 </template>
 
@@ -115,6 +121,11 @@
 export default {
   data() {
     return {
+      snackbar: {
+        visible: false,
+        color: "primary",
+        message: "",
+      },
       customerInformationDialog: false,
       dialogDelete: false,
       search: "",
@@ -190,7 +201,12 @@ export default {
           this.customers = data;
         })
         .catch((error) => {
-          console.log(error);
+          this.snackbar = {
+            visible: true,
+            color: "error",
+            message:
+              "Something went wrong while retrieving customers. Please try again.",
+          };
         })
         .finally((_) => {
           this.isRetrievingCustomers = false;
@@ -221,7 +237,12 @@ export default {
           this.closeDelete();
         })
         .catch((error) => {
-          console.log(error);
+          this.snackbar = {
+            visible: true,
+            color: "error",
+            message:
+              "Something went wrong while deleting customer. Please try again.",
+          };
         })
         .finally((_) => {});
     },

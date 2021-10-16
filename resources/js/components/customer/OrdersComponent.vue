@@ -151,6 +151,14 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+
+    <v-snackbar
+      :color="snackbar.color"
+      v-model="snackbar.visible"
+      timeout="2000"
+    >
+      {{ snackbar.message }}
+    </v-snackbar>
   </v-container>
 </template>
 
@@ -158,6 +166,11 @@
 export default {
   data() {
     return {
+      snackbar: {
+        visible: false,
+        color: "primary",
+        message: "",
+      },
       isProcessing: false,
       dialogCancel: false,
       search: this.$route.params.code ?? "",
@@ -209,7 +222,12 @@ export default {
           this.orders = response.data;
         })
         .catch((error) => {
-          console.log(error);
+          this.snackbar = {
+            visible: true,
+            color: "error",
+            message:
+              "Something went wrong while retrieving orders. Please try again.",
+          };
         })
         .finally((_) => {});
     },
@@ -224,7 +242,12 @@ export default {
           this.orderInformationDialog = false;
         })
         .catch((error) => {
-          console.log(error);
+          this.snackbar = {
+            visible: true,
+            color: "error",
+            message:
+              "Something went wrong while cancelling order. Please try again.",
+          };
         })
         .finally((_) => {
           this.isProcessing = false;

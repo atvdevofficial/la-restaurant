@@ -306,7 +306,11 @@
       </v-col>
     </v-row>
 
-    <v-snackbar color="primary" v-model="snackbar.visible" timeout="2000">
+    <v-snackbar
+      :color="snackbar.color"
+      v-model="snackbar.visible"
+      timeout="2000"
+    >
       {{ snackbar.message }}
     </v-snackbar>
   </v-container>
@@ -318,6 +322,12 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   data() {
     return {
+      snackbar: {
+        visible: false,
+        color: "primary",
+        message: "",
+      },
+
       isCalculating: false,
       isProcessing: false,
 
@@ -348,11 +358,6 @@ export default {
       deliveryFee: null,
       deliveryDistance: 0,
 
-      snackbar: {
-        visible: false,
-        message: "",
-      },
-
       // Google Maps Variables
       centerCoordinates: { lat: 6.9214, lng: 122.079 },
       positionCoordinates: { lat: 6.9214, lng: 122.079 },
@@ -363,6 +368,7 @@ export default {
   },
   mounted() {
     this.retrieveCustomerProfile();
+    this.getUserGeolocation();
   },
   methods: {
     ...mapActions(["updateCartProduct", "removeCartProduct", "clearCartItems"]),
@@ -389,7 +395,7 @@ export default {
           this.positionCoordinates = this.centerCoordinates;
         })
         .catch((error) => {
-          console.log(error.response.data);
+          console.log(error);
         })
         .finally((_) => {});
     },
@@ -414,6 +420,7 @@ export default {
           this.clearCart();
           this.snackbar = {
             visible: true,
+            color: "primary",
             message: "Order successfuly submitted.",
           };
         })
@@ -421,12 +428,15 @@ export default {
           if (error.response.status == 422) {
             this.snackbar = {
               visible: true,
-              message: "Please check all neccessary data and try again.",
+              color: "warning",
+              message:
+                "Please check all neccessary data (e.g. Delivery Fee, Address, etc.) and try again.",
             };
           } else {
             this.snackbar = {
               visible: true,
-              message: "Something went wrong. Please try again.",
+              color: "error",
+              message: "Something went wrong while checking out. Please try again.",
             };
           }
         })
@@ -516,7 +526,12 @@ export default {
           this.deliveryDistance = data.distance;
         })
         .catch((error) => {
-          console.log(error);
+          this.snackbar = {
+            visible: true,
+            color: "error",
+            message:
+              "Something went wrong while calculating delivery fee. Please try again.",
+          };
         })
         .finally((_) => {
           this.isCalculating = false;
@@ -536,7 +551,12 @@ export default {
           this.customerInformation.address = data;
         })
         .catch((error) => {
-          console.log(error);
+          this.snackbar = {
+            visible: true,
+            color: "error",
+            message:
+              "Something went wrong while trying to determine address. Please try again.",
+          };
         })
         .finally(() => (this.loading = false));
     },

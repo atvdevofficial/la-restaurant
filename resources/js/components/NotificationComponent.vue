@@ -36,7 +36,6 @@
               <v-list-item-subtitle>
                 {{ notification.data.body }}
               </v-list-item-subtitle>
-
             </v-list-item-content>
 
             <v-list-item-action>
@@ -46,6 +45,14 @@
         </v-list>
       </v-col>
     </v-row>
+
+    <v-snackbar
+      :color="snackbar.color"
+      v-model="snackbar.visible"
+      timeout="2000"
+    >
+      {{ snackbar.message }}
+    </v-snackbar>
   </v-container>
 </template>
 
@@ -53,6 +60,11 @@
 export default {
   data() {
     return {
+      snackbar: {
+        visible: false,
+        color: "primary",
+        message: "",
+      },
       isRetrievingNotifications: false,
       notifications: [],
     };
@@ -70,9 +82,14 @@ export default {
           this.notifications = data;
         })
         .catch((error) => {
-          console.log(error);
+          this.snackbar = {
+            visible: true,
+            color: "error",
+            message:
+              "Something went wrong while retrieving notifications. Please try again.",
+          };
         })
-        .then((_) => {
+        .finally((_) => {
           this.isRetrievingNotifications = false;
         });
     },

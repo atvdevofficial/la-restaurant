@@ -59,7 +59,9 @@
                         <v-select
                           :disabled="isProcessing"
                           :rules="[(v) => !!v.length || 'Category is required']"
-                          :error-messages="serverValidationErrors.product_categories"
+                          :error-messages="
+                            serverValidationErrors.product_categories
+                          "
                           v-model="editedProduct.product_categories"
                           :items="categories"
                           label="Categories"
@@ -178,6 +180,14 @@
         <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
       </template>
     </v-data-table>
+
+    <v-snackbar
+      :color="snackbar.color"
+      v-model="snackbar.visible"
+      timeout="2000"
+    >
+      {{ snackbar.message }}
+    </v-snackbar>
   </v-container>
 </template>
 
@@ -185,6 +195,11 @@
 export default {
   data() {
     return {
+      snackbar: {
+        visible: false,
+        color: "primary",
+        message: "",
+      },
       rules: {
         required: [(v) => !!v || "Field is required"],
         maximumSize: [
@@ -242,7 +257,6 @@ export default {
     },
     selectedCategoryIds() {
       return this.editedProduct.product_categories.map((x) => {
-        console.log(x.name);
         return x.id;
       });
     },
@@ -269,9 +283,14 @@ export default {
           this.products = response.data;
         })
         .catch((error) => {
-          console.log(error);
+          this.snackbar = {
+            visible: true,
+            color: "error",
+            message:
+              "Something went wrong while retrieving products. Please try again.",
+          };
         })
-        .then((_) => {
+        .finally((_) => {
           this.isRetrievingProducts = false;
         });
     },
@@ -284,9 +303,14 @@ export default {
           this.categories.push(...data);
         })
         .catch((error) => {
-          console.log(error);
+          this.snackbar = {
+            visible: true,
+            color: "error",
+            message:
+              "Something went wrong while retrieving product categories. Please try again.",
+          };
         })
-        .then((_) => {});
+        .finally((_) => {});
     },
 
     editItem(item) {
@@ -309,7 +333,12 @@ export default {
           this.closeDelete();
         })
         .catch((error) => {
-          console.log(error);
+          this.snackbar = {
+            visible: true,
+            color: "error",
+            message:
+              "Something went wrong while deleting product. Please try again.",
+          };
         })
         .finally((_) => {});
     },

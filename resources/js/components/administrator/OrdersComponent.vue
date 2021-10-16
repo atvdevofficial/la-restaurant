@@ -1,14 +1,14 @@
 <template>
   <v-container fluid>
     <v-row justify="end" align="center" no-gutters>
-        <v-col cols="12" sm="10" md="8" lg="6" xl="4">
-          <v-text-field
-            v-model="search"
-            placeholder="Search orders"
-            append-icon="mdi-magnify"
-          ></v-text-field>
-        </v-col>
-      </v-row>
+      <v-col cols="12" sm="10" md="8" lg="6" xl="4">
+        <v-text-field
+          v-model="search"
+          placeholder="Search orders"
+          append-icon="mdi-magnify"
+        ></v-text-field>
+      </v-col>
+    </v-row>
     <div class="caption font-italic ma-1">
       Note: Click the status of the corresponding order to update.
     </div>
@@ -139,6 +139,14 @@
         </v-btn>
       </template>
     </v-data-table>
+
+    <v-snackbar
+      :color="snackbar.color"
+      v-model="snackbar.visible"
+      timeout="2000"
+    >
+      {{ snackbar.message }}
+    </v-snackbar>
   </v-container>
 </template>
 
@@ -146,6 +154,11 @@
 export default {
   data() {
     return {
+      snackbar: {
+        visible: false,
+        color: "primary",
+        message: "",
+      },
       editedIndex: -1,
       isRetrievingOrders: false,
       orderInformationDialog: false,
@@ -196,9 +209,14 @@ export default {
           this.orders = data;
         })
         .catch((error) => {
-          console.log(error);
+          this.snackbar = {
+            visible: true,
+            color: "error",
+            message:
+              "Something went wrong while retrieving orders. Please try again.",
+          };
         })
-        .then((_) => {
+        .finally((_) => {
           this.isRetrievingOrders = false;
         });
     },
@@ -232,6 +250,12 @@ export default {
         })
         .catch((error) => {
           item.status = originalStatus;
+          this.snackbar = {
+            visible: true,
+            color: "error",
+            message:
+              "Something went wrong while updating order status. Please try again.",
+          };
         })
         .finally((_) => {});
     },

@@ -120,6 +120,14 @@
         </v-form>
       </v-col>
     </v-row>
+
+    <v-snackbar
+      :color="snackbar.color"
+      v-model="snackbar.visible"
+      timeout="2000"
+    >
+      {{ snackbar.message }}
+    </v-snackbar>
   </v-container>
 </template>
 
@@ -127,6 +135,12 @@
 export default {
   data() {
     return {
+      snackbar: {
+        visible: false,
+        color: "primary",
+        message: "",
+      },
+
       isRetrievingProfile: false,
       isNotEditing: true,
       valid: true,
@@ -245,7 +259,12 @@ export default {
           };
         })
         .catch((error) => {
-          console.log(error.response.data);
+          this.snackbar = {
+            visible: true,
+            color: "error",
+            message:
+              "Something went wrong while retrieving profile. Please try again.",
+          };
         })
         .finally((_) => {
           this.isRetrievingProfile = false;

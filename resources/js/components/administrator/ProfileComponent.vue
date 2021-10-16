@@ -57,7 +57,11 @@
       </v-col>
     </v-row>
 
-    <v-snackbar color="primary" v-model="snackbar.visible" timeout="2000">
+    <v-snackbar
+      :color="snackbar.color"
+      v-model="snackbar.visible"
+      timeout="2000"
+    >
       {{ snackbar.message }}
     </v-snackbar>
   </v-container>
@@ -67,6 +71,12 @@
 export default {
   data() {
     return {
+      snackbar: {
+        visible: false,
+        color: "primary",
+        message: "",
+      },
+
       isRetrievingProfile: false,
       isNotEditing: true,
       valid: true,
@@ -84,11 +94,6 @@ export default {
       serverValidationErrors: {
         email: null,
         password: null,
-      },
-
-      snackbar: {
-        visible: false,
-        message: "",
       },
     };
   },
@@ -113,11 +118,18 @@ export default {
         })
         .then((response) => {
           this.snackbar = {
-              visible: true, message: 'Password Updated'
-          }
+            visible: true,
+            color: "primary",
+            message: "Password updated successfuly.",
+          };
         })
         .catch((error) => {
-          console.log(error.response.data);
+          this.snackbar = {
+            visible: true,
+            color: "error",
+            message:
+              "Something went wrong while updating password. Please try again.",
+          };
         })
         .finally((_) => {
           this.isNotEditing = true;
@@ -134,7 +146,12 @@ export default {
           this.customerInformation = data;
         })
         .catch((error) => {
-          console.log(error.response.data);
+          this.snackbar = {
+            visible: true,
+            color: "error",
+            message:
+              "Something went wrong while retrieving profile. Please try again.",
+          };
         })
         .finally((_) => {
           this.isRetrievingProfile = false;
