@@ -149,8 +149,7 @@
                 ><div class="caption">Delivery Fee</div>
                 <div>
                   <span v-if="!isCalculating && deliveryFee != null">
-                    Php {{ parseFloat(deliveryFee).toFixed(2) }} (
-                    {{ parseFloat(deliveryDistance / 1000).toFixed(3) }} KM )
+                    Php {{ parseFloat(deliveryFee).toFixed(2) }} ({{ parseFloat(deliveryDistance / 1000).toFixed(3) }} KM)
                   </span>
                   <span
                     v-if="isCalculating && deliveryFee != null"
@@ -167,7 +166,7 @@
                 </div>
               </v-col>
 
-              <v-col cols="6"
+              <v-col cols="12"
                 ><div class="caption">Grand Total</div>
                 <div class="font-weight-bold title">
                   Php {{ parseFloat(cartSubTotal + 100).toFixed(2) }}

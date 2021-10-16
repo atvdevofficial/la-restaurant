@@ -4786,7 +4786,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -17478,13 +17477,13 @@ var render = function() {
                                                 _vm.deliveryFee
                                               ).toFixed(2)
                                             ) +
-                                            " (\n                  " +
+                                            " (" +
                                             _vm._s(
                                               parseFloat(
                                                 _vm.deliveryDistance / 1000
                                               ).toFixed(3)
                                             ) +
-                                            " KM )\n                "
+                                            " KM)\n                "
                                         )
                                       ])
                                     : _vm._e(),
@@ -17515,7 +17514,7 @@ var render = function() {
                                 ])
                               ]),
                               _vm._v(" "),
-                              _c("v-col", { attrs: { cols: "6" } }, [
+                              _c("v-col", { attrs: { cols: "12" } }, [
                                 _c("div", { staticClass: "caption" }, [
                                   _vm._v("Grand Total")
                                 ]),
