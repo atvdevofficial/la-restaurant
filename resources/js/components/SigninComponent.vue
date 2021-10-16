@@ -52,6 +52,16 @@
                   >
                     Sign in
                   </v-btn>
+                  <v-btn
+                        small
+                          block
+                          depressed
+                          color="default"
+                          @click="goToRegistrationPage"
+                          class="mt-2"
+                        >
+                          Create An Account
+                        </v-btn>
                 </v-col>
               </v-row>
             </v-card-text>
@@ -78,6 +88,10 @@ export default {
     };
   },
   methods: {
+      goToRegistrationPage() {
+      this.$router.push("/register");
+    },
+
     validate() {
       if (this.$refs.form.validate()) this.signin();
     },

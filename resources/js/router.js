@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 
 import LandingComponent from './components/LandingComponent.vue'
 import SigninComponent from './components/SigninComponent.vue'
+import RegistrationComponent from './components/RegistrationComponent.vue'
 import ScaffoldComponent from './components/ScaffoldComponent.vue'
 import NotificationsComponent from './components/NotificationComponent.vue'
 
@@ -29,6 +30,11 @@ const routes = [
         path: '/',
         name: 'landing',
         component: LandingComponent
+    },
+    {
+        path: '/register',
+        name: 'register',
+        component: RegistrationComponent
     },
     {
         path: '/signin',
@@ -88,7 +94,7 @@ const router = new VueRouter(opts)
 // Router Guards
 const modules = {
     // Main
-    landing: true, signin: true,
+    landing: true, signin: true, register: true,
 
     // Administrator
     dashboard: true, orders: true, products: true, orders: true, productCategories: true, customers: true, deliveryFees: true, administratorNotifications: true, administratorProfile: true,

@@ -106,8 +106,7 @@ export default {
       // Clear session storage
       sessionStorage.clear();
 
-      // Push to sign in
-      this.$router.push("/signin");
+      axios.post("/api/v1/logout").finally(() => this.$router.push("/signin"));
     },
   },
 };

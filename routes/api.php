@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ReverseGeocodeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,6 +20,9 @@ Route::group(['middleware' => 'forceJsonResponse'], function () {
     Route::group(['prefix' => 'v1'], function () {
 
         Route::post('/login', 'AuthController@login');
+        Route::post('/registration', 'RegistrationController')
+            ->name('registration');
+        Route::get('/reverse-geocode', 'ReverseGeocodeController');
 
         // Route::get('/verification', 'VerificationController@verifyContactNumber');
         // Route::put('/forgot-password', 'VerificationController@sendCodeToContactNumber');
@@ -36,9 +40,11 @@ Route::group(['middleware' => 'forceJsonResponse'], function () {
 
         Route::group(['middleware' => 'auth:api'], function () {
 
-            // Route::post('/logout', 'AuthController@logout');
+            Route::post('/logout', 'AuthController@logout');
 
-            Route::get('/user', function() { return request()->user(); });
+            Route::get('/user', function () {
+                return request()->user();
+            });
             Route::put('/user/change/password', 'UserController@changePassword');
 
             Route::get('/notifications', function (Request $request) {
@@ -60,18 +66,6 @@ Route::group(['middleware' => 'forceJsonResponse'], function () {
             Route::get('/delivery-fees/calculate', 'DeliveryFeeController@calculate')->name('deliveryFees.calculate');
             Route::apiResource('deliveryFees', 'DeliveryFeeController')
                 ->only(['store', 'update', 'destroy']);
-
-            Route::get('/reverse-geocode', function (Request $request) {
-                $latitude = $request->latitude ?? null;
-                $longitude = $request->longitude ?? null;
-
-                $googleApiKey = env('GOOGLE_API_KEY', null);
-
-                $url = "https://maps.googleapis.com/maps/api/geocode/json?latlng={$latitude},{$longitude}&key={$googleApiKey}";
-                $response = json_decode(file_get_contents($url), true);
-                $address = $response['results'][0]['formatted_address'];
-                return $address ?? null;
-            });
         });
     });
 });
