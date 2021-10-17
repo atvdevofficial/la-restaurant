@@ -26,7 +26,6 @@ class RegistrationTest extends TestCase
         ];
 
         $this->postJson(route('registration', $customerData))
-        ->dump()
             ->assertStatus(201)
             ->assertJsonStructure([
                 'id', 'first_name', 'last_name', 'contact_number',
