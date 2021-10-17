@@ -53,12 +53,12 @@
                     </div>
                   </v-list-item-action>
                 </v-list-item>
-                <div v-if="viewingOrder.note != null">
-                  <v-subheader>Note</v-subheader>
+                <div v-if="viewingOrder.notes != null">
+                  <v-subheader>Notes / Instructions</v-subheader>
                   <v-list-item>
                     <v-list-item-content>
                       <v-list-item-subtitle>
-                        {{ viewingOrder.note }}</v-list-item-subtitle
+                        {{ viewingOrder.notes }}</v-list-item-subtitle
                       >
                     </v-list-item-content>
                   </v-list-item>

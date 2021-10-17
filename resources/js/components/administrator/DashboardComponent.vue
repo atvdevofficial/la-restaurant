@@ -7,7 +7,7 @@
         :key="index"
         cols="12"
         sm="6"
-        md="3"
+        lg="3"
       >
         <v-card>
           <v-card-title>
@@ -31,7 +31,7 @@
         :key="index"
         cols="12"
         sm="6"
-        md="2"
+        md="3"
       >
         <v-card dark :color="item.color">
           <v-card-title>

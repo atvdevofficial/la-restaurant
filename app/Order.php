@@ -10,7 +10,7 @@ class Order extends Model
         'customer_id',
         'address', 'latitude', 'longitude',
         'sub_total', 'delivery_fee', 'grand_total',
-        'status',
+        'status', 'notes',
     ];
 
     protected $hidden = [

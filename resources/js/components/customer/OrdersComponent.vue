@@ -82,6 +82,13 @@
           </v-list>
 
           <v-row>
+            <v-col cols="12">
+              <div class="caption font-italic">Notes / Instructions</div>
+              <div v-if="viewingOrder.notes != null">
+                {{ viewingOrder.notes }}
+              </div>
+              <div v-else>No Notes / Instructions</div>
+            </v-col>
             <v-col
               ><div class="caption font-italic">Sub Total</div>
               <div>Php {{ viewingOrder.sub_total }}</div></v-col
@@ -184,7 +191,7 @@ export default {
         delivery_fee: 0,
         grand_total: 0,
         status: null,
-        note: null,
+        notes: null,
         items: [{ name: null, price: 0, quantity: 0 }],
       },
       orders: [],

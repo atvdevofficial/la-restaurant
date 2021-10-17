@@ -40,7 +40,7 @@
                   v-if="errorMessage != ''"
                   class="text-center red--text"
                 >
-                  {{ errorMessage }} !
+                  {{ errorMessage }}
                 </v-col>
 
                 <v-col cols="12">
@@ -121,7 +121,10 @@ export default {
           else if (userRole == "CUSTOMER") this.$router.push("/c/menu");
         })
         .catch((error) => {
-          this.errorMessage = error.response.data;
+            if (error.response.status == 42)
+                this.errorMessage = error.response.data;
+            else
+                this.errorMessage = 'Something Went Wrong'
         })
         .finally((fin) => {
           this.isSigningIn = false;

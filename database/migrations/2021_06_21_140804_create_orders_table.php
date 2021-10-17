@@ -24,6 +24,7 @@ class CreateOrdersTable extends Migration
             $table->double('delivery_fee');
             $table->double('grand_total');
             $table->string('status');
+            $table->string('notes')->nullable();
 
             $table->timestamps();
             $table->softDeletes();

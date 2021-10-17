@@ -131,6 +131,7 @@
               <v-col cols="12">
                 <div>
                   <v-textarea
+                    v-model="notes"
                     label="Notes / Instructions"
                     placeholder="No Notes / Instructions"
                     auto-grow
@@ -149,7 +150,10 @@
                 ><div class="caption">Delivery Fee</div>
                 <div>
                   <span v-if="!isCalculating && deliveryFee != null">
-                    Php {{ parseFloat(deliveryFee).toFixed(2) }} ({{ parseFloat(deliveryDistance / 1000).toFixed(3) }} KM)
+                    Php {{ parseFloat(deliveryFee).toFixed(2) }} ({{
+                      parseFloat(deliveryDistance / 1000).toFixed(3)
+                    }}
+                    KM)
                   </span>
                   <span
                     v-if="isCalculating && deliveryFee != null"
@@ -169,7 +173,7 @@
               <v-col cols="12"
                 ><div class="caption">Grand Total</div>
                 <div class="font-weight-bold title">
-                  Php {{ parseFloat(cartSubTotal + 100).toFixed(2) }}
+                  Php {{ parseFloat(cartSubTotal + deliveryFee).toFixed(2) }}
                 </div>
               </v-col>
             </v-row>
@@ -354,6 +358,7 @@ export default {
         email: null,
       },
 
+      notes: null,
       deliveryFee: null,
       deliveryDistance: 0,
 
@@ -413,6 +418,7 @@ export default {
           latitude: this.positionCoordinates.lat,
           longitude: this.positionCoordinates.lng,
           distance: this.deliveryDistance,
+          notes: this.notes,
           products: this.cart,
         })
         .then((response) => {
@@ -435,7 +441,8 @@ export default {
             this.snackbar = {
               visible: true,
               color: "error",
-              message: "Something went wrong while checking out. Please try again.",
+              message:
+                "Something went wrong while checking out. Please try again.",
             };
           }
         })

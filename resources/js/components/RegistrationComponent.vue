@@ -153,11 +153,12 @@
                           color="primary"
                           @click="register"
                           class="mt-2"
+                          :loading="isRegisteringAccount"
                         >
                           Create Account
                         </v-btn>
                         <v-btn
-                        small
+                          small
                           block
                           depressed
                           color="default"
@@ -172,7 +173,9 @@
                 </v-col>
               </v-row>
               <v-row justify="center" v-if="accountCreationStatus == true">
-                <v-col cols="12" class="text-center"> Account Created Successfuly. </v-col>
+                <v-col cols="12" class="text-center">
+                  Account Created Successfuly.
+                </v-col>
                 <v-col cols="12">
                   <v-btn
                     block
@@ -196,6 +199,7 @@
 export default {
   data() {
     return {
+      isRegisteringAccount: false,
       accountCreationStatus: false,
       valid: true,
 
@@ -239,6 +243,7 @@ export default {
 
     // Update
     register() {
+      this.isRegisteringAccount = true;
       axios
         .post("/api/v1/registration", {
           ...this.customerInformation,
@@ -260,7 +265,9 @@ export default {
             this.serverValidationErrors = error.response.data.errors;
           }
         })
-        .catch((_) => {});
+        .finally((_) => {
+          this.isRegisteringAccount = false;
+        });
     },
 
     // Cancel

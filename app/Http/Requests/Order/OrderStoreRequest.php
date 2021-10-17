@@ -34,6 +34,7 @@ class OrderStoreRequest extends FormRequest
             'latitude' => ['required', 'numeric'],
             'longitude' => ['required', 'numeric'],
             'distance' => ['required', 'numeric'],
+            'notes' => ['string'],
 
             'products' => ['required', 'array', 'min:1'],
             'products.*.id' => ['required', 'exists:products,id'],
