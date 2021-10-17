@@ -56,7 +56,7 @@ class OrderController extends Controller
             'latitude' => $request->validated()['latitude'],
             'longitude' => $request->validated()['longitude'],
             'distance' => $request->validated()['distance'],
-            'notes' => $request->validated()['notes'],
+            'notes' => $request->validated()['notes'] ?? null,
             'sub_total' => 99999,
             'delivery_fee' => null,
             'grand_total' => 99999,

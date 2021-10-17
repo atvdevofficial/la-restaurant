@@ -32,7 +32,8 @@ class Order extends Model
         parent::boot();
 
         self::creating(function($order) {
-            $order->code = time() . $order->customer_id;
+            $permittedChars = '1234567890QWERTYUIOPASDFGHJKLZXCVBNM';
+            $order->code = substr(str_shuffle($permittedChars), 0, 5) . $order->customer_id . time();
         });
     }
 }

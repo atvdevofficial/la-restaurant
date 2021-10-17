@@ -15,6 +15,7 @@ class RegistrationTest extends TestCase
         $customerData = [
             'email' => $this->faker->email,
             'password' => 'dummy1234',
+            'password_confirmation' => 'dummy1234',
 
             'first_name' => $this->faker->firstName,
             'last_name' => $this->faker->lastName,
@@ -25,6 +26,7 @@ class RegistrationTest extends TestCase
         ];
 
         $this->postJson(route('registration', $customerData))
+        ->dump()
             ->assertStatus(201)
             ->assertJsonStructure([
                 'id', 'first_name', 'last_name', 'contact_number',

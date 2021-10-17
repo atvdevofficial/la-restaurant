@@ -13,7 +13,8 @@ class OrderTest extends TestCase
     /**
      * Administrator tests
      */
-    public function testAdministratorOrderIndex() {
+    public function testAdministratorOrderIndex()
+    {
         $customerUser = factory(\App\User::class)->create(['role' => 'CUSTOMER']);
         $customer = factory(\App\Customer::class)->create(['user_id' => $customerUser->id]);
 
@@ -21,16 +22,17 @@ class OrderTest extends TestCase
 
         $administrator = factory(\App\User::class)->create(['role' => 'ADMINISTRATOR']);
         $this->actingAs($administrator, 'api')
-        ->getJson(route('orders.index'))
-        ->assertStatus(200)
-        ->assertJsonStructure([[
-            'id', 'address', 'latitude', 'longitude',
-            'sub_total', 'delivery_fee', 'grand_total',
-            'status', 'customer'
-        ]]);
+            ->getJson(route('orders.index'))
+            ->assertStatus(200)
+            ->assertJsonStructure([[
+                'id', 'address', 'latitude', 'longitude',
+                'sub_total', 'delivery_fee', 'grand_total',
+                'status', 'customer'
+            ]]);
     }
 
-    public function testAdministratorOrderShow() {
+    public function testAdministratorOrderShow()
+    {
         $customerUser = factory(\App\User::class)->create(['role' => 'CUSTOMER']);
         $customer = factory(\App\Customer::class)->create(['user_id' => $customerUser->id]);
 
@@ -38,16 +40,17 @@ class OrderTest extends TestCase
 
         $administrator = factory(\App\User::class)->create(['role' => 'ADMINISTRATOR']);
         $this->actingAs($administrator, 'api')
-        ->getJson(route('orders.show', ['order' => $order->id]))
-        ->assertStatus(200)
-        ->assertJsonStructure([
-            'id', 'address', 'latitude', 'longitude',
-            'sub_total', 'delivery_fee', 'grand_total',
-            'status', 'customer'
-        ]);
+            ->getJson(route('orders.show', ['order' => $order->id]))
+            ->assertStatus(200)
+            ->assertJsonStructure([
+                'id', 'address', 'latitude', 'longitude',
+                'sub_total', 'delivery_fee', 'grand_total',
+                'status', 'customer'
+            ]);
     }
 
-    public function testAdministratorOrderUpdate() {
+    public function testAdministratorOrderUpdate()
+    {
         $customerUser = factory(\App\User::class)->create(['role' => 'CUSTOMER']);
         $customer = factory(\App\Customer::class)->create(['user_id' => $customerUser->id]);
 
@@ -60,36 +63,44 @@ class OrderTest extends TestCase
 
         $administrator = factory(\App\User::class)->create(['role' => 'ADMINISTRATOR']);
         $this->actingAs($administrator, 'api')
-        ->putJson(route('orders.update', $orderData))
-        ->assertStatus(200)
-        ->assertJsonStructure([
-            'id', 'address', 'latitude', 'longitude',
-            'sub_total', 'delivery_fee', 'grand_total',
-            'status',
-        ]);
+            ->putJson(route('orders.update', $orderData))
+            ->assertStatus(200)
+            ->assertJsonStructure([
+                'id', 'address', 'latitude', 'longitude',
+                'sub_total', 'delivery_fee', 'grand_total',
+                'status',
+            ]);
     }
 
     /**
      * Customer tests
      */
-    public function testCustomerOrderIndex() {
+    public function testCustomerOrderIndex()
+    {
         $customerUser = factory(\App\User::class)->create(['role' => 'CUSTOMER']);
         $customer = factory(\App\Customer::class)->create(['user_id' => $customerUser->id]);
 
         factory(\App\Order::class, 5)->create(['customer_id' => $customer->id]);
 
         $this->actingAs($customerUser, 'api')
-        ->getJson(route('orders.index'))
-        ->assertStatus(200)
-        ->assertJsonStructure([[
-            'id', 'address', 'latitude', 'longitude',
-            'sub_total', 'delivery_fee', 'grand_total',
-            'status',
-        ]]);
+            ->getJson(route('orders.index'))
+            ->assertStatus(200)
+            ->assertJsonStructure([[
+                'id', 'address', 'latitude', 'longitude',
+                'sub_total', 'delivery_fee', 'grand_total',
+                'status',
+            ]]);
     }
 
-    public function testCustomerOrderStore() {
+    public function testCustomerOrderStore()
+    {
         $product = factory(\App\Product::class)->create();
+
+        factory(\App\DeliveryFee::class)->create([
+            'from' => 1,
+            'to' => 3,
+            'fee' => 50,
+        ]);
 
         $customerUser = factory(\App\User::class)->create(['role' => 'CUSTOMER']);
         factory(\App\Customer::class)->create(['user_id' => $customerUser->id]);
@@ -98,7 +109,7 @@ class OrderTest extends TestCase
             'address' => $this->faker->streetAddress,
             'latitude' => $this->faker->latitude,
             'longitude' => $this->faker->longitude,
-            'distance' => random_int(100, 999),
+            'distance' => 1,
 
             'products' => [
                 ['id' => $product->id, 'quantity' => 1]
@@ -106,32 +117,34 @@ class OrderTest extends TestCase
         ];
 
         $this->actingAs($customerUser, 'api')
-        ->postJson(route('orders.store', $orderData))
-        ->assertStatus(201)
-        ->assertJsonStructure([
-            'id', 'address', 'latitude', 'longitude',
-            'sub_total', 'delivery_fee', 'grand_total',
-            'status',
-        ]);
+            ->postJson(route('orders.store', $orderData))
+            ->assertStatus(201)
+            ->assertJsonStructure([
+                'id', 'address', 'latitude', 'longitude',
+                'sub_total', 'delivery_fee', 'grand_total',
+                'status',
+            ]);
     }
 
-    public function testCustomerOrderShow() {
+    public function testCustomerOrderShow()
+    {
         $customerUser = factory(\App\User::class)->create(['role' => 'CUSTOMER']);
         $customer = factory(\App\Customer::class)->create(['user_id' => $customerUser->id]);
 
         $order = factory(\App\Order::class)->create(['customer_id' => $customer->id]);
 
         $this->actingAs($customerUser, 'api')
-        ->getJson(route('orders.show', ['order' => $order->id]))
-        ->assertStatus(200)
-        ->assertJsonStructure([
-            'id', 'address', 'latitude', 'longitude',
-            'sub_total', 'delivery_fee', 'grand_total',
-            'status',
-        ]);
+            ->getJson(route('orders.show', ['order' => $order->id]))
+            ->assertStatus(200)
+            ->assertJsonStructure([
+                'id', 'address', 'latitude', 'longitude',
+                'sub_total', 'delivery_fee', 'grand_total',
+                'status',
+            ]);
     }
 
-    public function testCustomerOrderUpdate() {
+    public function testCustomerOrderUpdate()
+    {
         $customerUser = factory(\App\User::class)->create(['role' => 'CUSTOMER']);
         $customer = factory(\App\Customer::class)->create(['user_id' => $customerUser->id]);
 
@@ -143,12 +156,12 @@ class OrderTest extends TestCase
         ];
 
         $this->actingAs($customerUser, 'api')
-        ->putJson(route('orders.update', $orderData))
-        ->assertStatus(200)
-        ->assertJsonStructure([
-            'id', 'address', 'latitude', 'longitude',
-            'sub_total', 'delivery_fee', 'grand_total',
-            'status',
-        ]);
+            ->putJson(route('orders.update', $orderData))
+            ->assertStatus(200)
+            ->assertJsonStructure([
+                'id', 'address', 'latitude', 'longitude',
+                'sub_total', 'delivery_fee', 'grand_total',
+                'status',
+            ]);
     }
 }
