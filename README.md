@@ -3,10 +3,10 @@ A food booking web application build with Laravel and VueJs.
 
 ## Installation
 #### Prerequisites
- + PHP 7.4
- + MySQL Database
- + Composer
- + NodeJs
+ + PHP 7.*4*
+ + MySQL Database 
+ + Composer 2.*
+ + NodeJs 14.*
 
 #### Installation
 ```bash
