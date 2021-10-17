@@ -150,6 +150,8 @@
 
 /*! ../../presets/default */
 
+/*! ../../services/goto */
+
 /*! ../../services/goto/easing-patterns */
 
 /*! ../../styles/components/_selection-controls.sass */
@@ -1000,8 +1002,6 @@
 
 /*! exports provided: BaseItemGroup, default */
 
-/*! exports provided: BaseSlideGroup, default */
-
 /*! exports provided: Breakpoint */
 
 /*! exports provided: CalendarEventOverlapModes */
@@ -1206,6 +1206,8 @@
 
 /*! exports provided: attachedRoot */
 
+/*! exports provided: calculateUpdatedOffset, calculateCenteredOffset, BaseSlideGroup, default */
+
 /*! exports provided: checkCollinear, getDistance, moveTo */
 
 /*! exports provided: column */
@@ -1218,7 +1220,7 @@
 
 /*! exports provided: createItemTypeNativeListeners, createItemTypeListeners */
 
-/*! exports provided: createSimpleFunctional, directiveConfig, addOnceEventListener, passiveSupported, addPassiveEventListener, getNestedValue, deepEqual, getObjectValueByPath, getPropertyFromItem, createRange, getZIndex, escapeHTML, filterObjectOnKeys, convertToUnit, kebabCase, isObject, keyCodes, remapInternalIcon, keys, camelize, arrayDiff, upperFirst, groupItems, wrapInArray, sortItems, defaultFilter, searchItems, getSlotType, debounce, throttle, getPrefixedScopedSlots, getSlot, clamp, padEnd, chunk, humanReadableFileSize, camelizeObjectKeys, mergeDeep, fillArray */
+/*! exports provided: createSimpleFunctional, directiveConfig, addOnceEventListener, passiveSupported, addPassiveEventListener, getNestedValue, deepEqual, getObjectValueByPath, getPropertyFromItem, createRange, getZIndex, escapeHTML, filterObjectOnKeys, convertToUnit, kebabCase, isObject, keyCodes, remapInternalIcon, keys, camelize, arrayDiff, upperFirst, groupItems, wrapInArray, sortItems, defaultFilter, searchItems, getSlotType, debounce, throttle, getPrefixedScopedSlots, getSlot, clamp, padEnd, chunk, humanReadableFileSize, camelizeObjectKeys, mergeDeep, fillArray, composedPath */
 
 /*! exports provided: createSimpleTransition, createJavascriptTransition */
 
